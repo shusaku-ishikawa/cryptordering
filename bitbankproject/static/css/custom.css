@@ -164,6 +164,11 @@ button.on {
 button.off {
     background: teal;
 }
+
+button.active {
+    background: lightgray;
+}
+
 button[name="cancel_order_button"], button[name="deactivate_alert_button"] {
     color: orangered;
     border: none;
