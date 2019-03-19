@@ -1,0 +1,8 @@
+{{ user.full_name }} 様 
+
+通知レートに到達しました。
+
+通貨 : {{ pair }}
+レート : {{ ticker_dict.last }}
+
+管理者
