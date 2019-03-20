@@ -3,7 +3,7 @@ var market_price_json = {};
 
 function call_assets(method, is_async = true) {
     return $.ajax({
-        url: '{% url "bitbank:ajax_assets" %}',
+        url: BASE_URL_ASSETS,
         type: (method == 'GET') ? 'GET':'POST',
         dataType: 'json',
         async: is_async,
@@ -14,7 +14,7 @@ function call_assets(method, is_async = true) {
 }
 function call_ticker(method, pair, is_async = true) {
     return $.ajax({
-        url: '{% url "bitbank:ajax_ticker" %}',
+        url: BASE_URL_TICKER,
         type: (method == 'GET') ? 'GET':'POST',
         dataType: 'json',
         
@@ -28,7 +28,7 @@ function call_ticker(method, pair, is_async = true) {
 
 function call_user(method, full_name, api_key, api_secret_key, email_for_notice, notify_if_filled, use_alert) {
     return $.ajax({
-        url: '{% url "bitbank:ajax_user" %}',
+        url: BASE_URL_USER,
         type: (method == 'GET') ? 'GET':'POST' ,
         
         dataType: 'json',
@@ -44,15 +44,16 @@ function call_user(method, full_name, api_key, api_secret_key, email_for_notice,
     });
 }
 
-function call_orders(method, pair, offset = null, limit = null, type = null, pk = null, special_order = null, order_1, order_2, order_3) {
+function call_orders(method, market, pair, offset = null, limit = null, type = null, pk = null, special_order = null, order_1 = null, order_2 = null, order_3 = null) {
     return $.ajax({
-        url: '{% url "bitbank:ajax_orders" %}',
+        url: BASE_URL_ORDERS,
         type: (method == 'GET') ? 'GET' : 'POST',
         dataType: 'json',
         data: {
             method: method,
             offset: offset,
             limit: limit,
+            market: market,
             type: type,
             pk: pk,
             pair: pair,
@@ -66,7 +67,7 @@ function call_orders(method, pair, offset = null, limit = null, type = null, pk 
 
 function call_alerts(method, pk, pair, offset, limit, threshold, over_or_under) {
     return $.ajax({
-        url: '{% url "bitbank:ajax_alerts" %}',
+        url: BASE_URL_ALERTS,
         type: (method == 'GET') ? 'GET' : 'POST',
         dataType: 'json',
         data: {
@@ -84,7 +85,7 @@ function call_alerts(method, pk, pair, offset, limit, threshold, over_or_under) 
 
 function call_attachment(method, pk) {
     return $.ajax({
-        url: '{% url "bitbank:ajax_attachment" %}',
+        url: BASE_URL_ATTACHMENTS,
         type: 'POST',
         dataType: 'json',
         data : {
@@ -95,7 +96,7 @@ function call_attachment(method, pk) {
 }
 function call_inquiry(method, subject, body, email, attachment_pk_list) {
     return $.ajax({
-        url: '{% url "bitbank:ajax_inquiry" %}',
+        url: BASE_URL_INQUIRY,
         type: 'POST',
         dataType: 'json',
         data: {
@@ -137,7 +138,7 @@ function initialize_free_amount_json() {
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
         set_error_message($('#id_ajax_message'), xhr);
     });
@@ -156,7 +157,7 @@ function initialize_ticker_json() {
         })
         .fail(function(data, textStatus, xhr) {
             if (data.status == 401) {
-                window.location.href = "{% url 'bitbank:login' %}";
+                window.location.href = BASE_URL_LOGIN;
             }
             set_error_message($('#id_ajax_message'), xhr);
         });
@@ -300,18 +301,19 @@ function calculate_expect_price(tab_num) {
         }
     }
 }
-function create_order_json(pair, side, order_type, price, price_for_stop, start_amount) {
+function create_order_json(pair, side, order_type, price, price_for_stop, trail_width, start_amount) {
     var order_info = new Object();
     order_info.pair = pair;
     order_info.side = side;
     order_info.order_type = order_type;
     order_info.price = price;
     order_info.price_for_stop = price_for_stop;
+    order_info.trail_width = trail_width;
     order_info.start_amount = start_amount;
     return JSON.stringify(order_info);
 }
-function _order(pair, special_order, order_1, order_2, order_3,  message_target) {
-    call_orders('POST', pair, null, null, null, null, special_order, order_1, order_2, order_3)
+function _order(market, pair, special_order, order_1, order_2, order_3,  message_target) {
+    call_orders('POST', market, pair, null, null, null, null, special_order, order_1, order_2, order_3)
     .done(function(res) {
         if (res.error) {
             set_error_message(message_target, res.error);
@@ -321,7 +323,7 @@ function _order(pair, special_order, order_1, order_2, order_3,  message_target)
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
         set_error_message(message_target, xhr);
     });
@@ -350,7 +352,7 @@ function get_confirmation(order_name) {
         }
     });
 }
-function place_order(pair, special_order, order_1, order_2, order_3,  message_target) {
+function place_order(market, pair, special_order, order_1, order_2, order_3,  message_target) {
     // if (order_1 != null) {
     //     if (order_1.order_type.match(/limit/)) {
     call_ticker('GET', pair)
@@ -386,7 +388,7 @@ function place_order(pair, special_order, order_1, order_2, order_3,  message_ta
     .fail(function(data, textStatus, xhr) {
     
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
         set_error_message(message_target, xhr);
     });            
@@ -424,7 +426,7 @@ function set_default_price(tab_num, pair, message_target) {
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
         //alert('call ticker erorr');
         set_error_message(message_target, xhr);
@@ -482,8 +484,6 @@ function initialize_order_tab(is_initial = false) {
         var $input_market = $('#id_market');
         // bitbank/coincheck end
       
-        var side_option_html = '';
-        var order_type_option_html = '';
         
         $slick
         .slick({
@@ -515,16 +515,31 @@ function initialize_order_tab(is_initial = false) {
                 text: SPECIAL_ORDERS[key],
             }).appendTo($input_special_order);
         });
+        
  
         $input_market
         .on('value_change', function() {
-            reset_input_all(); 
+            reset_input_all();
             if ($(this).val() == 'bitbank') {
                 $bitbank_button.addClass('active');
                 $coincheck_button.removeClass('active');
+                $input_pair.empty();
+                Object.keys(PAIRS).forEach(key => {
+                    $('<option>', {
+                        value: key,
+                        text: PAIRS[key],
+                    }).appendTo($input_pair);
+                });
             } else {
                 $bitbank_button.removeClass('active');
                 $coincheck_button.addClass('active');
+                $input_pair.val('btc_jpy');
+                $input_pair
+                .empty()
+                .append($('<option>', {
+                    value: 'btc_jpy',
+                    text: PAIRS['btc_jpy']
+                }));
             }
         });
         $bitbank_button
@@ -549,7 +564,6 @@ function initialize_order_tab(is_initial = false) {
         .on('change', function() {
             $.cookie(COOKIE_SPECIAL_ORDER, $(this).val(), { expires: 7 });
             reset_input_all();    
-            
             
             $slick
             .slick('slickUnfilter')
@@ -605,7 +619,10 @@ function initialize_order_tab(is_initial = false) {
             // 無ければ先頭の選択肢をセット
             $input_pair.val(Object.keys(PAIRS)[0]);
         }
-            
+        
+        $input_market.val(Object.keys(MARKETS)[0]).trigger('value_change');
+        $input_special_order.val(Object.keys(SPECIAL_ORDERS)[0]).trigger('change');
+
         for (let i = 1; i < 4; i++) {
             
             $('#myRange_' + i).on("input", function () {
@@ -717,6 +734,7 @@ function initialize_order_tab(is_initial = false) {
         }
 
         $button_order.on('click', function(e) {
+            var market = $input_market.val();
             var pair = $input_pair.val();
             var special_order = $input_special_order.val();
             
@@ -736,360 +754,673 @@ function initialize_order_tab(is_initial = false) {
             var price_for_stop_2 = $('#id_price_for_stop_2').val() == '' ? null : parseFloat($('#id_price_for_stop_2').val());
             var price_for_stop_3 = $('#id_price_for_stop_3').val() == '' ? null : parseFloat($('#id_price_for_stop_3').val());
 
+            var trail_width_1 = $('#id_trail_width_1').val() == '' ? null : parseFloat($('#id_trail_width_1').val());
+            var trail_width_2 = $('#id_trail_width_2').val() == '' ? null : parseFloat($('#id_trail_width_2').val());
+            var trail_width_3 = $('#id_trail_width_3').val() == '' ? null : parseFloat($('#id_trail_width_3').val());
+
+
             var start_amount_1 = $('#id_start_amount_1').val();
             var start_amount_2 = $('#id_start_amount_2').val();
             var start_amount_3 = $('#id_start_amount_3').val();
             
-            var order_1 = create_order_json(pair, side_1, order_type_1, price_1, price_for_stop_1, start_amount_1);
-            var order_2 = create_order_json(pair, side_2, order_type_2, price_2, price_for_stop_2, start_amount_2);
-            var order_3 = create_order_json(pair, side_3, order_type_3, price_3, price_for_stop_3, start_amount_3);
+            var order_1 = create_order_json(pair, side_1, order_type_1, price_1, price_for_stop_1, trail_width_1, start_amount_1);
+            var order_2 = create_order_json(pair, side_2, order_type_2, price_2, price_for_stop_2, trail_width_2, start_amount_2);
+            var order_3 = create_order_json(pair, side_3, order_type_3, price_3, price_for_stop_3, trail_width_3, start_amount_3);
         
             switch ($input_special_order.val()) {
                 case 'SINGLE':
-                    place_order(pair, special_order, order_1, null, null, order_result_message_target);
+                    place_order(market, pair, special_order, order_1, null, null, order_result_message_target);
                     break;
                 case 'IFD':
-                    place_order(pair, special_order, order_1, order_2, null, order_result_message_target);
+                    place_order(market, pair, special_order, order_1, order_2, null, order_result_message_target);
                     break;
                 case 'OCO':
-                    place_order(pair, special_order, null, order_2, order_3, order_result_message_target);
+                    place_order(market, pair, special_order, null, order_2, order_3, order_result_message_target);
                     break;
                 case 'IFDOCO':
-                    place_order(pair, special_order, order_1, order_2, order_3, order_result_message_target);
+                    place_order(market, pair, special_order, order_1, order_2, order_3, order_result_message_target);
                     break;
             }
         });  
     }
 }
-function build_order_card_header(pair, special_order) {
-    var table_html = '';
-    table_html += '<div class="order_header">';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-3 card-table-header">取引通貨</div>';
-    table_html += '<div class="col-3 card-table-data">' + pair + '</div>';
-    table_html += '<div class="col-3 card-table-header">特殊注文</div>';
-    table_html += '<div class="col-3 card-table-data">' + special_order + '</div>';
-    table_html += '</div>';
-    table_html += '</div>';
-    return table_html;
+function build_order_card_header(market, pair, special_order) {
+    var row_1 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-header',
+        text: '取引所'
+    })).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-data',
+        text: market
+    }));
+
+    var row_2 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-header',
+        text: '取引通貨'
+    })).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-data',
+        text: pair
+    }));
+
+    var row_3 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-header',
+        text: '特殊注文'
+    })).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-data',
+        text: special_order
+    }));
+
+    return $('<div>', {
+        class: 'order_header'
+    }).append(row_1).append(row_2).append(row_3);
+    
+    // var table_html = '';
+    // table_html += '<div class="order_header">';
+    // table_html += '<div class="row">';
+    // table_html += '<div class="col-6 card-table-header">取引所</div>';
+    // table_html += '<div class="col-6 card-table-data">' + market + '</div>';
+    // table_html += '</div>';
+    // table_html += '<div class="row">';
+    // table_html += '<div class="col-6 card-table-header">取引通貨</div>';
+    // table_html += '<div class="col-6 card-table-data">' + pair + '</div>';
+    // table_html += '</div>';
+    // table_html += '<div class="row">';
+    // table_html += '<div class="col-6 card-table-header">特殊注文</div>';
+    // table_html += '<div class="col-6 card-table-data">' + special_order + '</div>';
+    // table_html += '</div>';
+    // table_html += '</div>';
+    // return table_html;
 }
 function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_type, side, price, price_for_stop, start_amount, executed_amount,average_price, status, ordered_at) {
-    var table_html = '';
-    table_html += '<div class="order_body">';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-3 card-table-header">注文ID</div>';
-    table_html += '<div class="col-3 card-table-data">' + order_id + '</div>';
-    table_html += '<div class="col-3 card-table-header">売/買</div>';
-    table_html += '<div class="col-3 card-table-data">' + side + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-3 card-table-header">タイプ</div>';
-    table_html += '<div class="col-3 card-table-data">' + order_type + '</div>';
-    table_html += '<div class="col-3 card-table-header">逆指値価格</div>';
-    table_html += '<div class="col-3 card-table-data">' + price_for_stop + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-3 card-table-header">数量</div>';
-    table_html += '<div class="col-3 card-table-data">' + start_amount + '</div>';
-    table_html += '<div class="col-3 card-table-header">指値価格</div>';
-    table_html += '<div class="col-3 card-table-data">' + price + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-3 card-table-header">約定数量</div>';
-    table_html += '<div class="col-3 card-table-data">' + executed_amount + '</div>';
-    table_html += '<div class="col-3 card-table-header">平均価格</div>';
-    table_html += '<div class="col-3 card-table-data">' + average_price + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-6 card-table-header">注文日時</div>';
-    table_html += '<div class="col-6 card-table-data">' + ordered_at + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-6 card-table-header">ステータス</div>';
-    table_html += '<div class="col-6 card-table-data">' + status + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row justify-content-end">';
+    
+    var row_1 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '注文ID'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: order_id
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '売/買'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: side
+    }));
+
+    var row_2 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: 'タイプ'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: order_type
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '逆指値価格'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: price_for_stop
+    }));
+
+    var row_3 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '数量'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: start_amount
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '指値価格'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: price
+    }));
+
+    var row_4 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '約定数量'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: executed_amount
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '平均価格'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: average_price
+    }));
+
+    var row_5 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-header',
+        text: '注文日時'
+    })).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-data',
+        text: ordered_at
+    }));
+
+    var row_6 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-header',
+        text: 'ステータス'
+    })).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-data',
+        text: status
+    }));
+    var row_7 = $('<div>', {
+        class: 'row justify-content-end'
+    })
     switch (order_seq) {
         case 'order_1':
-            table_html += '<span class="badge badge-info">新規注文</span>'
+            row_7.append($('<span>', {
+                class: 'badge badge-info',
+                text: '新規注文'
+            }));
             break;
         case 'order_2':
-            table_html += '<span class="badge badge-success">決済注文❶</span>'
+            row_7.append($('<span>', {
+                class: 'badge badge-success',
+                text: '決済注文❶'
+            }));
+            
             break;
         case 'order_3':
-            table_html += '<span class="badge badge-primary">決済注文❷</span>'
+            row_7.append($('<span>', {
+                class: 'badge badge-primary',
+                text: '決済注文❷'
+            }));
             break;
     }
-    table_html += '</div>';
-    
-    table_html += '<hr><div class="row">';
+    var row_8 = $('<div>', { class: 'row' });
     if (is_cancellable) {
-        table_html += '<button style="font-size:1rem; padding:0.2em!important" pk="' + pk + '" type="button" class="btn btn-outline-secondary" name="cancel_order_button">CANCEL</button>';
+        row_8.append($('<button>', {
+            style: 'font-size:1rem; padding:0.2em!important',
+            pk: pk,
+            type: 'btn btn-outline-secondary',
+            name: 'cancel_order_button',
+            text: 'CANCEL'
+        }));
     } else {
-        table_html += '<p style="color:red;font-weight:bold">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELさせてください</p>'
+        row_8.append($('<p>', {
+            style: 'color:red;font-weight:bold',
+            text: '新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELさせてください'
+        }));
     }
-    table_html += '</div>';
-    table_html += '</div>';
+    return $('<div>', {
+        class: 'order_body'
+    }).append(row_1).append(row_2).append(row_3).append(row_4).append(row_5).append(row_6).append(row_7).append(row_8);
 
-    return table_html;
+    // var table_html = '';
+    // table_html += '<div class="order_body">';
+    // table_html += '<div class="row">';
+    // table_html += '<div class="col-3 card-table-header">注文ID</div>';
+    // table_html += '<div class="col-3 card-table-data">' + order_id + '</div>';
+    // table_html += '<div class="col-3 card-table-header">売/買</div>';
+    // table_html += '<div class="col-3 card-table-data">' + side + '</div>';
+    // table_html += '</div>';
+    // table_html += '<div class="row">';
+    // table_html += '<div class="col-3 card-table-header">タイプ</div>';
+    // table_html += '<div class="col-3 card-table-data">' + order_type + '</div>';
+    // table_html += '<div class="col-3 card-table-header">逆指値価格</div>';
+    // table_html += '<div class="col-3 card-table-data">' + price_for_stop + '</div>';
+    // table_html += '</div>';
+    // table_html += '<div class="row">';
+    // table_html += '<div class="col-3 card-table-header">数量</div>';
+    // table_html += '<div class="col-3 card-table-data">' + start_amount + '</div>';
+    // table_html += '<div class="col-3 card-table-header">指値価格</div>';
+    // table_html += '<div class="col-3 card-table-data">' + price + '</div>';
+    // table_html += '</div>';
+    // table_html += '<div class="row">';
+    // table_html += '<div class="col-3 card-table-header">約定数量</div>';
+    // table_html += '<div class="col-3 card-table-data">' + executed_amount + '</div>';
+    // table_html += '<div class="col-3 card-table-header">平均価格</div>';
+    // table_html += '<div class="col-3 card-table-data">' + average_price + '</div>';
+    // table_html += '</div>';
+    // table_html += '<div class="row">';
+    // table_html += '<div class="col-6 card-table-header">注文日時</div>';
+    // table_html += '<div class="col-6 card-table-data">' + ordered_at + '</div>';
+    // table_html += '</div>';
+    // table_html += '<div class="row">';
+    // table_html += '<div class="col-6 card-table-header">ステータス</div>';
+    // table_html += '<div class="col-6 card-table-data">' + status + '</div>';
+    // table_html += '</div>';
+    // table_html += '<div class="row justify-content-end">';
+    // switch (order_seq) {
+    //     case 'order_1':
+    //         table_html += '<span class="badge badge-info">新規注文</span>'
+    //         break;
+    //     case 'order_2':
+    //         table_html += '<span class="badge badge-success">決済注文❶</span>'
+    //         break;
+    //     case 'order_3':
+    //         table_html += '<span class="badge badge-primary">決済注文❷</span>'
+    //         break;
+    // }
+    // table_html += '</div>';
+    
+    // table_html += '<div class="row">';
+    // if (is_cancellable) {
+    //     table_html += '<button style="font-size:1rem; padding:0.2em!important" pk="' + pk + '" type="button" class="btn btn-outline-secondary" name="cancel_order_button">CANCEL</button>';
+    // } else {
+    //     table_html += '<p style="color:red;font-weight:bold">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELさせてください</p>'
+    // }
+    // table_html += '</div>';
+    // table_html += '</div>';
+
+    // return table_html;
 }
-function build_history_order_card(pk, order_id, pair, order_type, side, price, price_for_stop, start_amount, executed_amount,average_price, status, ordered_at, error_message, failed_at) {
-    var table_html = '';
-    table_html += '<div class="order_history_body">';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-3 card-table-header">注文ID</div>';
-    table_html += '<div class="col-3 card-table-data">' + order_id + '</div>';
-    table_html += '<div class="col-3 card-table-header">取引通貨</div>';
-    table_html += '<div class="col-3 card-table-data">' + pair + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-3 card-table-header">タイプ</div>';
-    table_html += '<div class="col-3 card-table-data">' + order_type + '</div>';
-    table_html += '<div class="col-3 card-table-header">売/買</div>';
-    table_html += '<div class="col-3 card-table-data">' + side + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-3 card-table-header">数量</div>';
-    table_html += '<div class="col-3 card-table-data">' + start_amount + '</div>';
-    table_html += '<div class="col-3 card-table-header">指値価格</div>';
-    table_html += '<div class="col-3 card-table-data">' + price + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-3 card-table-header">約定数量</div>';
-    table_html += '<div class="col-3 card-table-data">' + executed_amount + '</div>';
-    table_html += '<div class="col-3 card-table-header">平均価格</div>';
-    table_html += '<div class="col-3 card-table-data">' + average_price + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-6 card-table-header">注文日時</div>';
-    table_html += '<div class="col-6 card-table-data">' + ordered_at + '</div>';
-    table_html += '</div>';
-    table_html += '<div class="row">';
-    table_html += '<div class="col-6 card-table-header">ステータス</div>';
-    table_html += '<div class="col-6 card-table-data">' + status + '</div>';
-    table_html += '</div>';
+function build_history_order_card(pk, market, order_id, pair, order_type, side, price, price_for_stop, start_amount, executed_amount,average_price, status, ordered_at, error_message, failed_at) {
+    
+    var $row_1 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '取引所'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: market
+    }));
+    
+    var $row_2 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '注文ID'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: order_id
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '取引通貨'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: pair
+    }));
+
+    var $row_3 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: 'タイプ'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: order_type
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '売/買'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: side
+    }));
+
+    
+    var $row_4 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '数量'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: start_amount
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '指値価格'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: price
+    }));
+
+    var $row_5 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '約定数量'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: executed_amount
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '平均価格'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: average_price
+    }));
+    
+    var $row_6 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-header',
+        text: '注文日時'
+    })).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-data',
+        text: ordered_at
+    }));
+        
+    var $row_7 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-header',
+        text: 'ステータス'
+    })).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-data',
+        text: status
+    }));
+
+    var $container = $('<div>', {
+        class: 'order_history_body'
+    }).append($row_1, $row_2, $row_3, $row_4, $row_5, $row_6, $row_7);
+
     if (error_message != null && error_message != "") {
-        table_html += '<div class="row">';
-        table_html += '<div class="col-12 card-table-data alert-danger">' + error_message + '</div>';
-        table_html += '</div>';
-        table_html += '<div class="row">';
-        table_html += '<div class="col-4 card-table-header">エラー時刻</div>';
-        table_html += '<div class="col-8 card-table-data">' + failed_at + '</div>';
-        table_html += '</div>';
+        var $row_8 = $('<div>', {
+            class: 'row'
+        }).append('<div>', {
+            class: 'col-md-12 col-12 card-table-data alert-danger',
+            text: error_message
+        });
+        var $row_9 = $('<div>', {
+            class: 'row'
+        }).append($('<div>', {
+            class: 'col-md-4 col-4 card-table-header',
+            text: 'エラー時刻'
+        })).append($('<div>', {
+            class: 'col-md-8 col-8 card-table-data',
+            text: failed_at
+        }))
+
+        $container
+        .append($row_8).append($row_9);
     }
-    table_html += '</div>';
-    return table_html;
+    return $container;
 }
 
 
-function initialize_active_orders_content(message_target) {
-    var page_selection = $('#page_selection_active_orders');
-    var search_pair = $('#id_active_orders_search_pair').val();
-    call_orders('GET', search_pair, 0, 1, 'active')
+function initialize_active_orders_content(market, pair, $message_target) {
+    var $page_selection = $('#page_selection_active_orders');
+    var $div_contents = $('#active_orders_content');
+
+    call_orders('GET', market, pair, 0, 1, 'active')
     .done(function(res_1) {
         if (res_1.error) {
-            set_error_message(message_target, res_1.error);
+            set_error_message($message_target, res_1.error);
             return;
         }
-        if(page_selection.data("twbs-pagination")){
-            page_selection.empty();
-            page_selection.removeData("twbs-pagination");
-            page_selection.unbind("page");
+        if($page_selection.data("twbs-pagination")){
+            $page_selection.empty();
+            $page_selection.removeData("twbs-pagination");
+            $page_selection.unbind("page");
         }
-        page_selection.twbsPagination({
+        $page_selection.twbsPagination({
             totalPages: (res_1.total_count == 0) ? 1 : Math.ceil(res_1.total_count / COUNT_PER_PAGE),
             next: '次',
             prev: '前',
             first: '先頭',
             last: '最後',
             onPageClick: function (event, page) {
-                var table_html = '';
-                call_orders('GET', search_pair, COUNT_PER_PAGE * (page - 1), COUNT_PER_PAGE, 'active')
+                
+                call_orders('GET', market, pair, COUNT_PER_PAGE * (page - 1), COUNT_PER_PAGE, 'active')
                 .done(function(res_2) {
                     if (res_2.error) {
-                        set_error_message(message_target, res_2.error);
+                        set_error_message($message_target, res_2.error);
                         return;
                     }
-                    console.log(res_2);
-                    var html_header = '<div class="row"><div class="col-md-6 offset-md-3 col-12">';
-                    var html_footer = '</div></div><hr>';
-
-                    var wrapper = '<div class="order_container">';
-                    var content_html = '';
-                    console.log(res_2.data);
+                    
+                    var $outer = $('<div>', {class: 'row',});
+                    var $inner = $('<div>', {class: 'col-md-6 offset-md-3 col-12'});
+                    
                     var is_empty = true;
                     res_2.data.forEach(active_order => {
                         is_empty = false;
-                        content_html += wrapper;
-                        content_html += build_order_card_header(PAIRS[active_order.pair], active_order.special_order)
+                        var $container = $('<div>', { class: 'order_container' })
+                        .append(
+                            build_order_card_header(MARKETS[active_order.market], PAIRS[active_order.pair], active_order.special_order)
+                        );
+
                         if (active_order.order_1) {
-                            content_html += build_active_order_card(active_order.special_order == 'SINGLE', 'order_1', active_order.order_1.pk,hyphen_if_null(active_order.order_1.order_id),ORDER_TYPES[active_order.order_1.order_type],SELL_BUY[active_order.order_1.side],hyphen_if_null(active_order.order_1.price),hyphen_if_null(active_order.order_1.price_for_stop),active_order.order_1.start_amount,hyphen_if_null(active_order.order_1.executed_amount),hyphen_if_null(active_order.order_1.average_price),STATUS[active_order.order_1.status],return_formatted_datetime(active_order.order_1.ordered_at));
+                            $container.append(build_active_order_card(active_order.special_order == 'SINGLE', 'order_1', active_order.order_1.pk,hyphen_if_null(active_order.order_1.order_id),ORDER_TYPES[active_order.order_1.order_type],SELL_BUY[active_order.order_1.side],hyphen_if_null(active_order.order_1.price),hyphen_if_null(active_order.order_1.price_for_stop),active_order.order_1.start_amount,hyphen_if_null(active_order.order_1.executed_amount),hyphen_if_null(active_order.order_1.average_price),STATUS[active_order.order_1.status],return_formatted_datetime(active_order.order_1.ordered_at)));
                         }
                         if (active_order.order_2) {
-                            content_html += build_active_order_card(true, 'order_2', active_order.order_2.pk,hyphen_if_null(active_order.order_2.order_id),ORDER_TYPES[active_order.order_2.order_type],SELL_BUY[active_order.order_2.side],hyphen_if_null(active_order.order_2.price),hyphen_if_null(active_order.order_2.price_for_stop),active_order.order_2.start_amount,hyphen_if_null(active_order.order_2.executed_amount),hyphen_if_null(active_order.order_2.average_price),STATUS[active_order.order_2.status],return_formatted_datetime(active_order.order_2.ordered_at));
+                            $container.append(build_active_order_card(true, 'order_2', active_order.order_2.pk,hyphen_if_null(active_order.order_2.order_id),ORDER_TYPES[active_order.order_2.order_type],SELL_BUY[active_order.order_2.side],hyphen_if_null(active_order.order_2.price),hyphen_if_null(active_order.order_2.price_for_stop),active_order.order_2.start_amount,hyphen_if_null(active_order.order_2.executed_amount),hyphen_if_null(active_order.order_2.average_price),STATUS[active_order.order_2.status],return_formatted_datetime(active_order.order_2.ordered_at)));
                         }
                         if (active_order.order_3) {
-                            content_html += build_active_order_card(true, 'order_3', active_order.order_3.pk,hyphen_if_null(active_order.order_3.order_id),ORDER_TYPES[active_order.order_3.order_type],SELL_BUY[active_order.order_3.side],hyphen_if_null(active_order.order_3.price),hyphen_if_null(active_order.order_3.price_for_stop),active_order.order_3.start_amount,hyphen_if_null(active_order.order_3.executed_amount),hyphen_if_null(active_order.order_3.average_price),STATUS[active_order.order_3.status],return_formatted_datetime(active_order.order_3.ordered_at));
+                            $container.append(build_active_order_card(true, 'order_3', active_order.order_3.pk,hyphen_if_null(active_order.order_3.order_id),ORDER_TYPES[active_order.order_3.order_type],SELL_BUY[active_order.order_3.side],hyphen_if_null(active_order.order_3.price),hyphen_if_null(active_order.order_3.price_for_stop),active_order.order_3.start_amount,hyphen_if_null(active_order.order_3.executed_amount),hyphen_if_null(active_order.order_3.average_price),STATUS[active_order.order_3.status],return_formatted_datetime(active_order.order_3.ordered_at)));
                         }
-                        content_html += '</div><hr>'
+                        $inner.append($container).append($('<hr>'));
                     });
                     if (is_empty) {
-                        content_html = '取引はありません';
+                        $inner.append($('<p>', {
+                            text: '取引はありません'
+                        }));
                     }
-                    $('#active_orders_content').html(html_header + content_html + html_footer);
-
+                    $div_contents.append($outer.append($inner));
 
                     //キャンセルボタンクリック時のイベント追加
                     $("button[name='cancel_order_button']").on('click', function() {
                         var pk = $(this).attr('pk');
-                        call_orders('DELETE', null, null, null, null, pk)
+                        call_orders('DELETE', null, null, null, null, null, pk)
                         .done(function(res) {
                             if (res.error) {
                                 set_error_message('#id_ajax_message', res.error);
                                 return;
                             }
                         
-                            set_success_message(message_target, '注文をキャンセルしました');
+                            set_success_message($message_target, '注文をキャンセルしました');
                             $('#active_orders_button').click();
-                            message_target.show();
+                            $message_target.show();
                         })
                         .fail(function(data, textStatus, xhr) {
                             if (data.status == 401) {
-                                window.location.href = "{% url 'bitbank:login' %}";
+                                window.location.href = BASE_URL_LOGIN;
                             }
-                            set_error_message(message_target, xhr);
+                            set_error_message($message_target, xhr);
                         });
                         
                     });
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
-                        window.location.href = "{% url 'bitbank:login' %}";
+                        window.location.href = BASE_URL_LOGIN;
                     }
-                    set_error_message(message_target, xhr);
+                    set_error_message($message_target, xhr);
                 });
             }
         });
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
-        set_error_message(message_target, xhr);
+        set_error_message($message_target, xhr);
     });
 }
 function initialize_active_orders_tab(is_initial = false) {
-    var message_target = $('#id_ajax_message');
-    var search_pair = $('#id_active_orders_search_pair');
+    var $message_target = $('#id_ajax_message');
+    var $input_search_pair = $('#id_active_orders_search_pair');
+    var $input_search_market = $('#id_active_orders_search_market');
     
     if (is_initial) {
-        var search_pair_option_html = '';
-        search_pair_option_html += '<option value="all">全て</option>'; 
-        Object.keys(PAIRS).forEach(pair => {
-            search_pair_option_html += '<option value="' + pair + '">' + PAIRS[pair] + '</option>';
-        });
-        search_pair.html(search_pair_option_html);
+        $input_search_market
+        .append($('<option>', {
+            value: 'all',
+            text: '全て'
+        }));
 
-        search_pair.on('change', function() {
+        Object.keys(MARKETS).forEach(market => {
+            $input_search_market
+            .append($('<option>', {
+                value: market,
+                text: MARKETS[market]
+            }))
+        });
+
+        $input_search_market
+        .on('change', function() {
+            initialize_active_orders_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+        });
+
+        $input_search_pair
+        .append($('<option>', {
+            value: 'all',
+            text: '全て'
+        }));
+        
+        Object.keys(PAIRS).forEach(pair => {
+            $input_search_pair
+            .append($('<option>', {
+                value: pair,
+                text: PAIRS[pair]
+            }));
+        });
+
+        $input_search_pair
+        .on('change', function() {
             $.cookie(COOKIE_SEARCH_PAIR_ACTIVE_ORDERS, $(this).val(), {expire: 7});
-            initialize_active_orders_content(message_target);
+            initialize_active_orders_content($input_search_market.val(), $input_search_pair.val(), $message_target);
         });
     }
+
+    $input_search_market.val('all');
+
     var ck_search_pair_ao = $.cookie(COOKIE_SEARCH_PAIR_ACTIVE_ORDERS);
     if (ck_search_pair_ao != undefined) {
-        search_pair.val(ck_search_pair_ao).trigger('change');
+        $input_search_pair.val(ck_search_pair_ao);
     } else {
-        search_pair.val('all').trigger('change');
+        $input_search_pair.val('all');
     }
-}
-function initialize_order_history_content(message_target) {
-    var page_selection = $('#page_selection_order_history');
-    var search_pair = $('#id_order_history_search_pair').val();
 
-    call_orders('GET', search_pair, 0, 1, 'history')
+    initialize_active_orders_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+
+}
+function initialize_order_history_content(market, pair, $message_target) {
+    var $page_selection = $('#page_selection_order_history');
+    var $div_contents =  $('#order_history_content');
+
+    call_orders('GET', market, pair, 0, 1, 'history')
     .done(function(res_1) {
         if (res_1.error) {
-            set_error_message(message_target, res_1.error);
+            set_error_message($message_target, res_1.error);
             return;
         }
-        if(page_selection.data("twbs-pagination")){
-            page_selection.empty();
-            page_selection.removeData("twbs-pagination");
-            page_selection.unbind("page");
+        if($page_selection.data("twbs-pagination")){
+            $page_selection.empty();
+            $page_selection.removeData("twbs-pagination");
+            $page_selection.unbind("page");
         } 
-        page_selection.twbsPagination({
+        $page_selection.twbsPagination({
             totalPages: (res_1.total_count == 0) ? 1 : Math.ceil(res_1.total_count / COUNT_PER_PAGE),
             next: '次',
             prev: '前',
             first: '先頭',
             last: '最後',
             onPageClick: function (event, page) {
-                var html_header = '<div class="row"><div class="col-md-6 offset-md-3 col-12">';
-                var html_footer = '</div></div><hr>';
-                var wrapper = '<div class="order_container">';
-                var wrapper_end = '</div><hr>';
-                var content_html = '';
-                call_orders('GET', search_pair, COUNT_PER_PAGE * (page - 1), COUNT_PER_PAGE, 'history')
+                var $outer = $('<div>', { class: 'row' });
+                var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
+            
+                call_orders('GET', market, pair, COUNT_PER_PAGE * (page - 1), COUNT_PER_PAGE, 'history')
                 .done(function(res_2) {
                     if (res_2.error) {
-                        set_error_message(message_target, res_2.error);
+                        set_error_message($message_target, res_2.error);
                         return;
                     }
                     var is_empty = true;
                     res_2.data.forEach(order => {
                         is_empty = false;
-                        content_html += wrapper;
-                        
-                        content_html += build_history_order_card(order.pk,hyphen_if_null(order.order_id), PAIRS[order.pair], ORDER_TYPES[order.order_type],SELL_BUY[order.side],hyphen_if_null(order.price),hyphen_if_null(order.price_for_stop),order.start_amount,hyphen_if_null(order.executed_amount),hyphen_if_null(order.average_price),STATUS[order.status],return_formatted_datetime(order.ordered_at), order.error_message, return_formatted_datetime(order.updated_at * 1000));
-                        content_html += wrapper_end;
-                        
+                      
+                        $inner
+                        .append($('<div>',{
+                            class: 'order_container'
+                        }).append(build_history_order_card(order.pk, MARKETS['bitbank'], hyphen_if_null(order.order_id), PAIRS[order.pair], ORDER_TYPES[order.order_type],SELL_BUY[order.side],hyphen_if_null(order.price),hyphen_if_null(order.price_for_stop),order.start_amount,hyphen_if_null(order.executed_amount),hyphen_if_null(order.average_price),STATUS[order.status],return_formatted_datetime(order.ordered_at), order.error_message, return_formatted_datetime(order.updated_at * 1000))))
+                        .append($('<hr>'));
                     });
                     // 1件もない場合
                     if (is_empty) {
+                        $inner
                         content_html = '取引はありません';
                     }
-                    $('#order_history_content').html(html_header + content_html + html_footer);
+                    $div_contents.append($outer.append($inner));
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
-                        window.location.href = "{% url 'bitbank:login' %}";
+                        window.location.href = BASE_URL_LOGIN;
                     }
-                    set_error_message(message_target, xhr);
+                    set_error_message($message_target, xhr);
                 });
             }
         });
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
         set_error_message(message_target, xhr);
     });
 }
 function initialize_order_history_tab(is_initial = false) {
-    var message_target = $('#id_ajax_message');
-    var search_pair = $('#id_order_history_search_pair');
+    var $message_target = $('#id_ajax_message');
+    var $input_search_pair = $('#id_order_history_search_pair');
+    var $input_search_market = $('#id_order_history_search_market');
+    
     
     if (is_initial) {
-        var search_pair_option_html = '';
-        search_pair_option_html += '<option value="all">全て</option>'; 
-        Object.keys(PAIRS).forEach(pair => {
-            search_pair_option_html += '<option value="' + pair + '">' + PAIRS[pair] + '</option>';
+        $input_search_market
+        .append($('<option>', {
+            value: 'all',
+            text: '全て'
+        }))
+        .on('change', function() {
+            initialize_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
         });
-        search_pair.html(search_pair_option_html);
 
-        search_pair.on('change', function() {
-            $.cookie(COOKIE_SEARCH_PAIR_ORDER_HISTORY, $(this).val(), {expire: 7});
-            initialize_order_history_content(message_target);
+        Object.keys(MARKETS).forEach(market => {
+            $input_search_market
+            .append($('<option>', {
+                value: market,
+                text: MARKETS[market]
+            }));
         });
+
+        $input_search_pair
+        .append($('<option>', {
+            value: 'all',
+            text: '全て'
+        }))
+        .on('change', function() {
+            $.cookie(COOKIE_SEARCH_PAIR_ORDER_HISTORY, $(this).val(), {expire: 7});
+            initialize_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+        });
+
+        Object.keys(PAIRS).forEach(pair => {
+            $input_search_pair
+            .append($('<option>', {
+                value: pair,
+                text: PAIRS[pair]
+            }));
+        });
+        
     }
+
+    $input_search_market.val('all');
     
     var ck_search_pair_oh = $.cookie(COOKIE_SEARCH_PAIR_ORDER_HISTORY);
     if (ck_search_pair_oh != undefined) {
-        search_pair.val(ck_search_pair_oh).trigger('change');
+        $input_search_pair.val(ck_search_pair_oh);
     } else {
-        search_pair.val('all').trigger('change');
+        $input_search_pair.val('all');
     }
+    initialize_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
 }
 
 function initialize_alerts_content(message_target) {
@@ -1121,7 +1452,7 @@ function initialize_alerts_content(message_target) {
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
         set_error_message(message_target, xhr);
     });
@@ -1180,7 +1511,7 @@ function initialize_alerts_content(message_target) {
                         })
                         .fail(function(data, textStatus, xhr) {
                             if (data.status == 401) {
-                                window.location.href = "{% url 'bitbank:login' %}";
+                                window.location.href = BASE_URL_LOGIN;
                             }
                             set_error_message(message_target, xhr);
                         });
@@ -1188,7 +1519,7 @@ function initialize_alerts_content(message_target) {
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
-                        window.location.href = "{% url 'bitbank:login' %}";
+                        window.location.href = BASE_URL_LOGIN;
                     }
                     set_error_message(message_target, xhr);
                 });
@@ -1198,7 +1529,7 @@ function initialize_alerts_content(message_target) {
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
         set_error_message(message_target, xhr);
     });
@@ -1235,7 +1566,7 @@ function initialize_alerts_tab(is_initial = false) {
             })
             .fail((data, textStatus, xhr) => {
                 if (data.status == 401) {
-                    window.location.href = "{% url 'bitbank:login' %}";
+                    window.location.href = BASE_URL_LOGIN;
                 }
                 set_error_message(message_target, xhr);
             });
@@ -1256,7 +1587,7 @@ function initialize_alerts_tab(is_initial = false) {
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
-                        window.location.href = "{% url 'bitbank:login' %}";
+                        window.location.href = BASE_URL_LOGIN;
                     }
                     set_error_message(message_target, xhr);
                 });
@@ -1280,7 +1611,7 @@ function initialize_alerts_tab(is_initial = false) {
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
-                        window.location.href = "{% url 'bitbank:login' %}";
+                        window.location.href = BASE_URL_LOGIN;
                     }
                     set_error_message(message_target, xhr);
                 });
@@ -1302,7 +1633,7 @@ function initialize_alerts_tab(is_initial = false) {
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
-                        window.location.href = "{% url 'bitbank:login' %}";
+                        window.location.href = BASE_URL_LOGIN;
                     }
                     set_error_message(message_target, xhr);
                 });
@@ -1323,7 +1654,7 @@ function initialize_alerts_tab(is_initial = false) {
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
-                        window.location.href = "{% url 'bitbank:login' %}";
+                        window.location.href = BASE_URL_LOGIN;
                     }
                     set_error_message(message_target, xhr);
                 });
@@ -1366,7 +1697,7 @@ function initialize_alerts_tab(is_initial = false) {
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
-                        window.location.href = "{% url 'bitbank:login' %}";
+                        window.location.href = BASE_URL_LOGIN;
                     }
                     set_error_message(message_target, xhr);
                 });
@@ -1425,14 +1756,14 @@ function initialize_asset_tab(is_initial = false) {
                         })
                         .fail(function(data, textStatus, xhr) {
                             if (data.status == 401) {
-                                window.location.href = "{% url 'bitbank:login' %}";
+                                window.location.href = BASE_URL_LOGIN;
                             }
                             set_error_message(message_target, xhr);
                         });
                     })
                     .fail(function(data, textStatus, xhr) {
                         if (data.status == 401) {
-                            window.location.href = "{% url 'bitbank:login' %}";
+                            window.location.href = BASE_URL_LOGIN;
                         }
                         set_error_message(message_target, xhr);
                     });
@@ -1448,7 +1779,7 @@ function initialize_asset_tab(is_initial = false) {
                     })
                     .fail(function(data, textStatus, xhr) {
                         if (data.status == 401) {
-                            window.location.href = "{% url 'bitbank:login' %}";
+                            window.location.href = BASE_URL_LOGIN;
                         }
                         set_error_message(message_target, xhr);
                     });
@@ -1466,7 +1797,7 @@ function initialize_asset_tab(is_initial = false) {
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
         set_error_message(message_target, xhr);
     });
@@ -1489,7 +1820,7 @@ function initialize_user_info_tab(is_initial = false) {
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
         set_error_message(message_target, xhr);
     });
@@ -1519,7 +1850,7 @@ function initialize_user_info_tab(is_initial = false) {
             })
             .fail(function(data, textStatus, xhr) {
                 if (data.status == 401) {
-                    window.location.href = "{% url 'bitbank:login' %}";
+                    window.location.href = BASE_URL_LOGIN;
                 }
                 set_error_message(message_target, xhr);
             });
@@ -1574,7 +1905,7 @@ function initialize_contact_tab(is_initial = false) {
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
-            window.location.href = "{% url 'bitbank:login' %}";
+            window.location.href = BASE_URL_LOGIN;
         }
         set_error_message(message_target, xhr);
     });
@@ -1604,7 +1935,7 @@ function initialize_contact_tab(is_initial = false) {
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
-                        window.location.href = "{% url 'bitbank:login' %}";
+                        window.location.href = BASE_URL_LOGIN;
                     }
                     set_error_message(message_target, xhr);
                 });
@@ -1652,7 +1983,7 @@ function initialize_contact_tab(is_initial = false) {
                     })
                     .fail(function(data, textStatus, xhr) {
                         if (data.status == 401) {
-                            window.location.href = "{% url 'bitbank:login' %}";
+                            window.location.href = BASE_URL_LOGIN;
                         }
                         set_error_message(message_target, xhr);
                     });

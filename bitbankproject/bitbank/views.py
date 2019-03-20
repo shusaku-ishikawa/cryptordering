@@ -347,7 +347,7 @@ def ajax_orders(request):
     prv = python_bitbankcc.private(user.api_key, user.api_secret_key)
     method = request.method
     if method == 'GET': 
-        print(request.GET.get('type'))
+        print('type ==' + request.GET.get('type'))
         if request.GET.get('type') == 'active':
            
             offset = int(request.GET.get('offset'))

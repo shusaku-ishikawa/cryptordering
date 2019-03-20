@@ -110,7 +110,7 @@
                             <div class="input-group-prepend">
                                 <div id="id_trail_placeholder_1" class="input-group-text placeholder">トレイル幅</div>
                             </div>
-                            <input id="id_trail_gap_1" type="number" class="form-control" min="0" step="1">              
+                            <input id="id_trail_width_1" type="number" class="form-control" min="0" step="1">              
                             <div class="input-group-append">
                                 <div class="input-group-text placeholder pair">JPY</div>
                             </div>
@@ -221,7 +221,7 @@
                             <div class="input-group-prepend">
                                 <div id="id_trail_placeholder_2" class="input-group-text placeholder">トレイル幅</div>
                             </div>
-                            <input id="id_trail_gap_2" type="number" class="form-control" min="0" step="1">              
+                            <input id="id_trail_width_2" type="number" class="form-control" min="0" step="1">              
                             <div class="input-group-append">
                                 <div class="input-group-text placeholder pair">JPY</div>
                             </div>
@@ -333,7 +333,7 @@
                             <div class="input-group-prepend">
                                 <div id="id_trail_placeholder_3" class="input-group-text placeholder">トレイル幅</div>
                             </div>
-                            <input id="id_trail_gap_3" type="number" class="form-control" min="0" step="1">              
+                            <input id="id_trail_width_3" type="number" class="form-control" min="0" step="1">              
                             <div class="input-group-append">
                                 <div class="input-group-text placeholder pair">JPY</div>
                             </div>
@@ -433,6 +433,17 @@
         <div class="col-md-6 offset-md-3 col-12">
             <div class="input-group">
                 <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">取引所</div>
+                </div>
+                <select id="id_active_orders_search_market" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
                     <div class="input-group-text placeholder">検索通貨</div>
                 </div>
                 <select id="id_active_orders_search_pair" class="form-control"></select>
@@ -448,6 +459,17 @@
     </div>
 </div>  
 <div id="order_history" class="tabcontent">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">取引所</div>
+                </div>
+                <select id="id_order_history_search_market" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
     <div class="row">
         <div class="col-md-6 offset-md-3 col-12">
             <div class="input-group">
@@ -668,6 +690,18 @@
 {% block extra_js %}
 
     <script>
+        BASE_URL_LOGIN = "{% url 'bitbank:login' %}";
+        BASE_URL_ASSETS = '{% url "bitbank:ajax_assets" %}';
+        BASE_URL_TICKER = '{% url "bitbank:ajax_ticker" %}';
+        BASE_URL_USER = '{% url "bitbank:ajax_user" %}';
+        BASE_URL_ORDERS = '{% url "bitbank:ajax_orders" %}';
+        BASE_URL_ALERTS = '{% url "bitbank:ajax_alerts" %}';
+        BASE_URL_ATTACHMENTS = '{% url "bitbank:ajax_attachment" %}';
+        BASE_URL_INQUIRY = '{% url "bitbank:ajax_inquiry" %}';
+        
+        
+
+
         COUNT_PER_PAGE = 10;
         COOKIE_ORDER_PAIR = "ck_order_pair";
         COOKIE_SPECIAL_ORDER = "ck_special_order";
@@ -677,6 +711,7 @@
         COOKIE_SEARCH_PAIR_ORDER_HISTORY = "ck_search_pair_oh";
         COOKIE_LAST_VISITED_TAB = "ck_last_visited_tab";
         
+
         MARKETS = {
             "bitbank": "bitbank",
             "coincheck": "coincheck"

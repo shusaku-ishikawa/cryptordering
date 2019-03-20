@@ -133,8 +133,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.email
 
-
-
 class BitbankOrder(models.Model):
     def __str__(self):
         if self.order_id == None:
@@ -196,6 +194,7 @@ class BitbankOrder(models.Model):
         verbose_name = '利用者',
         on_delete = models.CASCADE
     )
+
    
     pair = models.CharField(
         verbose_name = _('通貨'),
@@ -319,8 +318,15 @@ class OrderRelation(models.Model):
         # 'OCO',
         # 'IFDOCO'  
     ]
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    market = models.CharField(
+        verbose_name = _('取引所'),
+        max_length = 50,
+        default = 'bitbank'
+    )
+    
     pair = models.CharField(
         verbose_name = _('通貨'),
         max_length = 50,
