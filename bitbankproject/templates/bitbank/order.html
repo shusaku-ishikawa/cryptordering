@@ -529,11 +529,40 @@
     </div>
     <hr>
     <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">取引所</div>
+                </div>
+                <select id="id_alerts_market" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">検索通貨</div>
+                </div>
+                <select id="id_alerts_pair" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="input-group">
+                <!-- <div class="input-group-prepend">
+                    <select class="form-control" id="id_market_for_alert" style="padding-right: 1.5em !important;">
+                    </select>
+                </div>
                 <div class="input-group-prepend">
                     <select class="form-control" id="id_pair_for_alert" style="padding-right: 1.5em !important;">
                     </select>
+                </div> -->
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">通知レート</div>
                 </div>
                 <input type="number" id="id_notice_rate" class="form-control" min="0">
                 <div class="input-group-append">
@@ -546,17 +575,7 @@
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col-md-6 offset-md-3 col-12">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text placeholder">検索通貨</div>
-                </div>
-                <select id="id_alerts_search_pair" class="form-control"></select>
-            </div>
-        </div>
-    </div>
-    <hr>
+    
     <div id="alert_container">
         
     </div> 

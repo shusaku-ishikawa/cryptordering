@@ -74,6 +74,12 @@ select#id_pair_for_alert {
     padding-right: 0.5em !important;
     padding-left: 0.5em !important; 
 }
+select#id_market_for_alert {
+    text-align-last: center;
+    padding-right: 0.5em !important;
+    padding-left: 0.5em !important; 
+}
+
 
 .btn {
     color: white;
