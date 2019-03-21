@@ -1,7 +1,13 @@
-var free_amount_json = {};
-var market_price_json = {};
+var free_amount_json = {
+    'bitbank': {},
+    'coincheck': {}
+};
+var market_price_json = {
+    'bitbank': {},
+    'coincheck': {}
+};
 
-function call_assets(method, is_async = true) {
+function call_assets(method, market, is_async = true) {
     return $.ajax({
         url: BASE_URL_ASSETS,
         type: (method == 'GET') ? 'GET':'POST',
@@ -9,6 +15,7 @@ function call_assets(method, is_async = true) {
         async: is_async,
         data: {
             method: method,
+            market: market
         }
     });
 }
@@ -65,7 +72,7 @@ function call_orders(method, market, pair, offset = null, limit = null, type = n
     });
 }
 
-function call_alerts(method, pk, pair, offset, limit, threshold, over_or_under) {
+function call_alerts(method, pk, market, pair, offset, limit, threshold, over_or_under) {
     return $.ajax({
         url: BASE_URL_ALERTS,
         type: (method == 'GET') ? 'GET' : 'POST',
@@ -73,6 +80,7 @@ function call_alerts(method, pk, pair, offset, limit, threshold, over_or_under) 
         data: {
             method:method,
             pk: pk,
+            market: market,
             pair: pair,
             offset: offset,
             limit: limit,
@@ -126,21 +134,23 @@ function isNumberKey(evt){
 }
 
 function initialize_free_amount_json() {
-    call_assets('GET')
-    .done(function(res) {
-        if (res.error) {
-            set_error_message($('#id_ajax_message'), res.error);
-            return;
-        }
-        res.assets.forEach(asset => {
-            free_amount_json[asset.asset] = asset.free_amount;
+    Object.keys(MARKETS).forEach(market => {
+        call_assets('GET', market)
+        .done(function(res) {
+            if (res.error) {
+                set_error_message($('#id_ajax_message'), res.error);
+                return;
+            }
+            res.assets.forEach(asset => {
+                free_amount_json[market][asset.asset] = asset.free_amount;
+            });
+        })
+        .fail(function(data, textStatus, xhr) {
+            if (data.status == 401) {
+                window.location.href = BASE_URL_LOGIN;
+            }
+            set_error_message($('#id_ajax_message'), xhr);
         });
-    })
-    .fail(function(data, textStatus, xhr) {
-        if (data.status == 401) {
-            window.location.href = BASE_URL_LOGIN;
-        }
-        set_error_message($('#id_ajax_message'), xhr);
     });
 }
 
@@ -222,14 +232,14 @@ function update_amount_by_slider(tab_num) {
     if($('#id_pair').val() == '') {
         return;
     }
-    
+    var market = $('#id_market').val();
     var pair = $('#id_pair').val();
     var side = $('#id_side_' + tab_num).val();
     var order_type = $('#id_order_type_' + tab_num).val();
     var currency = (side == 'sell') ? pair.split('_')[0] : pair.split('_')[1];
     if (parseInt(newVal) != 0) {
-        var free_amount = free_amount_json[currency];
-        var price = (order_type.match(/market/)) ? parseFloat(market_price_json[market][pair][side]) : ($('#id_price_' + tab_num).val() != '') ? parseFloat($('#id_price_' + tab_num).val()) : 0;
+        var free_amount = free_amount_json[market][currency];
+        var price = (order_type.match(/limit/)) ? ($('#id_price_' + tab_num).val() != '') ? parseFloat($('#id_price_' + tab_num).val()) : 0 : parseFloat(market_price_json[market][pair][side]);
         var floored = (side == 'sell') ? Math.floor((free_amount * newVal / 100) * 10000) / 10000 : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * 10000) / 10000 : 0;
         $('#id_start_amount_' + tab_num).val(floored).trigger('calculate');
     } else {
@@ -239,6 +249,7 @@ function update_amount_by_slider(tab_num) {
 }
 
 function update_slider_by_amount(tab_num) {
+
     var market = $('#id_market').val();
     var pair = $('#id_pair').val();
     var side = $('#id_side_' + tab_num).val();
@@ -357,13 +368,12 @@ function get_confirmation(order_name) {
         }
     });
 }
-function place_order(market, pair, special_order, order_1, order_2, order_3,  message_target) {
-    // if (order_1 != null) {
-    //     if (order_1.order_type.match(/limit/)) {
-    call_ticker('GET', pair)
+function place_order(market, pair, special_order, order_1, order_2, order_3,  $message_target) {
+    
+    call_ticker('GET', market, pair)
     .done(function(res) {
         if (res.error) {
-            set_error_message(message_target, res.error);
+            set_error_message($message_target, res.error);
             return;
         }
             
@@ -388,14 +398,14 @@ function place_order(market, pair, special_order, order_1, order_2, order_3,  me
                 }
             }
         } 
-        _order(pair, special_order, order_1, order_2, order_3,  message_target);
+        _order(market, pair, special_order, order_1, order_2, order_3,  $message_target);
     })
     .fail(function(data, textStatus, xhr) {
     
         if (data.status == 401) {
             window.location.href = BASE_URL_LOGIN;
         }
-        set_error_message(message_target, xhr);
+        set_error_message($message_target, xhr);
     });            
 }
 function set_slidevalue(tab_num, new_val, trigger_input_event=true) {
@@ -416,11 +426,11 @@ function set_slidevalue(tab_num, new_val, trigger_input_event=true) {
     $('#amount_percentage_' + tab_num).html(new_val + '%');
 }
 
-function set_default_price(tab_num, pair, message_target) {
-    call_ticker('GET', pair)
+function set_default_price(tab_num, market, pair, $message_target) {
+    call_ticker('GET', market, pair)
     .done(function(res) {
         if (res.error) {
-            set_error_message(message_target, res.error);
+            set_error_message($message_target, res.error);
             return;
         }
         var new_order_type = $('#id_order_type_' + tab_num).val();
@@ -434,7 +444,7 @@ function set_default_price(tab_num, pair, message_target) {
             window.location.href = BASE_URL_LOGIN;
         }
         //alert('call ticker erorr');
-        set_error_message(message_target, xhr);
+        set_error_message($message_target, xhr);
     });
 }
 function reset_input(i) {
@@ -447,14 +457,15 @@ function reset_input(i) {
 function reset_input_all() {
     var $input = $('input[type="number"]');
     var $message_target = $('#id_ajax_message_target');
-    var $pair = $('#id_pair');
+    var market = $('#id_market').val();
+    var pair = $('#id_pair').val();
 
     $input.val(null);
     for (let i = 0; i < 4; i ++) {
         set_slidevalue(i, 0, false);
         $('#id_side_' + i).val(Object.keys(SELL_BUY)[1]).trigger('value_change');
         $('#id_order_type_' + i).val(Object.keys(ORDER_TYPES)[1]).trigger('change');
-        set_default_price(i, $pair.val(), $message_target);
+        set_default_price(i, market, pair, $message_target);
     }
 }
 
@@ -626,9 +637,6 @@ function initialize_order_tab(is_initial = false) {
             $input_pair.val(Object.keys(PAIRS)[0]);
         }
         
-        $input_market.val(Object.keys(MARKETS)[0]).trigger('value_change');
-        $input_special_order.val(Object.keys(SPECIAL_ORDERS)[0]).trigger('change');
-
         for (let i = 1; i < 4; i++) {
             
             $('#myRange_' + i).on("input", function () {
@@ -669,7 +677,7 @@ function initialize_order_tab(is_initial = false) {
                     $('#id_price_placeholder_' + i).html('指値(約定希望価格)');
                 }
                 if (new_order_type != 'market') {
-                    set_default_price(i, $input_pair.val(), $ajax_message_target);
+                    set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target);
                 }
                 
                 display_price_div(i, new_order_type);
@@ -691,7 +699,7 @@ function initialize_order_tab(is_initial = false) {
                     $('#myRange_' + i).addClass('slider_for_sell').removeClass('slider_for_buy');
                     $button_order.removeClass('green_button').addClass('red_button');
                 }
-                set_default_price(i, $input_pair.val(), $ajax_message_target);
+                set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target);
             });
             $('#sell_button_' + i).on('click', function() {
                 // 変更があった場合のみ処理
@@ -775,20 +783,23 @@ function initialize_order_tab(is_initial = false) {
         
             switch ($input_special_order.val()) {
                 case 'SINGLE':
-                    place_order(market, pair, special_order, order_1, null, null, order_result_message_target);
+                    place_order(market, pair, special_order, order_1, null, null, $order_result_message_target);
                     break;
                 case 'IFD':
-                    place_order(market, pair, special_order, order_1, order_2, null, order_result_message_target);
+                    place_order(market, pair, special_order, order_1, order_2, null, $order_result_message_target);
                     break;
                 case 'OCO':
-                    place_order(market, pair, special_order, null, order_2, order_3, order_result_message_target);
+                    place_order(market, pair, special_order, null, order_2, order_3, $order_result_message_target);
                     break;
                 case 'IFDOCO':
-                    place_order(market, pair, special_order, order_1, order_2, order_3, order_result_message_target);
+                    place_order(market, pair, special_order, order_1, order_2, order_3, $order_result_message_target);
                     break;
             }
         });  
+        $input_market.val(Object.keys(MARKETS)[0]).trigger('value_change');
+        $input_special_order.val(Object.keys(SPECIAL_ORDERS)[0]).trigger('change');
     }
+    
 }
 function build_order_card_header(market, pair, special_order) {
     var row_1 = $('<div>', { 
@@ -946,10 +957,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
             text: 'CANCEL'
         }));
     } else {
-        $row_8.append($('<p>', {
-            style: 'color:red;font-weight:bold',
-            text: '新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELさせてください'
-        }));
+        $row_8.html('<p style="color:red;font-weight:bold">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
     }
     return $('<div>', {
         class: 'order_body'
@@ -1059,12 +1067,13 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
     }).append($row_1, $row_2, $row_3, $row_4, $row_5, $row_6, $row_7);
 
     if (error_message != null && error_message != "") {
+        console.log('error: ' + error_message);
         var $row_8 = $('<div>', {
             class: 'row'
-        }).append('<div>', {
-            class: 'col-md-12 col-12 card-table-data alert-danger',
+        }).append($('<div>', {
+            class: 'col-md-12 col-12 alert-danger',
             text: error_message
-        });
+        }));
         var $row_9 = $('<div>', {
             class: 'row'
         }).append($('<div>', {
@@ -1074,9 +1083,8 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
             class: 'col-md-8 col-8 card-table-data',
             text: failed_at
         }))
-
-        $container
-        .append($row_8).append($row_9);
+        console.log($row_8);
+        $container.append($row_8).append($row_9);
     }
     return $container;
 }
@@ -1357,18 +1365,63 @@ function initialize_order_history_tab(is_initial = false) {
     initialize_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
 }
 
-function initialize_alerts_content(message_target) {
+function build_alert_card(pk, market, pair, rate) {
+    var $outer_container = $('<div>', { class: 'order_container' });
+    var $inner_container = $('<div>', { class: 'order_order_history_body' });
+    var $row_1 = $('<div>', {
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '取引所'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: market
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-header',
+        text: '通貨'
+    })).append($('<div>', {
+        class: 'col-md-3 col-3 card-table-data',
+        text: pair
+    }));
+
+    var $row_2 = $('<div>', {
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-header',
+        text: '通知レート'
+    })).append($('<div>', {
+        class: 'col-md-6 col-6 card-table-data',
+        text: rate
+    }));
+
+    var $row_3 = $('<div>', {
+        class: 'row'
+    }).append($('<button>', {
+        pk: pk,
+        style: 'font-size:1rem; padding:0.2em!important',
+        type: 'button',
+        class: 'btn btn-outline-primary',
+        text: 'CANCEL'
+    }));
+    return $outer_container.append($inner_container.append($row_1).append($row_2).append($row_3));    
+
+}
+
+function initialize_alerts_content($message_target) {
     var $notify_if_filled_on_button = $('#notify_if_filled_on_button');
     var $notify_if_filled_off_button = $('#notify_if_filled_off_button');
     var $use_alert_on_button = $('#id_use_alert_on_button');
     var $use_alert_off_button = $('#id_use_alert_off_button');
     var $page_selection = $('#page_selection_alerts');
-    var $search_pair = $('#id_alerts_search_pair');
+    var market = $('#id_alerts_market').val();
+    var pair = $('#id_alerts_pair').val();
+    var $contaier = $('#alert_container');
+
 
     call_user('GET')
     .done(function(res) {
         if (res.error) {
-            set_error_message(message_target, res.error);
+            set_error_message($message_target, res.error);
             return;
         }
         console.log(res);
@@ -1388,14 +1441,14 @@ function initialize_alerts_content(message_target) {
         if (data.status == 401) {
             window.location.href = BASE_URL_LOGIN;
         }
-        set_error_message(message_target, xhr);
+        set_error_message($message_target, xhr);
     });
 
     
-    call_alerts('GET', null, $search_pair.val(), 0, 1)
+    call_alerts('GET', null, market, pair, 0, 1)
     .done(function(res_1) {
         if (res_1.error) {
-            set_error_message(message_target, res_1.error);
+            set_error_message($message_target, res_1.error);
             return;
         }
         if($page_selection.data("twbs-pagination")){
@@ -1411,43 +1464,49 @@ function initialize_alerts_content(message_target) {
             last: '最後',
             onPageClick: function (event, page) {
                 var table_html = '';
-                call_alerts('GET', null, $search_pair.val(), COUNT_PER_PAGE * (page - 1), COUNT_PER_PAGE)
+                call_alerts('GET', null, market, pair, COUNT_PER_PAGE * (page - 1), COUNT_PER_PAGE)
                 .done(function(res_2) {
                     var table_html = '';
-                    $.parseJSON(res_2.active_alerts).forEach(active_alert => {
-                        table_html += '<div class="row"><div class="col-md-6 offset-md-3 col-12"><div class="order_container"><div class="order_history_body"><div class="row">';
-                        table_html += '<div class="col-6 card-table-header">取引通貨</div>';
-                        table_html += '<div class="col-6 card-table-data">' + PAIRS[active_alert.fields.pair] + '</div>';
-                        table_html += '</div>';
-                        table_html += '<div class="row">';
-                        table_html += '<div class="col-6 card-table-header">通知レート</div>';
-                        table_html += '<div class="col-6 card-table-data">' + active_alert.fields.threshold + '</div>';
-                        table_html += '</div>';
-                        table_html += '<div class="row">';
-                        table_html += '<button style="font-size:1rem; padding:0.2em!important" pk="' + active_alert.pk + '" type="button" class="btn btn-outline-secondary" name="deactivate_alert_button">CANCEL</button>';
-                        table_html += '</div>'
-                        table_html += '</div></div></div></div><hr>';
+                    var $outer = $('<div>', { class: 'row' });
+                    var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
+
+                    res_2.data.forEach(alert => {
+                        
+                        $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.threshold)).append($('<hr>'));
+                        // table_html += '<div class="row"><div class="col-md-6 offset-md-3 col-12"><div class="order_container"><div class="order_history_body"><div class="row">';
+                        // table_html += '<div class="col-6 card-table-header">取引通貨</div>';
+                        // table_html += '<div class="col-6 card-table-data">' + PAIRS[active_alert.fields.pair] + '</div>';
+                        // table_html += '</div>';
+                        // table_html += '<div class="row">';
+                        // table_html += '<div class="col-6 card-table-header">通知レート</div>';
+                        // table_html += '<div class="col-6 card-table-data">' + active_alert.fields.threshold + '</div>';
+                        // table_html += '</div>';
+                        // table_html += '<div class="row">';
+                        // table_html += '<button style="font-size:1rem; padding:0.2em!important" pk="' + active_alert.pk + '" type="button" class="btn btn-outline-secondary" name="deactivate_alert_button">CANCEL</button>';
+                        // table_html += '</div>'
+                        // table_html += '</div></div></div></div><hr>';
                     });
-                    $('#alert_container').html(table_html);
-                
+
+                    $contaier.append($outer.append($inner));
+
                     $("button[name='deactivate_alert_button']").on('click', function() {
                         var pk = $(this).attr('pk');
                         call_alerts('DELETE', pk)
                         .done(function(res_3) {
                             if (res_3.error) {
-                                set_error_message(message_target, res_3.error);
+                                set_error_message($message_target, res_3.error);
                                 return;
                             }
                             set_success_message('#id_ajax_message', '通知設定を解除しました');
                             
                             $('#alerts_button').click();
-                            message_target.show();
+                           $message_target.show();
                         })
                         .fail(function(data, textStatus, xhr) {
                             if (data.status == 401) {
                                 window.location.href = BASE_URL_LOGIN;
                             }
-                            set_error_message(message_target, xhr);
+                            set_error_message($message_target, xhr);
                         });
                     });
                 })
@@ -1455,7 +1514,7 @@ function initialize_alerts_content(message_target) {
                     if (data.status == 401) {
                         window.location.href = BASE_URL_LOGIN;
                     }
-                    set_error_message(message_target, xhr);
+                    set_error_message($message_target, xhr);
                 });
             }
         });
@@ -1465,7 +1524,7 @@ function initialize_alerts_content(message_target) {
         if (data.status == 401) {
             window.location.href = BASE_URL_LOGIN;
         }
-        set_error_message(message_target, xhr);
+        set_error_message($message_target, xhr);
     });
 }
 function initialize_alerts_tab(is_initial = false) {
@@ -1501,13 +1560,25 @@ function initialize_alerts_tab(is_initial = false) {
         });
 
         $alert_market.on('change', function() {
-            initialize_alerts_tab($message_target);
+            $alert_pair.empty();
+            if ($alert_market.val() == 'bitbank') {
+                Object.keys(PAIRS).forEach(key => {
+                    $('<option>', {
+                        value: key,
+                        text: PAIRS[key],
+                    }).appendTo($alert_pair);
+                });
+            } else {
+                $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_pair);
+
+            }
+            initialize_alerts_content($message_target);
         });
 
         $alert_pair.on('change', function() {
             $.cookie(COOKIE_ALERT_PAIR, $(this).val(), {expire: 7});
             var currency = $(this).val().split('_')[1].toUpperCase();
-            call_ticker('GET', $(this).val())
+            call_ticker('GET', $alert_market.val(), $(this).val())
             .done((data) => {
                 if (data.error) {
                     set_error_message($message_target, data.error);
@@ -1647,7 +1718,7 @@ function initialize_alerts_tab(is_initial = false) {
                     set_success_message($message_target, 'アラートを追加しました');
 
                     $('#alerts_button').click();
-                    message_target.show();
+                   $message_target.show();
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
@@ -1672,8 +1743,9 @@ function initialize_alerts_tab(is_initial = false) {
     }
 }
 function initialize_asset_tab(is_initial = false) {
-    var message_target = $('#id_ajax_message');
-    call_assets('GET')
+    var market = 'bitbank';
+    var $message_target = $('#id_ajax_message');
+    call_assets('GET', market)
     .done(response => {
         if (response.assets) {
             var asset_html = "";
@@ -1682,13 +1754,13 @@ function initialize_asset_tab(is_initial = false) {
                 
                 $('#' + asset.asset).html(asset.onhand_amount);
                 if (asset.asset == 'ltc' || asset.asset == 'eth') {
-                    call_ticker('GET', asset.asset + '_' + 'btc')
+                    call_ticker('GET', market, asset.asset + '_' + 'btc')
                     .done(function(res) {
                         if (res.error) {
-                            set_error_message(message_target, res.error);
+                            set_error_message($message_target, res.error);
                             return;
                         }
-                        call_ticker('GET', 'btc_jpy')
+                        call_ticker('GET', market, 'btc_jpy')
                         .done(function(res2) {
                             total_asset_in_jpy += parseInt(res.buy) * parseInt(res2.buy) * asset.onhand_amount;
                             $('#total_in_jpy').html(parseInt(total_asset_in_jpy));
@@ -1697,20 +1769,20 @@ function initialize_asset_tab(is_initial = false) {
                             if (data.status == 401) {
                                 window.location.href = BASE_URL_LOGIN;
                             }
-                            set_error_message(message_target, xhr);
+                            set_error_message($message_target, xhr);
                         });
                     })
                     .fail(function(data, textStatus, xhr) {
                         if (data.status == 401) {
                             window.location.href = BASE_URL_LOGIN;
                         }
-                        set_error_message(message_target, xhr);
+                        set_error_message($message_target, xhr);
                     });
                 } else if (asset.asset != 'jpy') {
-                    call_ticker('GET', asset.asset + '_jpy')
+                    call_ticker('GET', market, asset.asset + '_jpy')
                     .done(function(res) {
                         if (res.error) {
-                            set_error_message(message_target, res.error);
+                            set_error_message($message_target, res.error);
                             return;
                         }
                         total_asset_in_jpy += parseInt(res.buy * asset.onhand_amount);
@@ -1720,7 +1792,7 @@ function initialize_asset_tab(is_initial = false) {
                         if (data.status == 401) {
                             window.location.href = BASE_URL_LOGIN;
                         }
-                        set_error_message(message_target, xhr);
+                        set_error_message($message_target, xhr);
                     });
                 } else {
                     total_asset_in_jpy += parseInt(asset.onhand_amount);
@@ -1730,7 +1802,7 @@ function initialize_asset_tab(is_initial = false) {
             //$("#asset_table").html(asset_html);
         } else {
             if (response.error) {
-                set_error_message(message_target, response.error);
+                set_error_message($message_target, response.error);
             }
         }
     })
@@ -1738,15 +1810,15 @@ function initialize_asset_tab(is_initial = false) {
         if (data.status == 401) {
             window.location.href = BASE_URL_LOGIN;
         }
-        set_error_message(message_target, xhr);
+        set_error_message($message_target, xhr);
     });
 }
 function initialize_user_info_tab(is_initial = false) {
-    var message_target = $('#id_ajax_message');
+    var$message_target = $('#id_ajax_message');
     call_user('GET')
     .done(function(data) {
         if (data.error) {
-            set_error_message(message_target, data.error);
+            set_error_message($message_target, data.error);
             return;
         }
         console.log(data);
@@ -1761,7 +1833,7 @@ function initialize_user_info_tab(is_initial = false) {
         if (data.status == 401) {
             window.location.href = BASE_URL_LOGIN;
         }
-        set_error_message(message_target, xhr);
+        set_error_message($message_target, xhr);
     });
     // 初期ロード時のみ
     if (is_initial) {
@@ -1781,23 +1853,23 @@ function initialize_user_info_tab(is_initial = false) {
             call_user('POST', full_name, api_key, api_secret_key, email_for_notice)
             .done(function(res) {
                 if (res.error) {
-                    set_error_message(message_target, res.error);
+                    set_error_message($message_target, res.error);
                     return;
                 }
-                set_success_message(message_target, '登録情報を更新しました');
+                set_success_message($message_target, '登録情報を更新しました');
                 return;
             })
             .fail(function(data, textStatus, xhr) {
                 if (data.status == 401) {
                     window.location.href = BASE_URL_LOGIN;
                 }
-                set_error_message(message_target, xhr);
+                set_error_message($message_target, xhr);
             });
         });
     }
 }
 
-function validate_contact_info(message_target) {
+function validate_contact_info($message_target) {
     //validations....
     var name = $('#id_contact_name');
     var email = $('#id_contact_email');
@@ -1805,22 +1877,22 @@ function validate_contact_info(message_target) {
     var body = $('#id_contact_body');
     
     if (name.val() == '') {
-        set_error_message(message_target, '名前を入力してください');
+        set_error_message($message_target, '名前を入力してください');
         name.focus();
         return false;
     }
     if (email.val() == '') {
-        set_error_message(message_target, '通知用メールアドレスを入力してください');
+        set_error_message($message_target, '通知用メールアドレスを入力してください');
         email.focus();
         return false;
     }
     if (subject.val() == '') {
-        set_error_message(message_target, '件名を入力してください');
+        set_error_message($message_target, '件名を入力してください');
         subject.focus();
         return false;
     }
     if (body.val() == '') {
-        set_error_message(message_target, '内容を入力してください');
+        set_error_message($message_target, '内容を入力してください');
         body.focus();
         return false;
     }
@@ -1831,11 +1903,11 @@ function validate_contact_info(message_target) {
 
 function initialize_contact_tab(is_initial = false) {
     var attachment_pk_list = [];
-    var message_target = $('#id_contact_message');
+    var $message_target = $('#id_contact_message');
     call_user('GET')
     .done(function(data) {
         if (data.error) {
-            set_error_message(message_target, data.error);
+            set_error_message($message_target, data.error);
             return;
         }
         $('#id_contact_date').html(return_formatted_datetime((new Date()).getTime(), false));
@@ -1846,7 +1918,7 @@ function initialize_contact_tab(is_initial = false) {
         if (data.status == 401) {
             window.location.href = BASE_URL_LOGIN;
         }
-        set_error_message(message_target, xhr);
+        set_error_message($message_target, xhr);
     });
     // 初期ロード時のみ
     if (is_initial) {
@@ -1862,21 +1934,21 @@ function initialize_contact_tab(is_initial = false) {
 
         inquiry_button
         .on('click', function() {
-            if (validate_contact_info(message_target)) {
+            if (validate_contact_info($message_target)) {
                 call_inquiry('POST', input_subject.val(), input_body.val(), input_email.val(), attachment_pk_list)
                 .done(function(res) {
                     if (res.error) {
-                        set_error_message(message_target, res.error);
+                        set_error_message($message_target, res.error);
                         return;
                     }
-                    set_success_message(message_target, res.success);
+                    set_success_message($message_target, res.success);
                     return;
                 })
                 .fail(function(data, textStatus, xhr) {
                     if (data.status == 401) {
                         window.location.href = BASE_URL_LOGIN;
                     }
-                    set_error_message(message_target, xhr);
+                    set_error_message($message_target, xhr);
                 });
             }
         });

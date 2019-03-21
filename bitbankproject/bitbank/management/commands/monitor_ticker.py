@@ -7,8 +7,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from django.template.loader import get_template
 
-from ...models import OrderRelation,BitbankOrder, User, Alert
-from ... import _util
+from ...models import Relation,Order, User, Alert
 
 # BaseCommandを継承して作成
 class Command(BaseCommand):
@@ -41,7 +40,7 @@ class Command(BaseCommand):
                     continue
 
                 # 通貨ペアをイテレーション
-                for pair in OrderRelation.PAIR:
+                for pair in Relation.PAIR:
                     
                     # Tickerの取得
                     try:
@@ -74,7 +73,7 @@ class Command(BaseCommand):
                             logger.error('user:' + user.email + ' pair:' + pair + ' alert:' + str(alert.pk) + ' error:' + str(e.args))
 
                     # 逆指値の注文取得
-                    stop_market_orders_by_pair = BitbankOrder.objects.filter(user=user).filter(pair=pair).filter(order_type=BitbankOrder.TYPE_STOP_MARKET).filter(order_id__isnull=True).filter(status__in=[BitbankOrder.STATUS_READY_TO_ORDER])
+                    stop_market_orders_by_pair = Order.objects.filter(user = user).filter(pair=pair).filter(order_type=Order.TYPE_STOP_MARKET).filter(order_id__isnull=True).filter(status__in=[Order.STATUS_READY_TO_ORDER])
                     
                     # 各注文を処理
                     for stop_market_order in stop_market_orders_by_pair:
@@ -82,10 +81,10 @@ class Command(BaseCommand):
                         logger.info('Stop market order found. side:' + stop_market_order.side + ' stop price:' + str(stop_market_order.price_for_stop) + ' market sell:' + ticker_dict.get('sell') + ' market buy:' + ticker_dict.get('buy'))
                         if (stop_market_order.side == 'sell' and (float(ticker_dict.get('sell')) <= stop_market_order.price_for_stop)) or \
                             (stop_market_order.side == 'buy' and (float(ticker_dict.get('buy')) >= stop_market_order.price_for_stop)):
-                            _util.place_order(prv, stop_market_order)
+                            stop_market_order.place(prv)
 
                     # ストップリミットの注文取得
-                    stop_limit_orders_by_pair = BitbankOrder.objects.filter(user=user).filter(pair=pair).filter(order_type=BitbankOrder.TYPE_STOP_LIMIT).filter(order_id__isnull=True).filter(status__in=[BitbankOrder.STATUS_READY_TO_ORDER])
+                    stop_limit_orders_by_pair = Order.objects.filter(user=user).filter(pair=pair).filter(order_type=Order.TYPE_STOP_LIMIT).filter(order_id__isnull=True).filter(status__in=[Order.STATUS_READY_TO_ORDER])
                     
                     # 各注文を処理
                     for stop_limit_order in stop_limit_orders_by_pair:
@@ -93,6 +92,26 @@ class Command(BaseCommand):
                         
                         if (stop_limit_order.side == 'sell' and (float(ticker_dict.get('sell')) <= stop_limit_order.price_for_stop)) or \
                             (stop_limit_order.side == 'buy' and (float(ticker_dict.get('buy')) >= stop_limit_order.price_for_stop)):
-                            _util.place_order(prv, stop_limit_order)
+                            stop_limit_order.place(prv)
+                    
+                    # トレール注文取得
+                    trail_orders_by_pair = Order.objects.filter(user = user).filter(pair = pair).filter(order_type = Order.TYPE_TRAIL).filter(order_id__isnull = True).filter(status__in = [Order.STATUS_READY_TO_ORDER])
+
+                    # 各注文を処理
+                    for trail_order in trail_orders_by_pair:
+                        logger.info('trail order found. side:' + trail_order.side + ' trail width:' + trail_order.trail_width)
+                        if trail_order.side == 'sell':
+                            current_price = float(ticker_dict.get('sell'))
+                            if trail_order.trail_price > current_price:
+                                trail_order.place(prv)
+                            else current_price > trail_order.trail_price + trail_order.trail_width:
+                                trail_order.trail_price = current_price - trail_order.trail_width
+                        else:
+                            current_price = float(ticker_dict.get('buy'))
+                            if trail_order.trail_price <= current_price:
+                                trail_order.place(prv)
+                            else current_price <= trail_order.trail_price - trail_order.trail_width:
+                                trail_order.trail_price = current_price + trail_order.trail_width
+
         logger.info('completed')  
           

@@ -4,7 +4,7 @@ from django.contrib.auth.forms import (AuthenticationForm, PasswordChangeForm,
                                        PasswordResetForm, SetPasswordForm,
                                        UserCreationForm)
 
-from .models import Alert, OrderRelation, Inquiry
+from .models import Alert, Relation, Inquiry
 
 User = get_user_model()
 
@@ -82,13 +82,3 @@ class MySetPasswordForm(SetPasswordForm):
             field.widget.attrs['placeholder'] = field.label  # placeholderにフィールドのラベルを入れる
 
 
-# class MyOrderForm(forms.ModelForm):
-
-#     class Meta:
-#         model = Order
-#         fields = ('pair', 'special_order', 'side', 'order_type', 'start_amount', 'price', 'price_for_stop_limit')
-                
-#     def __init__(self, *arg, **kwargs):
-#         super().__init__(*arg, **kwargs)
-#         for field in self.fields.values():
-#             field.widget.attrs['class'] = 'form-control'

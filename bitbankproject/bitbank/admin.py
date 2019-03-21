@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import ugettext_lazy as _
-from .models import User, OrderRelation, BitbankOrder, Alert, Inquiry, Attachment
+from .models import User, Relation, Order, Alert, Inquiry, Attachment
 
 from django.utils.safestring import mark_safe
 # from django.contrib.auth import get_user_model
@@ -42,36 +42,36 @@ class MyUserAdmin(UserAdmin):
 
     ordering = ('remaining_days',)
 
-class MyOrderRelationAdmin(admin.ModelAdmin):
+class MyRelationAdmin(admin.ModelAdmin):
     list_display = ('pk', 'user_display', 'pair_display', 'special_order', 'order_1', 'order_2', 'order_3', 'placed_at', 'is_active')
     list_display_links = ('pk',)
     def pair_display(self, obj):
-        return BitbankOrder.PAIR[obj.pair]
+        return Order.PAIR[obj.pair]
     def order_type_display(self, obj):
-        return BitbankOrder.ORDER_TYPE[obj.order_type]
+        return Order.ORDER_TYPE[obj.order_type]
     def user_display(self, obj):
         return obj.user.full_name
     user_display.short_description = '利用者'
     pair_display.short_description = '通貨'
     order_type_display.short_description = '注文'
     
-class MyBitbankOrderAdmin(admin.ModelAdmin):
+class MyOrderAdmin(admin.ModelAdmin):
     list_display = ('order_id', 'user_display', 'pair_display', 'side_display', 'order_type_display', 'price', 'start_amount', 'remaining_amount', 'executed_amount', 'status_display', 'error_message')
     list_display_links = ('order_id',)
     def user_display(self, obj):
         return obj.user.full_name
     user_display.short_description = '利用者'
     def pair_display(self, obj):
-        return BitbankOrder.PAIR[obj.pair]
+        return Order.PAIR[obj.pair]
     def side_display(self, obj):
-        return BitbankOrder.SIDE[obj.side]
+        return Order.SIDE[obj.side]
     def order_type_display(self, obj):
-        return BitbankOrder.ORDER_TYPE[obj.order_type]
+        return Order.ORDER_TYPE[obj.order_type]
     def status_display(self, obj):
         if obj.status == None:
             return '未注文'
         else:
-            return BitbankOrder.STATUS[obj.status]
+            return Order.STATUS[obj.status]
         
     pair_display.short_description = '通貨'
     side_display.short_description = '売/買'
@@ -82,7 +82,7 @@ class MyBitbankOrderAdmin(admin.ModelAdmin):
 class MyAlertAdmin(admin.ModelAdmin):
     list_display = ('user_display', 'pair_display', 'threshold', 'is_active')
     def pair_display(self, obj):
-        return BitbankOrder.PAIR[obj.pair]
+        return Order.PAIR[obj.pair]
     def user_display(self, obj):
         return obj.user.full_name
     user_display.short_description = '利用者'
@@ -159,7 +159,7 @@ class MyAdminSite(admin.AdminSite):
 
 admin_site = MyAdminSite(name = 'bitbank管理画面')
 admin_site.register(User, MyUserAdmin)
-admin_site.register(OrderRelation, MyOrderRelationAdmin)
-admin_site.register(BitbankOrder, MyBitbankOrderAdmin)
+admin_site.register(Relation, MyRelationAdmin)
+admin_site.register(Order, MyOrderAdmin)
 admin_site.register(Alert, MyAlertAdmin)
 admin_site.register(Inquiry, MyInquiryAdmin)

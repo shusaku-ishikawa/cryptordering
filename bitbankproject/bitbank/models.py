@@ -1,3 +1,5 @@
+
+import logging
 from django import forms
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
@@ -11,6 +13,10 @@ from django.core.files.storage import FileSystemStorage
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 import unicodedata
+from django.db.models import Q
+from datetime import datetime
+import time
+from django.template.loader import get_template
 
 
 class ASCIIFileSystemStorage(FileSystemStorage):
@@ -133,7 +139,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.email
 
-class BitbankOrder(models.Model):
+logger = logging.getLogger('batch_logger')
+
+class Order(models.Model):
     def __str__(self):
         if self.order_id == None:
             return "-"
@@ -148,6 +156,7 @@ class BitbankOrder(models.Model):
     TYPE_LIMIT = 'limit'
     TYPE_STOP_MARKET = 'stop_market'
     TYPE_STOP_LIMIT = 'stop_limit'
+    TYPE_TRAIL = 'trail'
 
     STATUS_UNFILLED = 'UNFILLED'
     STATUS_PARTIALLY_FILLED = 'PARTIALLY_FILLED'
@@ -195,6 +204,11 @@ class BitbankOrder(models.Model):
         on_delete = models.CASCADE
     )
 
+    market = models.CharField(
+        verbose_name = _('取引所'),
+        max_length = 50,
+        default = 'bitbank'
+    )
    
     pair = models.CharField(
         verbose_name = _('通貨'),
@@ -226,6 +240,20 @@ class BitbankOrder(models.Model):
         validators = [
             MinValueValidator(0),
         ]
+    )
+
+    trail_width = models.FloatField(
+        verbose_name = 'トレール幅',
+        blank = True,
+        null = True,
+        validators = [
+            MinValueValidator(0)
+        ]
+    )
+    trail_price = models.FloatField(
+        verbose_name = 'トレール金額',
+        blank = True,
+        null = True
     )
 
     start_amount = models.FloatField(
@@ -293,8 +321,68 @@ class BitbankOrder(models.Model):
         use_numeric = True,  
         auto_now = True,
     )
+    
+    def place(self, prv):
+        try:
+            ret = prv.order(
+                self.pair, # ペア
+                self.price, # 価格
+                self.start_amount, # 注文枚数
+                self.side, # 注文サイド
+                'market' if self.order_type.find("market") > -1 else 'limit' # 注文タイプ
+            )
+            self.remaining_amount = ret.get('remaining_amount')
+            self.executed_amount = ret.get('executed_amount')
+            self.average_price = ret.get('average_price')
+            self.status = ret.get('status')
+            self.ordered_at = ret.get('ordered_at')
+            self.order_id = ret.get('order_id')
+            self.save()
+            return True
+        except Exception as e:
+            self.status = Order.STATUS_FAILED_TO_ORDER
+            self.error_message = str(e.args)
+            self.save()
+            return False
 
-class OrderRelation(models.Model):
+    def cancel(self, prv):
+        try:
+            ret = prv.cancel_order(
+                self.pair, # ペア
+                self.order_id # 注文ID
+            )
+            self.remaining_amount = ret.get('remaining_amount')
+            self.executed_amount = ret.get('executed_amount')
+            self.average_price = ret.get('average_price')
+            self.status = ret.get('status')
+            self.save()
+            return True
+        except:
+            return False
+
+    def update(self, prv):
+        ret = prv.get_order(
+            self.pair, 
+            self.order_id
+        )
+        self.remaining_amount = ret.get('remaining_amount')
+        self.executed_amount = ret.get('executed_amount')
+        self.average_price = ret.get('average_price')
+        status = ret.get('status')
+        self.status = status
+        self.save()
+        return status
+
+    def notify_user(self):
+        readable_datetime = datetime.fromtimestamp(int(int(self.ordered_at) / 1000))
+        context = { "user": self.user, "order": self, 'readable_datetime': readable_datetime }
+        subject = get_template('bitbank/mail_template/fill_notice/subject.txt').render(context)
+        message = get_template('bitbank/mail_template/fill_notice/message.txt').render(context)
+        self.user.email_user(subject, message)
+        logger.info('notice sent to:' + self.user.email_for_notice)
+
+
+class Relation(models.Model):
     def __str__(self):
         return self.special_order
 
@@ -321,12 +409,6 @@ class OrderRelation(models.Model):
     
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    market = models.CharField(
-        verbose_name = _('取引所'),
-        max_length = 50,
-        default = 'bitbank'
-    )
-    
     pair = models.CharField(
         verbose_name = _('通貨'),
         max_length = 50,
@@ -338,7 +420,7 @@ class OrderRelation(models.Model):
     )
 
     order_1 = models.OneToOneField(
-        BitbankOrder,
+        Order,
         verbose_name = '新規注文',
         related_name = 'new_order',
         null = True,
@@ -346,7 +428,7 @@ class OrderRelation(models.Model):
         on_delete = models.CASCADE
     )
     order_2 = models.OneToOneField(
-        BitbankOrder,
+        Order,
         verbose_name = '決済注文1',
         related_name = 'settle_order_1',
         null = True,
@@ -354,7 +436,7 @@ class OrderRelation(models.Model):
         on_delete = models.CASCADE
     )
     order_3 = models.OneToOneField(
-        BitbankOrder,
+        Order,
         verbose_name = '決済注文2',
         related_name = 'settle_order_2',
         null = True,
@@ -369,15 +451,30 @@ class OrderRelation(models.Model):
         verbose_name = '有効',
         default = True,
     )
+    
+    @property
+    def market(self):
+        if self.order_1 != None:
+            return self.order_1.market
+        if self.order_2 != None:
+            return self.order_2.market
+        if self.order_3 != None:
+            return self.order_3.market
 
 class Alert(models.Model):
     def __str__(self):
         return self.pair
+
     class Meta:
         verbose_name = "通知設定"
         verbose_name_plural = "通知設定"
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    market = models.CharField(
+        verbose_name = '取引所',
+        max_length = 50,
+        default = 'bitbank'
+    )
     pair = models.CharField(
         verbose_name = _('通貨'),
         max_length = 50,
@@ -405,7 +502,8 @@ class Alert(models.Model):
         verbose_name = _('有効'),
         null = True,
     )
-
+    
+        
 class Attachment(models.Model):
     def __str__(self):
         return self.file.name
