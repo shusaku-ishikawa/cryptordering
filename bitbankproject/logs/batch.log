@@ -7491,3 +7491,27 @@
 [INFO]	asctime:2019-03-13 18:46:00,654	module:monitor_ticker	message:completed
 [INFO]	asctime:2019-03-13 18:47:01,796	module:monitor_ticker	message:completed
 [INFO]	asctime:2019-03-13 18:48:01,324	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-03-22 14:05:07,130	module:monitor_ticker	message:trail order found. side:buy trail width:10.0
+[INFO]	asctime:2019-03-22 14:05:10,296	module:monitor_ticker	message:trail order found. side:buy trail width:10.0
+[INFO]	asctime:2019-03-22 14:05:10,599	module:monitor_ticker	message:trail order found. side:buy trail width:11.0
+[INFO]	asctime:2019-03-22 14:05:10,839	module:monitor_ticker	message:trail order found. side:buy trail width:10.0
+[INFO]	asctime:2019-03-22 14:10:22,887	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:10:26,349	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:10:29,612	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:10:33,123	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:10:36,991	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:10:40,325	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:10:43,865	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:10:48,070	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:10:51,648	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:10:56,222	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:11:00,047	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[ERROR]	asctime:2019-03-22 14:11:01,015	module:monitor_ticker	message:user:ishikawasyuusaku@gmail.com pair:mona_jpy error:(MaxRetryError('HTTPSConnectionPool(host=\'public.bitbank.cc\', port=443): Max retries exceeded with url: /mona_jpy/ticker (Caused by SSLError(SSLError("bad handshake: Error([(\'SSL routines\', \'tls_process_server_certificate\', \'certificate verify failed\')])")))'),)
+[INFO]	asctime:2019-03-22 14:11:03,472	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[INFO]	asctime:2019-03-22 14:11:07,062	module:monitor_ticker	message:trail order found. side:buy trail width:4.0
+[ERROR]	asctime:2019-03-22 14:43:57,647	module:sync_orders	message:user:ishikawasyuusaku@gmail.com message: ("argument of type 'int' is not iterable",)
+[ERROR]	asctime:2019-03-22 14:45:52,778	module:sync_orders	message:user:ishikawasyuusaku@gmail.com message: ('get_active_orders() takes from 2 to 3 positional arguments but 5 were given',)
+[ERROR]	asctime:2019-03-22 14:56:03,480	module:sync_orders	message:user:ishikawasyuusaku@gmail.com message: ("type object 'datetime.datetime' has no attribute 'datetime'",)
+[ERROR]	asctime:2019-03-22 15:03:27,521	module:sync_orders	message:user:ishikawasyuusaku@gmail.com message: ('エラーコード: 40006 内容: count値が不正です',)
+[ERROR]	asctime:2019-03-22 15:03:49,010	module:sync_orders	message:user:ishikawasyuusaku@gmail.com message: ('get_trade_history() takes 3 positional arguments but 4 were given',)
+[ERROR]	asctime:2019-03-22 15:08:30,257	module:sync_orders	message:user:ishikawasyuusaku@gmail.com message: ("name 'ret' is not defined",)

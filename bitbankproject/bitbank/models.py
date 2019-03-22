@@ -323,13 +323,14 @@ class Order(models.Model):
     )
     
     def place(self, prv):
+        print('place called')
         try:
             ret = prv.order(
                 self.pair, # ペア
                 self.price, # 価格
                 self.start_amount, # 注文枚数
                 self.side, # 注文サイド
-                'market' if self.order_type.find("market") > -1 else 'limit' # 注文タイプ
+                'market' if self.order_type.find("limit") == -1 else 'limit' # 注文タイプ
             )
             self.remaining_amount = ret.get('remaining_amount')
             self.executed_amount = ret.get('executed_amount')
@@ -409,6 +410,12 @@ class Relation(models.Model):
     
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    market = models.CharField(
+        verbose_name = _('取引所'),
+        max_length = 50,
+        default = 'bitbank'
+    )
+    
     pair = models.CharField(
         verbose_name = _('通貨'),
         max_length = 50,
@@ -452,14 +459,7 @@ class Relation(models.Model):
         default = True,
     )
     
-    @property
-    def market(self):
-        if self.order_1 != None:
-            return self.order_1.market
-        if self.order_2 != None:
-            return self.order_2.market
-        if self.order_3 != None:
-            return self.order_3.market
+   
 
 class Alert(models.Model):
     def __str__(self):

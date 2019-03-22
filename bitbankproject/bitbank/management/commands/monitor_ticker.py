@@ -99,18 +99,18 @@ class Command(BaseCommand):
 
                     # 各注文を処理
                     for trail_order in trail_orders_by_pair:
-                        logger.info('trail order found. side:' + trail_order.side + ' trail width:' + trail_order.trail_width)
+                        logger.info('trail order found. side:' + trail_order.side + ' trail width:' + str(trail_order.trail_width))
                         if trail_order.side == 'sell':
                             current_price = float(ticker_dict.get('sell'))
                             if trail_order.trail_price > current_price:
                                 trail_order.place(prv)
-                            else current_price > trail_order.trail_price + trail_order.trail_width:
+                            elif current_price > trail_order.trail_price + trail_order.trail_width:
                                 trail_order.trail_price = current_price - trail_order.trail_width
                         else:
                             current_price = float(ticker_dict.get('buy'))
                             if trail_order.trail_price <= current_price:
                                 trail_order.place(prv)
-                            else current_price <= trail_order.trail_price - trail_order.trail_width:
+                            elif current_price <= trail_order.trail_price - trail_order.trail_width:
                                 trail_order.trail_price = current_price + trail_order.trail_width
 
         logger.info('completed')  

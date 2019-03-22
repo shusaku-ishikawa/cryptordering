@@ -767,7 +767,7 @@
             'limit': '指値',
             'stop_market': '逆指値',
             'stop_limit': 'ストップリミット',
-            'trail': 'トレイル'
+            'trail': 'トレール'
         };
 
         SELL_BUY = {
@@ -779,13 +779,13 @@
         //資産情報取得用
 
         $(function() {
-            initialize_order_tab(true);
-            initialize_active_orders_tab(true);
-            initialize_order_history_tab(true);
-            initialize_alerts_tab(true);
-            initialize_asset_tab(true);
-            initialize_user_info_tab(true);
-            initialize_contact_tab(true);
+            init_order_tab(true);
+            init_active_orders_tab(true);
+            init_order_history_tab(true);
+            init_alerts_tab(true);
+            init_asset_tab(true);
+            init_user_info_tab(true);
+            init_contact_tab(true);
             $('#order_button').click();
         });
         

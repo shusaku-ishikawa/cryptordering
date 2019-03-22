@@ -177,43 +177,21 @@ def ajax_user(request):
         return JsonResponse({'error' : 'authentication failed'}, status=401)
 
     method = request.method
+    user = request.user
+
     if method == 'GET':
         serizlized = UserSerializer(request.user, many=False).data
         
         return JsonResponse(serizlized)
 
     elif method == 'POST':
-        new_full_name = request.POST.get("full_name")
-        new_api_key = request.POST.get("api_key")
-        new_api_secret_key = request.POST.get("api_secret_key")
-        new_email_for_notice = request.POST.get("email_for_notice")
-        new_notify_if_filled = request.POST.get('notify_if_filled')
-        new_use_alert = request.POST.get('use_alert')
-        
-        try:
-            user_to_update = request.user
-            if new_full_name != None and new_full_name != "": 
-                user_to_update.full_name = new_full_name
-            if new_api_key != None and new_api_key != "":
-                user_to_update.api_key = new_api_key
-            if new_api_secret_key != None and new_api_secret_key != "":
-                user_to_update.api_secret_key = new_api_secret_key
-            if new_email_for_notice != None and new_email_for_notice != "":
-                user_to_update.email_for_notice = new_email_for_notice
-            if new_notify_if_filled != None and new_notify_if_filled != "":
-                user_to_update.notify_if_filled = new_notify_if_filled
-            if new_use_alert != None and new_use_alert != "":
-                user_to_update.use_alert = new_use_alert
-
-            user_to_update.save()
-        except Exception as e:
-            return JsonResponse({'error': e.args})
-
-        data = {
-            'success': True
-        }
-        return JsonResponse(data) 
-
+        serializer = UserSerializer(user, data = request.POST)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({'success': True}) 
+        else:
+            return JsonResponse({'error': serializer.errors})
+           
 def ajax_alerts(request):
     if request.user.is_anonymous or request.user.is_active == False:
         return JsonResponse({'error' : 'authentication failed'}, status=401)
@@ -255,17 +233,14 @@ def ajax_alerts(request):
                 traceback.print_exc()
                 return JsonResponse({'error': e.args})
         elif op == 'POST':
-            market = request.POST.get('market')
-            pair = request.POST.get('pair')
-            threshold = request.POST.get('threshold')
-            over_or_under = request.POST.get('over_or_under')
-            try:
-                new_alert = Alert(user=user, market = market, pair=pair, threshold=threshold, over_or_under=over_or_under, is_active=True, alerted_at=None)
-                new_alert.save()
+            print(request.POST)
+            serializer = AlertSerializer(data = request.POST, context={'request': request})
+            if serializer.is_valid():
+                serializer.save()
                 return JsonResponse({'success': True})
-            except Exception as e:
-                traceback.print_exc()
-                return JsonResponse({'error': e.args})
+            else:
+                print(request.POST.get('threshold'))
+                return JsonResponse({'error': serializer.errors })
 def ajax_ticker(request):
     if request.user.is_anonymous or request.user.is_active == False:
         return JsonResponse({'error' : 'authentication failed'}, status=401)
@@ -328,8 +303,10 @@ def validate_input(obj):
     return {'success': True}
 
 def create_order(user, order_params, is_ready):
+    print('create order called')
     prv = python_bitbankcc.private(user.api_key, user.api_secret_key)
     order = Order()
+    print(user)
     order.user = user
     order.pair = order_params.get('pair')
     order.side = order_params.get('side')
@@ -396,12 +373,15 @@ def ajax_orders(request):
             try:
                 offset = int(request.GET.get('offset'))
                 to = int(request.GET.get('limit')) + offset
+                search_market = request.GET.get('market')
                 search_pair = request.GET.get('pair')
 
                 order_history = Order.objects.filter(user=user).filter(status__in=[Order.STATUS_CANCELED_PARTIALLY_FILLED, Order.STATUS_FULLY_FILLED, Order.STATUS_FAILED_TO_ORDER])
-                print(order_history[0].market)
+                
+                if search_market != 'all':
+                    order_history = order_history.filter(market = search_market)
                 if search_pair != 'all':
-                    order_history = order_history.filter(pair=search_pair)
+                    order_history = order_history.filter(pair = search_pair)
                 
                 data = {
                     'total_count': order_history.count(),
@@ -432,6 +412,8 @@ def ajax_orders(request):
                     return JsonResponse(validate_1)
 
                 relation = Relation()
+                relation.user = user
+                
                 relation.pair = pair
                 relation.special_order = special_order
                 o_1 = create_order(user, params_1, True)

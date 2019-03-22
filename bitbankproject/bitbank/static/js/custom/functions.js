@@ -33,7 +33,7 @@ function call_ticker(method, market, pair, is_async = true) {
     });
 }
 
-function call_user(method, full_name, api_key, api_secret_key, email_for_notice, notify_if_filled, use_alert) {
+function call_user(method, full_name  = null, api_key = null, api_secret_key = null, email_for_notice = null, notify_if_filled = null, use_alert = null) {
     return $.ajax({
         url: BASE_URL_USER,
         type: (method == 'GET') ? 'GET':'POST' ,
@@ -133,32 +133,36 @@ function isNumberKey(evt){
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
 }
 
-function initialize_free_amount_json() {
+function init_free_amount_json() {
     Object.keys(MARKETS).forEach(market => {
-        call_assets('GET', market)
-        .done(function(res) {
-            if (res.error) {
-                set_error_message($('#id_ajax_message'), res.error);
-                return;
-            }
-            res.assets.forEach(asset => {
-                free_amount_json[market][asset.asset] = asset.free_amount;
+        if (market == 'bitbank') {
+            call_assets('GET', market)
+            .done(function(res) {
+                if (res.error) {
+                    set_error_message($('#id_ajax_message'), res.error);
+                    return;
+                }
+                res.assets.forEach(asset => {
+                    free_amount_json[market][asset.asset] = asset.free_amount;
+                });
+            })
+            .fail(function(data, textStatus, xhr) {
+                if (data.status == 401) {
+                    window.location.href = BASE_URL_LOGIN;
+                }
+                set_error_message($('#id_ajax_message'), xhr);
             });
-        })
-        .fail(function(data, textStatus, xhr) {
-            if (data.status == 401) {
-                window.location.href = BASE_URL_LOGIN;
-            }
-            set_error_message($('#id_ajax_message'), xhr);
-        });
+        }
+        
     });
 }
 
-function initialize_ticker_json() {
+function init_ticker_json() {
     var $message_target = $('#id_ajax_message');
 
     Object.keys(MARKETS).forEach(market => {
         Object.keys(PAIRS).forEach(pair => {
+            console.log('inside init ticker json');
             call_ticker('GET', market, pair)
             .done(function (res) {
                 if (res.error) {
@@ -256,7 +260,7 @@ function update_slider_by_amount(tab_num) {
     var order_type = $('#id_order_type_' + tab_num).val(); 
     var price = $('#id_price_' + tab_num).val();
     var amount = $('#id_start_amount_' + tab_num).val();
-    var $input_expected_price = $('#expected_price_' + tab_num);
+    var $input_expect_price = $('#expect_price_' + tab_num);
     var $percentage = $('#amount_percentage_' + tab_num);
 
     if (side == 'buy') {
@@ -287,9 +291,9 @@ function update_slider_by_amount(tab_num) {
             var rounded = Math.round(perc * 10) / 10;
             set_slidevalue(tab_num, rounded, false);
             if (currency == 'jpy') {
-                $input_expected_price.val(Math.round(new_price * amount));
+                $input_expect_price.val(Math.round(new_price * amount));
             } else {
-                $input_expected_price.val(Math.round(new_price * amount * 10000) / 10000);
+                $input_expect_price.val(Math.round(new_price * amount * 10000) / 10000);
             } 
         }
     }
@@ -303,17 +307,17 @@ function calculate_expect_price(tab_num) {
     var order_type = $('#id_order_type_' + tab_num).val();
     var amount = $('#id_start_amount_' + tab_num).val();
     var $input_price = $('#id_price_' + tab_num);
-    var $input_expected_price = $('#expected_price_' + tab_num);
+    var $input_expect_price = $('#expect_price_' + tab_num);
 
 
     if (parseFloat(amount) == 0 || amount == '') {
-        $input_expected_price.val(0);
+        $input_expect_price.val(0);
     } else {
         var price = (order_type.match(/market/)) ? parseFloat(market_price_json[market][pair][side]) : ($input_price.val() != '') ? parseFloat($input_price.val()) : 0;
         if (pair.split('_')[1] == 'jpy') {
-            $input_expected_price.val(Math.floor(price * amount));    
+            $input_expect_price.val(Math.floor(price * amount));    
         } else {
-            $input_expected_price.val(price * amount);    
+            $input_expect_price.val(price * amount);    
         }
     }
 }
@@ -429,6 +433,7 @@ function set_slidevalue(tab_num, new_val, trigger_input_event=true) {
 function set_default_price(tab_num, market, pair, $message_target) {
     call_ticker('GET', market, pair)
     .done(function(res) {
+        console.log('inside set default price');
         if (res.error) {
             set_error_message($message_target, res.error);
             return;
@@ -465,16 +470,16 @@ function reset_input_all() {
         set_slidevalue(i, 0, false);
         $('#id_side_' + i).val(Object.keys(SELL_BUY)[1]).trigger('value_change');
         $('#id_order_type_' + i).val(Object.keys(ORDER_TYPES)[1]).trigger('change');
-        set_default_price(i, market, pair, $message_target);
+        //set_default_price(i, market, pair, $message_target);
     }
 }
 
 
-function initialize_order_tab(is_initial = false) {
+function init_order_tab(is_initial = false) {
     var $order_result_message_target = $('#id_order_result_message');
     var $ajax_message_target = $('#id_ajax_message');
-    initialize_ticker_json();
-    initialize_free_amount_json();
+    init_ticker_json();
+    init_free_amount_json();
 
     for (let i = 1; i < 4; i ++) {
         if ($('#id_side_' + i).val() == 'sell') {
@@ -656,6 +661,7 @@ function initialize_order_tab(is_initial = false) {
                 update_slider_by_amount(i);
             })
             .on('calculate', function() {
+                //alert('calc');
                 calculate_expect_price(i);
             });
 
@@ -699,7 +705,7 @@ function initialize_order_tab(is_initial = false) {
                     $('#myRange_' + i).addClass('slider_for_sell').removeClass('slider_for_buy');
                     $button_order.removeClass('green_button').addClass('red_button');
                 }
-                set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target);
+                //set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target);
             });
             $('#sell_button_' + i).on('click', function() {
                 // 変更があった場合のみ処理
@@ -837,7 +843,7 @@ function build_order_card_header(market, pair, special_order) {
     }).append(row_1).append(row_2).append(row_3);
     
 }
-function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_type, side, price, price_for_stop, start_amount, executed_amount,average_price, status, ordered_at) {
+function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_type, side, price, price_for_stop, trail_width, trail_price, start_amount, executed_amount,average_price, status, ordered_at) {
     
     var $row_1 = $('<div>', { 
         class: 'row'
@@ -846,13 +852,13 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         text: '注文ID'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: order_id
+        text: hyphen_if_null(order_id)
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-header',
         text: '売/買'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: side
+        text: SELL_BUY[side]
     }));
 
     var $row_2 = $('<div>', { 
@@ -862,14 +868,26 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         text: 'タイプ'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: order_type
-    })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-header',
-        text: '逆指値価格'
-    })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-data',
-        text: price_for_stop
+        text: ORDER_TYPES[order_type]
     }));
+   
+    if (order_type == 'trail') {
+        $row_2.append($('<div>', {
+            class: 'col-md-3 col-3 card-table-header',
+            text: 'トレール幅'
+        })).append($('<div>', {
+            class: 'col-md-3 col-3 card-table-data',
+            text: hyphen_if_null(trail_width)
+        }));
+    } else {
+        $row_2.append($('<div>', {
+            class: 'col-md-3 col-3 card-table-header',
+            text: '逆指値価格'
+        })).append($('<div>', {
+            class: 'col-md-3 col-3 card-table-data',
+            text: hyphen_if_null(price_for_stop)
+        }));
+    }
 
     var $row_3 = $('<div>', { 
         class: 'row'
@@ -878,14 +896,26 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         text: '数量'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: start_amount
-    })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-header',
-        text: '指値価格'
-    })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-data',
-        text: price
+        text: hyphen_if_null(start_amount)
     }));
+    
+    if (order_type == 'trail') {
+        $row_3.append($('<div>', {
+            class: 'col-md-3 col-3 card-table-header',
+            text: 'トレール金額'
+        })).append($('<div>', {
+            class: 'col-md-3 col-3 card-table-data',
+            text: hyphen_if_null(trail_price)
+        }));
+    } else {
+        $row_3.append($('<div>', {
+            class: 'col-md-3 col-3 card-table-header',
+            text: '指値価格'
+        })).append($('<div>', {
+            class: 'col-md-3 col-3 card-table-data',
+            text: hyphen_if_null(price)
+        }));
+    }
 
     var $row_4 = $('<div>', { 
         class: 'row'
@@ -894,13 +924,13 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         text: '約定数量'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: executed_amount
+        text: hyphen_if_null(executed_amount)
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-header',
         text: '平均価格'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: average_price
+        text: hyphen_if_null(average_price)
     }));
 
     var $row_5 = $('<div>', { 
@@ -910,7 +940,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         text: '注文日時'
     })).append($('<div>', {
         class: 'col-md-6 col-6 card-table-data',
-        text: ordered_at
+        text: return_formatted_datetime(ordered_at)
     }));
 
     var $row_6 = $('<div>', { 
@@ -920,7 +950,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         text: 'ステータス'
     })).append($('<div>', {
         class: 'col-md-6 col-6 card-table-data',
-        text: status
+        text: STATUS[status]
     }));
     var $row_7 = $('<div>', {
         class: 'row justify-content-end'
@@ -974,7 +1004,7 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
         text: '取引所'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: market
+        text: MARKETS[market]
     }));
     
     var $row_2 = $('<div>', { 
@@ -984,13 +1014,13 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
         text: '注文ID'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: order_id
+        text: hyphen_if_null(order_id)
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-header',
         text: '取引通貨'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: pair
+        text: PAIRS[pair]
     }));
 
     var $row_3 = $('<div>', { 
@@ -1000,13 +1030,13 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
         text: 'タイプ'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: order_type
+        text: ORDER_TYPES[order_type]
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-header',
         text: '売/買'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: side
+        text: SELL_BUY[side]
     }));
 
     
@@ -1017,13 +1047,13 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
         text: '数量'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: start_amount
+        text: hyphen_if_null(start_amount)
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-header',
         text: '指値価格'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: price
+        text: hyphen_if_null(price)
     }));
 
     var $row_5 = $('<div>', { 
@@ -1033,13 +1063,13 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
         text: '約定数量'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: executed_amount
+        text: hyphen_if_null(executed_amount)
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-header',
         text: '平均価格'
     })).append($('<div>', {
         class: 'col-md-3 col-3 card-table-data',
-        text: average_price
+        text: hyphen_if_null(average_price)
     }));
     
     var $row_6 = $('<div>', { 
@@ -1049,7 +1079,7 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
         text: '注文日時'
     })).append($('<div>', {
         class: 'col-md-6 col-6 card-table-data',
-        text: ordered_at
+        text: return_formatted_datetime(ordered_at)
     }));
         
     var $row_7 = $('<div>', { 
@@ -1059,7 +1089,7 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
         text: 'ステータス'
     })).append($('<div>', {
         class: 'col-md-6 col-6 card-table-data',
-        text: status
+        text: STATUS[status]
     }));
 
     var $container = $('<div>', {
@@ -1081,7 +1111,7 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
             text: 'エラー時刻'
         })).append($('<div>', {
             class: 'col-md-8 col-8 card-table-data',
-            text: failed_at
+            text: return_formatted_datetime(failed_at * 1000)
         }))
         console.log($row_8);
         $container.append($row_8).append($row_9);
@@ -1090,7 +1120,7 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
 }
 
 
-function initialize_active_orders_content(market, pair, $message_target) {
+function init_active_orders_content(market, pair, $message_target) {
     var $page_selection = $('#page_selection_active_orders');
     var $div_contents = $('#active_orders_content');
 
@@ -1119,26 +1149,26 @@ function initialize_active_orders_content(market, pair, $message_target) {
                         set_error_message($message_target, res_2.error);
                         return;
                     }
-                    
+                    $div_contents.empty();
                     var $outer = $('<div>', {class: 'row',});
                     var $inner = $('<div>', {class: 'col-md-6 offset-md-3 col-12'});
                     
                     var is_empty = true;
-                    res_2.data.forEach(active_order => {
+                    res_2.data.forEach(o => {
                         is_empty = false;
                         var $container = $('<div>', { class: 'order_container' })
                         .append(
-                            build_order_card_header(MARKETS[active_order.market], PAIRS[active_order.pair], active_order.special_order)
+                            build_order_card_header(MARKETS[o.market], PAIRS[o.pair], o.special_order)
                         );
 
-                        if (active_order.order_1) {
-                            $container.append(build_active_order_card(active_order.special_order == 'SINGLE', 'order_1', active_order.order_1.pk,hyphen_if_null(active_order.order_1.order_id),ORDER_TYPES[active_order.order_1.order_type],SELL_BUY[active_order.order_1.side],hyphen_if_null(active_order.order_1.price),hyphen_if_null(active_order.order_1.price_for_stop),active_order.order_1.start_amount,hyphen_if_null(active_order.order_1.executed_amount),hyphen_if_null(active_order.order_1.average_price),STATUS[active_order.order_1.status],return_formatted_datetime(active_order.order_1.ordered_at)));
+                        if (o.order_1) {
+                            $container.append(build_active_order_card(o.special_order == 'SINGLE', 'order_1', o.order_1.pk, o.order_1.order_id, o.order_1.order_type, o.order_1.side, o.order_1.price, o.order_1.price_for_stop, o.order_1.trail_width, o.order_1.trail_price, o.order_1.start_amount, o.order_1.executed_amount, o.order_1.average_price, o.order_1.status, o.order_1.ordered_at));
                         }
-                        if (active_order.order_2) {
-                            $container.append(build_active_order_card(true, 'order_2', active_order.order_2.pk,hyphen_if_null(active_order.order_2.order_id),ORDER_TYPES[active_order.order_2.order_type],SELL_BUY[active_order.order_2.side],hyphen_if_null(active_order.order_2.price),hyphen_if_null(active_order.order_2.price_for_stop),active_order.order_2.start_amount,hyphen_if_null(active_order.order_2.executed_amount),hyphen_if_null(active_order.order_2.average_price),STATUS[active_order.order_2.status],return_formatted_datetime(active_order.order_2.ordered_at)));
+                        if (o.order_2) {
+                            $container.append(build_active_order_card(true, 'order_2', o.order_2.pk, o.order_2.order_id, o.order_2.order_type, o.order_2.side, o.order_2.price, o.order_2.price_for_stop, o.order_1.trail_width, o.order_1.trail_price, o.order_2.start_amount, o.order_2.executed_amount, o.order_2.average_price, o.order_2.status, o.order_2.ordered_at));
                         }
-                        if (active_order.order_3) {
-                            $container.append(build_active_order_card(true, 'order_3', active_order.order_3.pk,hyphen_if_null(active_order.order_3.order_id),ORDER_TYPES[active_order.order_3.order_type],SELL_BUY[active_order.order_3.side],hyphen_if_null(active_order.order_3.price),hyphen_if_null(active_order.order_3.price_for_stop),active_order.order_3.start_amount,hyphen_if_null(active_order.order_3.executed_amount),hyphen_if_null(active_order.order_3.average_price),STATUS[active_order.order_3.status],return_formatted_datetime(active_order.order_3.ordered_at)));
+                        if (o.order_3) {
+                            $container.append(build_active_order_card(true, 'order_3', o.order_3.pk, o.order_3.order_id, o.order_3.order_type, o.order_3.side, o.order_3.price, o.order_3.price_for_stop, o.order_1.trail_width, o.order_1.trail_price, o.order_3.start_amount, o.order_3.executed_amount, o.order_3.average_price, o.order_3.status, o.order_3.ordered_at));
                         }
                         $inner.append($container).append($('<hr>'));
                     });
@@ -1188,7 +1218,7 @@ function initialize_active_orders_content(market, pair, $message_target) {
         set_error_message($message_target, xhr);
     });
 }
-function initialize_active_orders_tab(is_initial = false) {
+function init_active_orders_tab(is_initial = false) {
     var $message_target = $('#id_ajax_message');
     var $input_search_pair = $('#id_active_orders_search_pair');
     var $input_search_market = $('#id_active_orders_search_market');
@@ -1210,7 +1240,7 @@ function initialize_active_orders_tab(is_initial = false) {
 
         $input_search_market
         .on('change', function() {
-            initialize_active_orders_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+            init_active_orders_content($input_search_market.val(), $input_search_pair.val(), $message_target);
         });
 
         $input_search_pair
@@ -1230,7 +1260,7 @@ function initialize_active_orders_tab(is_initial = false) {
         $input_search_pair
         .on('change', function() {
             $.cookie(COOKIE_SEARCH_PAIR_ACTIVE_ORDERS, $(this).val(), {expire: 7});
-            initialize_active_orders_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+            init_active_orders_content($input_search_market.val(), $input_search_pair.val(), $message_target);
         });
     }
 
@@ -1243,10 +1273,10 @@ function initialize_active_orders_tab(is_initial = false) {
         $input_search_pair.val('all');
     }
 
-    initialize_active_orders_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+    init_active_orders_content($input_search_market.val(), $input_search_pair.val(), $message_target);
 
 }
-function initialize_order_history_content(market, pair, $message_target) {
+function init_order_history_content(market, pair, $message_target) {
     var $page_selection = $('#page_selection_order_history');
     var $div_contents =  $('#order_history_content');
 
@@ -1268,6 +1298,7 @@ function initialize_order_history_content(market, pair, $message_target) {
             first: '先頭',
             last: '最後',
             onPageClick: function (event, page) {
+                $div_contents.empty();
                 var $outer = $('<div>', { class: 'row' });
                 var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
             
@@ -1284,13 +1315,14 @@ function initialize_order_history_content(market, pair, $message_target) {
                         $inner
                         .append($('<div>',{
                             class: 'order_container'
-                        }).append(build_history_order_card(order.pk, MARKETS['bitbank'], hyphen_if_null(order.order_id), PAIRS[order.pair], ORDER_TYPES[order.order_type],SELL_BUY[order.side],hyphen_if_null(order.price),hyphen_if_null(order.price_for_stop),order.start_amount,hyphen_if_null(order.executed_amount),hyphen_if_null(order.average_price),STATUS[order.status],return_formatted_datetime(order.ordered_at), order.error_message, return_formatted_datetime(order.updated_at * 1000))))
+                        }).append(build_history_order_card(order.pk, 'bitbank', order.order_id, order.pair, order.order_type, order.side, order.price, order.price_for_stop, order.start_amount, order.executed_amount, order.average_price, order.status, order.ordered_at, order.error_message, order.updated_at)))
                         .append($('<hr>'));
                     });
                     // 1件もない場合
                     if (is_empty) {
-                        $inner
-                        content_html = '取引はありません';
+                        $inner.append($('<p>', {
+                            text: '取引はありません'
+                        }));
                     }
                     $div_contents.append($outer.append($inner));
                 })
@@ -1307,10 +1339,10 @@ function initialize_order_history_content(market, pair, $message_target) {
         if (data.status == 401) {
             window.location.href = BASE_URL_LOGIN;
         }
-        set_error_message(message_target, xhr);
+        set_error_message($message_target, xhr);
     });
 }
-function initialize_order_history_tab(is_initial = false) {
+function init_order_history_tab(is_initial = false) {
     var $message_target = $('#id_ajax_message');
     var $input_search_pair = $('#id_order_history_search_pair');
     var $input_search_market = $('#id_order_history_search_market');
@@ -1323,7 +1355,7 @@ function initialize_order_history_tab(is_initial = false) {
             text: '全て'
         }))
         .on('change', function() {
-            initialize_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+            init_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
         });
 
         Object.keys(MARKETS).forEach(market => {
@@ -1341,7 +1373,7 @@ function initialize_order_history_tab(is_initial = false) {
         }))
         .on('change', function() {
             $.cookie(COOKIE_SEARCH_PAIR_ORDER_HISTORY, $(this).val(), {expire: 7});
-            initialize_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+            init_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
         });
 
         Object.keys(PAIRS).forEach(pair => {
@@ -1362,12 +1394,12 @@ function initialize_order_history_tab(is_initial = false) {
     } else {
         $input_search_pair.val('all');
     }
-    initialize_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+    init_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
 }
 
 function build_alert_card(pk, market, pair, rate) {
     var $outer_container = $('<div>', { class: 'order_container' });
-    var $inner_container = $('<div>', { class: 'order_order_history_body' });
+    var $inner_container = $('<div>', { class: 'order_history_body' });
     var $row_1 = $('<div>', {
         class: 'row'
     }).append($('<div>', {
@@ -1400,14 +1432,15 @@ function build_alert_card(pk, market, pair, rate) {
         pk: pk,
         style: 'font-size:1rem; padding:0.2em!important',
         type: 'button',
-        class: 'btn btn-outline-primary',
-        text: 'CANCEL'
+        class: 'btn btn-outline-secondary',
+        text: 'CANCEL',
+        name: 'deactivate_alert_button'
     }));
     return $outer_container.append($inner_container.append($row_1).append($row_2).append($row_3));    
 
 }
 
-function initialize_alerts_content($message_target) {
+function init_alerts_content($message_target) {
     var $notify_if_filled_on_button = $('#notify_if_filled_on_button');
     var $notify_if_filled_off_button = $('#notify_if_filled_off_button');
     var $use_alert_on_button = $('#id_use_alert_on_button');
@@ -1415,7 +1448,7 @@ function initialize_alerts_content($message_target) {
     var $page_selection = $('#page_selection_alerts');
     var market = $('#id_alerts_market').val();
     var pair = $('#id_alerts_pair').val();
-    var $contaier = $('#alert_container');
+    var $container = $('#alert_container');
 
 
     call_user('GET')
@@ -1463,31 +1496,19 @@ function initialize_alerts_content($message_target) {
             first: '先頭',
             last: '最後',
             onPageClick: function (event, page) {
-                var table_html = '';
+                $container.empty();
                 call_alerts('GET', null, market, pair, COUNT_PER_PAGE * (page - 1), COUNT_PER_PAGE)
                 .done(function(res_2) {
-                    var table_html = '';
                     var $outer = $('<div>', { class: 'row' });
                     var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
 
                     res_2.data.forEach(alert => {
                         
                         $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.threshold)).append($('<hr>'));
-                        // table_html += '<div class="row"><div class="col-md-6 offset-md-3 col-12"><div class="order_container"><div class="order_history_body"><div class="row">';
-                        // table_html += '<div class="col-6 card-table-header">取引通貨</div>';
-                        // table_html += '<div class="col-6 card-table-data">' + PAIRS[active_alert.fields.pair] + '</div>';
-                        // table_html += '</div>';
-                        // table_html += '<div class="row">';
-                        // table_html += '<div class="col-6 card-table-header">通知レート</div>';
-                        // table_html += '<div class="col-6 card-table-data">' + active_alert.fields.threshold + '</div>';
-                        // table_html += '</div>';
-                        // table_html += '<div class="row">';
-                        // table_html += '<button style="font-size:1rem; padding:0.2em!important" pk="' + active_alert.pk + '" type="button" class="btn btn-outline-secondary" name="deactivate_alert_button">CANCEL</button>';
-                        // table_html += '</div>'
-                        // table_html += '</div></div></div></div><hr>';
+                       
                     });
 
-                    $contaier.append($outer.append($inner));
+                    $container.append($outer.append($inner));
 
                     $("button[name='deactivate_alert_button']").on('click', function() {
                         var pk = $(this).attr('pk');
@@ -1527,7 +1548,7 @@ function initialize_alerts_content($message_target) {
         set_error_message($message_target, xhr);
     });
 }
-function initialize_alerts_tab(is_initial = false) {
+function init_alerts_tab(is_initial = false) {
     var $message_target = $('#id_ajax_message');
     var $alert_market = $('#id_alerts_market');
     var $alert_pair = $('#id_alerts_pair');
@@ -1572,7 +1593,7 @@ function initialize_alerts_tab(is_initial = false) {
                 $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_pair);
 
             }
-            initialize_alerts_content($message_target);
+            init_alerts_content($message_target);
         });
 
         $alert_pair.on('change', function() {
@@ -1584,6 +1605,7 @@ function initialize_alerts_tab(is_initial = false) {
                     set_error_message($message_target, data.error);
                     return;
                 }
+                console.log(data.last);
                 $notice_rate.val(data.last);
             })
             .fail((data, textStatus, xhr) => {
@@ -1593,7 +1615,7 @@ function initialize_alerts_tab(is_initial = false) {
                 set_error_message($message_target, xhr);
             });
             $pair_for_alert_class.html(currency);
-            initialize_alerts_content($message_target);
+            init_alerts_content($message_target);
         });
         
         $notify_if_filled_on_button.on('click', function() {
@@ -1603,7 +1625,7 @@ function initialize_alerts_tab(is_initial = false) {
                 call_user('POST', null, null, null, null, 'ON', null)
                 .done(function(res) {
                     if (res.error) {
-                        set_error_message(message_target, res.error);
+                        set_error_message($message_target, res.error);
                         return;
                     }
                     $notify_if_filled_on_button.addClass('on').removeClass('btn-base');
@@ -1687,6 +1709,7 @@ function initialize_alerts_tab(is_initial = false) {
 
 
         $add_button.on('click', function() {
+        
             var threshold = $notice_rate.val();
             var market = $alert_market.val();
             var pair = $alert_pair.val();
@@ -1700,7 +1723,7 @@ function initialize_alerts_tab(is_initial = false) {
             call_ticker('GET', market, pair)
             .done(function(res) {
                 if (res.error) {
-                    set_error_message($('#id_ajax_messsage'), res.error)
+                    set_error_message($message_target, res.error)
                     return;
                 }
                 if (parseFloat(threshold) >= parseFloat(res.buy)) {
@@ -1708,11 +1731,12 @@ function initialize_alerts_tab(is_initial = false) {
                 } else {
                     over_or_under = '以下';
                 }
-                call_alerts('POST', null, pair, null, null, threshold, over_or_under)
+                call_alerts('POST', null, market, pair, null, null, threshold, over_or_under)
                 .done(function(res) {
                     
                     if (res.error) {
-                        set_error_message($('#id_ajax_messsage'), res.error)
+                        console.log(res.error);
+                        set_error_message($message_target, res.error)
                         return;
                     }
                     set_success_message($message_target, 'アラートを追加しました');
@@ -1739,10 +1763,10 @@ function initialize_alerts_tab(is_initial = false) {
         } else {
             $alert_pair.val(Object.keys(PAIRS)[0]).trigger('change');
         }
-
     }
+    init_alerts_content($message_target);
 }
-function initialize_asset_tab(is_initial = false) {
+function init_asset_tab(is_initial = false) {
     var market = 'bitbank';
     var $message_target = $('#id_ajax_message');
     call_assets('GET', market)
@@ -1762,6 +1786,7 @@ function initialize_asset_tab(is_initial = false) {
                         }
                         call_ticker('GET', market, 'btc_jpy')
                         .done(function(res2) {
+                            console.log('in side initialize asset')
                             total_asset_in_jpy += parseInt(res.buy) * parseInt(res2.buy) * asset.onhand_amount;
                             $('#total_in_jpy').html(parseInt(total_asset_in_jpy));
                         })
@@ -1813,8 +1838,8 @@ function initialize_asset_tab(is_initial = false) {
         set_error_message($message_target, xhr);
     });
 }
-function initialize_user_info_tab(is_initial = false) {
-    var$message_target = $('#id_ajax_message');
+function init_user_info_tab(is_initial = false) {
+    var $message_target = $('#id_ajax_message');
     call_user('GET')
     .done(function(data) {
         if (data.error) {
@@ -1853,6 +1878,7 @@ function initialize_user_info_tab(is_initial = false) {
             call_user('POST', full_name, api_key, api_secret_key, email_for_notice)
             .done(function(res) {
                 if (res.error) {
+                    console.log(res.error);
                     set_error_message($message_target, res.error);
                     return;
                 }
@@ -1901,7 +1927,7 @@ function validate_contact_info($message_target) {
 
 
 
-function initialize_contact_tab(is_initial = false) {
+function init_contact_tab(is_initial = false) {
     var attachment_pk_list = [];
     var $message_target = $('#id_contact_message');
     call_user('GET')
@@ -2065,25 +2091,25 @@ function openTab(evt, tab_id) {
     $.cookie(COOKIE_LAST_VISITED_TAB, tab_id, {expire: 7});
     switch( tab_id ) {
         case 'order':
-            initialize_order_tab(false);
+            init_order_tab(false);
             break;
         case 'active_orders':
-            initialize_active_orders_tab(false);
+            init_active_orders_tab(false);
             break;
         case 'order_history':
-            initialize_order_history_tab(false);
+            init_order_history_tab(false);
             break;
         case 'alerts':
-            initialize_alerts_tab(false);
+            init_alerts_tab(false);
             break;
         case 'assets':
-            initialize_asset_tab(false);
+            init_asset_tab(false);
             break;
         case 'user_info':
-            initialize_user_info_tab(false);
+            init_user_info_tab(false);
             break;
         case 'contact':
-            initialize_contact_tab(false);
+            init_contact_tab(false);
             break;
     }
 
