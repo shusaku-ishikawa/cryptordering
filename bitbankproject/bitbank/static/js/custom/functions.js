@@ -33,17 +33,18 @@ function call_ticker(method, market, pair, is_async = true) {
     });
 }
 
-function call_user(method, full_name  = null, api_key = null, api_secret_key = null, email_for_notice = null, notify_if_filled = null, use_alert = null) {
+function call_user(method, full_name  = null, bb_api_key = null, bb_api_secret_key = null, cc_api_key = null, cc_api_secret_key = null, email_for_notice = null, notify_if_filled = null, use_alert = null) {
     return $.ajax({
         url: BASE_URL_USER,
         type: (method == 'GET') ? 'GET':'POST' ,
-        
         dataType: 'json',
         data: {
             method: method,
             full_name: full_name,
-            api_key: api_key,
-            api_secret_key: api_secret_key,
+            bb_api_key: bb_api_key,
+            bb_api_secret_key: bb_api_secret_key,
+            cc_api_key: cc_api_key,
+            cc_api_secret_key: cc_api_secret_key,
             email_for_notice: email_for_notice,
             notify_if_filled: notify_if_filled,
             use_alert: use_alert
@@ -133,13 +134,13 @@ function isNumberKey(evt){
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
 }
 
-function init_free_amount_json() {
+function init_free_amount_json($message_target) {
     Object.keys(MARKETS).forEach(market => {
         if (market == 'bitbank') {
             call_assets('GET', market)
             .done(function(res) {
                 if (res.error) {
-                    set_error_message($('#id_ajax_message'), res.error);
+                    set_error_message($message_target, res.error);
                     return;
                 }
                 res.assets.forEach(asset => {
@@ -150,35 +151,46 @@ function init_free_amount_json() {
                 if (data.status == 401) {
                     window.location.href = BASE_URL_LOGIN;
                 }
-                set_error_message($('#id_ajax_message'), xhr);
+                alert('init free failed');
+                set_error_message($message_target, xhr);
             });
         }
         
     });
 }
 
-function init_ticker_json() {
-    var $message_target = $('#id_ajax_message');
-
-    Object.keys(MARKETS).forEach(market => {
-        Object.keys(PAIRS).forEach(pair => {
-            console.log('inside init ticker json');
-            call_ticker('GET', market, pair)
-            .done(function (res) {
-                if (res.error) {
-                    set_error_message($message_target ,200 , res.error);
-                    return;
-                }
-                market_price_json[market][pair] = res;              
-            })
-            .fail(function(data, textStatus, xhr) {
-                if (data.status == 401) {
-                    window.location.href = BASE_URL_LOGIN;
-                }
-                set_error_message($message_target, xhr);
-            });
+function init_ticker_json($message_target) {
+    
+    Object.keys(PAIRS).forEach(pair => {
+        call_ticker('GET', 'bitbank', pair)
+        .done(function (res) {
+            if (res.error) {
+                set_error_message($message_target , res.error);
+                return;
+            }
+            market_price_json['bitbank'][pair] = res;              
+        })
+        .fail(function(data, textStatus, xhr) {
+            if (data.status == 401) {
+                window.location.href = BASE_URL_LOGIN;
+            }
+            set_error_message($message_target, xhr);
         });
-    });   
+    });
+    call_ticker('GET', 'coincheck', 'btc_jpy')
+    .done(function (res) {
+        if (res.error) {
+            set_error_message($message_target , res.error);
+            return;
+        }
+        market_price_json['coincheck']['btc_jpy'] = res;              
+    })
+    .fail(function(data, textStatus, xhr) {
+        if (data.status == 401) {
+            window.location.href = BASE_URL_LOGIN;
+        }
+        set_error_message($message_target, xhr);
+    });
 }
 
 function return_formatted_datetime(unixtime, date_only=false) {
@@ -243,9 +255,10 @@ function update_amount_by_slider(tab_num) {
     var currency = (side == 'sell') ? pair.split('_')[0] : pair.split('_')[1];
     if (parseInt(newVal) != 0) {
         var free_amount = free_amount_json[market][currency];
-        var price = (order_type.match(/limit/)) ? ($('#id_price_' + tab_num).val() != '') ? parseFloat($('#id_price_' + tab_num).val()) : 0 : parseFloat(market_price_json[market][pair][side]);
+        var price = (order_type.match(/limit/)) ? ($('#id_price_' + tab_num).val() != '') ? parseFloat($('#id_price_' + tab_num).val()) : 0 : market_price_json[market][pair][side];
         var floored = (side == 'sell') ? Math.floor((free_amount * newVal / 100) * 10000) / 10000 : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * 10000) / 10000 : 0;
         $('#id_start_amount_' + tab_num).val(floored).trigger('calculate');
+
     } else {
         $('#id_start_amount_' + tab_num).val(0).trigger('calculate');
     }
@@ -321,8 +334,9 @@ function calculate_expect_price(tab_num) {
         }
     }
 }
-function create_order_json(pair, side, order_type, price, price_for_stop, trail_width, start_amount) {
+function create_order_json(market, pair, side, order_type, price, price_for_stop, trail_width, start_amount) {
     var order_info = new Object();
+    order_info.market = market
     order_info.pair = pair;
     order_info.side = side;
     order_info.order_type = order_type;
@@ -332,20 +346,20 @@ function create_order_json(pair, side, order_type, price, price_for_stop, trail_
     order_info.start_amount = start_amount;
     return JSON.stringify(order_info);
 }
-function _order(market, pair, special_order, order_1, order_2, order_3,  message_target) {
+function _order(market, pair, special_order, order_1, order_2, order_3,  $message_target) {
     call_orders('POST', market, pair, null, null, null, null, special_order, order_1, order_2, order_3)
     .done(function(res) {
         if (res.error) {
-            set_error_message(message_target, res.error);
+            set_error_message($message_target, res.error);
             return;
         }
-        set_success_message(message_target, '注文が完了しました');
+        set_success_message($message_target, '注文が完了しました');
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
             window.location.href = BASE_URL_LOGIN;
         }
-        set_error_message(message_target, xhr);
+        set_error_message($message_target, xhr);
     });
 }
 function get_confirmation(order_name) {
@@ -430,7 +444,8 @@ function set_slidevalue(tab_num, new_val, trigger_input_event=true) {
     $('#amount_percentage_' + tab_num).html(new_val + '%');
 }
 
-function set_default_price(tab_num, market, pair, $message_target) {
+function set_default_price(tab_num, market, pair, $message_target, called_at = null) {
+    console.log(called_at);
     call_ticker('GET', market, pair)
     .done(function(res) {
         console.log('inside set default price');
@@ -465,12 +480,13 @@ function reset_input_all() {
     var market = $('#id_market').val();
     var pair = $('#id_pair').val();
 
-    $input.val(null);
-    for (let i = 0; i < 4; i ++) {
+    //$input.val(null);
+
+    for (let i = 1; i < 4; i++) {
         set_slidevalue(i, 0, false);
         $('#id_side_' + i).val(Object.keys(SELL_BUY)[1]).trigger('value_change');
         $('#id_order_type_' + i).val(Object.keys(ORDER_TYPES)[1]).trigger('change');
-        //set_default_price(i, market, pair, $message_target);
+        //set_default_price(i, market, pair, $message_target, 'reset_all');
     }
 }
 
@@ -478,8 +494,8 @@ function reset_input_all() {
 function init_order_tab(is_initial = false) {
     var $order_result_message_target = $('#id_order_result_message');
     var $ajax_message_target = $('#id_ajax_message');
-    init_ticker_json();
-    init_free_amount_json();
+    init_ticker_json($ajax_message_target);
+    init_free_amount_json($ajax_message_target);
 
     for (let i = 1; i < 4; i ++) {
         if ($('#id_side_' + i).val() == 'sell') {
@@ -585,8 +601,7 @@ function init_order_tab(is_initial = false) {
         $input_special_order
         .on('change', function() {
             $.cookie(COOKIE_SPECIAL_ORDER, $(this).val(), { expires: 7 });
-            reset_input_all();    
-            
+               
             $slick
             .slick('slickUnfilter')
             .slick('slickFilter', function(index){
@@ -613,7 +628,7 @@ function init_order_tab(is_initial = false) {
             });
 
             $slick.slick('slickGoTo', 0);
-            
+            reset_input_all(); 
         });
 
         $input_pair.on('change', function() {
@@ -621,7 +636,6 @@ function init_order_tab(is_initial = false) {
 
             reset_input_all();    
             
-
             // 数量、金額の通貨部分を更新
             var unit = $(this).val().split('_')[0].toUpperCase();
             var currency = $(this).val().split('_')[1].toUpperCase();
@@ -633,15 +647,7 @@ function init_order_tab(is_initial = false) {
             $slick.slick('slickGoTo', 0);
         });
         
-        // クッキーにあればデフォルトセット
-        var ck_pair = $.cookie(COOKIE_ORDER_PAIR);
-        if (ck_pair != undefined && Object.keys(PAIRS).indexOf(ck_pair) >= 0) {
-            $input_pair.val(ck_pair).trigger('change');
-        } else {
-            // 無ければ先頭の選択肢をセット
-            $input_pair.val(Object.keys(PAIRS)[0]);
-        }
-        
+
         for (let i = 1; i < 4; i++) {
             
             $('#myRange_' + i).on("input", function () {
@@ -683,7 +689,7 @@ function init_order_tab(is_initial = false) {
                     $('#id_price_placeholder_' + i).html('指値(約定希望価格)');
                 }
                 if (new_order_type != 'market') {
-                    set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target);
+                    set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'order_type_change_' + i);
                 }
                 
                 display_price_div(i, new_order_type);
@@ -693,7 +699,6 @@ function init_order_tab(is_initial = false) {
             .on('value_change', function() {
                 reset_input(i);
                 if ($(this).val() == 'buy') {
-                    
                     $('#sell_button_' + i).removeClass('sell').addClass('btn-base');
                     $('#buy_button_' + i).addClass('buy').removeClass('btn-base');
                     $('#myRange_' + i).addClass('slider_for_buy').removeClass('slider_for_sell');
@@ -705,7 +710,9 @@ function init_order_tab(is_initial = false) {
                     $('#myRange_' + i).addClass('slider_for_sell').removeClass('slider_for_buy');
                     $button_order.removeClass('green_button').addClass('red_button');
                 }
-                //set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target);
+                //console.log('side value change');
+                console.log('before default ' + i);
+                set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'side change_' + i);
             });
             $('#sell_button_' + i).on('click', function() {
                 // 変更があった場合のみ処理
@@ -740,17 +747,28 @@ function init_order_tab(is_initial = false) {
                 }).appendTo($('#id_order_type_' + i));
             });
 
-            $('#id_side_' + i).val(Object.keys(SELL_BUY)[1]).trigger('value_change');
-            $('#id_order_type_' + i).val(Object.keys(ORDER_TYPES)[1]).trigger('change');
-            set_slidevalue(i, 0);
-            display_price_div(i, $('#id_order_type_' + i).val());
+            // $('#id_side_' + i).val(Object.keys(SELL_BUY)[1]).trigger('value_change');
+            // $('#id_order_type_' + i).val(Object.keys(ORDER_TYPES)[1]).trigger('change');
+            //set_slidevalue(i, 0, false);
+            //display_price_div(i, $('#id_order_type_' + i).val());
         }
         
+        $input_market.val(Object.keys(MARKETS)[0]).trigger('value_change');
+        
+        // クッキーにあればデフォルトセット
+        var ck_pair = $.cookie(COOKIE_ORDER_PAIR);
+        if (ck_pair != undefined && Object.keys(PAIRS).indexOf(ck_pair) >= 0) {
+            $input_pair.val(ck_pair).trigger('change');
+        } else {
+            // 無ければ先頭の選択肢をセット
+            $input_pair.val(Object.keys(PAIRS)[0]).trigger('change');
+        }
+                
         var ck_special_order = $.cookie(COOKIE_SPECIAL_ORDER);
         if (ck_special_order != undefined && Object.keys(SPECIAL_ORDERS).indexOf(ck_special_order) >= 0) {
             $input_special_order.val(ck_special_order).trigger('change');
         } else {
-            $input_special_order.val(SPECIAL_ORDERS[Object.keys(SPECIAL_ORDERS)]).trigger('change');
+            $input_special_order.val(SPECIAL_ORDERS[Object.keys(SPECIAL_ORDERS)[0]]).trigger('change');
         }
 
         $button_order.on('click', function(e) {
@@ -783,9 +801,9 @@ function init_order_tab(is_initial = false) {
             var start_amount_2 = $('#id_start_amount_2').val();
             var start_amount_3 = $('#id_start_amount_3').val();
             
-            var order_1 = create_order_json(pair, side_1, order_type_1, price_1, price_for_stop_1, trail_width_1, start_amount_1);
-            var order_2 = create_order_json(pair, side_2, order_type_2, price_2, price_for_stop_2, trail_width_2, start_amount_2);
-            var order_3 = create_order_json(pair, side_3, order_type_3, price_3, price_for_stop_3, trail_width_3, start_amount_3);
+            var order_1 = create_order_json(market, pair, side_1, order_type_1, price_1, price_for_stop_1, trail_width_1, start_amount_1);
+            var order_2 = create_order_json(market, pair, side_2, order_type_2, price_2, price_for_stop_2, trail_width_2, start_amount_2);
+            var order_3 = create_order_json(market, pair, side_3, order_type_3, price_3, price_for_stop_3, trail_width_3, start_amount_3);
         
             switch ($input_special_order.val()) {
                 case 'SINGLE':
@@ -802,10 +820,7 @@ function init_order_tab(is_initial = false) {
                     break;
             }
         });  
-        $input_market.val(Object.keys(MARKETS)[0]).trigger('value_change');
-        $input_special_order.val(Object.keys(SPECIAL_ORDERS)[0]).trigger('change');
     }
-    
 }
 function build_order_card_header(market, pair, special_order) {
     var row_1 = $('<div>', { 
@@ -1162,13 +1177,16 @@ function init_active_orders_content(market, pair, $message_target) {
                         );
 
                         if (o.order_1) {
+                            console.log(o.order_1.order_id + ':' + o.order_1.status);
                             $container.append(build_active_order_card(o.special_order == 'SINGLE', 'order_1', o.order_1.pk, o.order_1.order_id, o.order_1.order_type, o.order_1.side, o.order_1.price, o.order_1.price_for_stop, o.order_1.trail_width, o.order_1.trail_price, o.order_1.start_amount, o.order_1.executed_amount, o.order_1.average_price, o.order_1.status, o.order_1.ordered_at));
                         }
                         if (o.order_2) {
-                            $container.append(build_active_order_card(true, 'order_2', o.order_2.pk, o.order_2.order_id, o.order_2.order_type, o.order_2.side, o.order_2.price, o.order_2.price_for_stop, o.order_1.trail_width, o.order_1.trail_price, o.order_2.start_amount, o.order_2.executed_amount, o.order_2.average_price, o.order_2.status, o.order_2.ordered_at));
+                            console.log(o.order_2.order_id + ':' + o.order_2.status);
+                            $container.append(build_active_order_card(true, 'order_2', o.order_2.pk, o.order_2.order_id, o.order_2.order_type, o.order_2.side, o.order_2.price, o.order_2.price_for_stop, o.order_2.trail_width, o.order_2.trail_price, o.order_2.start_amount, o.order_2.executed_amount, o.order_2.average_price, o.order_2.status, o.order_2.ordered_at));
                         }
                         if (o.order_3) {
-                            $container.append(build_active_order_card(true, 'order_3', o.order_3.pk, o.order_3.order_id, o.order_3.order_type, o.order_3.side, o.order_3.price, o.order_3.price_for_stop, o.order_1.trail_width, o.order_1.trail_price, o.order_3.start_amount, o.order_3.executed_amount, o.order_3.average_price, o.order_3.status, o.order_3.ordered_at));
+                            console.log(o.order_3.order_id + ':' + o.order_3.status);
+                            $container.append(build_active_order_card(true, 'order_3', o.order_3.pk, o.order_3.order_id, o.order_3.order_type, o.order_3.side, o.order_3.price, o.order_3.price_for_stop, o.order_3.trail_width, o.order_3.trail_price, o.order_3.start_amount, o.order_3.executed_amount, o.order_3.average_price, o.order_3.status, o.order_3.ordered_at));
                         }
                         $inner.append($container).append($('<hr>'));
                     });
@@ -1622,9 +1640,11 @@ function init_alerts_tab(is_initial = false) {
             if ($(this).hasClass('on')) {
                 // すでにONの場合は何もしない
             } else {
-                call_user('POST', null, null, null, null, 'ON', null)
+                call_user('POST', null, null, null, null, null, null, 'ON', null)
                 .done(function(res) {
                     if (res.error) {
+                        alert('on button init faile');
+                        console.log(res);
                         set_error_message($message_target, res.error);
                         return;
                     }
@@ -1645,7 +1665,7 @@ function init_alerts_tab(is_initial = false) {
                 // すでにOFFの場合は何もしない
                
             } else {
-                call_user('POST',null, null, null, null, 'OFF', null)
+                call_user('POST',null, null, null, null, null, null, 'OFF', null)
                 .done(function(res) {
                     if (res.error) {
                         set_error_message($message_target, res.error);
@@ -1668,7 +1688,7 @@ function init_alerts_tab(is_initial = false) {
             if ($(this).hasClass('on')) {
                 // すでにONの場合は何もしない
             } else {
-                call_user('POST', null, null, null, null, null, 'ON')
+                call_user('POST', null, null, null, null, null, null, null, 'ON')
                 .done(function(res) {
                     if (res.error) {
                         set_error_message($message_target, res.error);
@@ -1689,7 +1709,7 @@ function init_alerts_tab(is_initial = false) {
             if ($(this).hasClass('off')) {
                 // すでにOFFの場合は何もしない
             } else {
-                call_user('POST',null, null, null, null, null, 'OFF')
+                call_user('POST',null, null, null, null, null, null, null, 'OFF')
                 .done(function(res) {
                     if (res.error) {
                         set_error_message($message_target, res.error);
@@ -1775,7 +1795,6 @@ function init_asset_tab(is_initial = false) {
             var asset_html = "";
             var total_asset_in_jpy = 0;
             response.assets.forEach(asset => {
-                
                 $('#' + asset.asset).html(asset.onhand_amount);
                 if (asset.asset == 'ltc' || asset.asset == 'eth') {
                     call_ticker('GET', market, asset.asset + '_' + 'btc')
@@ -1786,8 +1805,7 @@ function init_asset_tab(is_initial = false) {
                         }
                         call_ticker('GET', market, 'btc_jpy')
                         .done(function(res2) {
-                            console.log('in side initialize asset')
-                            total_asset_in_jpy += parseInt(res.buy) * parseInt(res2.buy) * asset.onhand_amount;
+                            total_asset_in_jpy += parseFloat(res.buy) * parseFloat(res2.buy) * asset.onhand_amount;
                             $('#total_in_jpy').html(parseInt(total_asset_in_jpy));
                         })
                         .fail(function(data, textStatus, xhr) {
@@ -1850,8 +1868,11 @@ function init_user_info_tab(is_initial = false) {
         $('#id_date_joined').html(return_formatted_datetime(Date.parse(data.date_joined), false));
         $('#id_email').html(data.email);
         $('#id_full_name').val(data.full_name);
-        $('#id_api_key').val(data.api_key);
-        $('#id_api_secret_key').val(data.api_secret_key);
+        $('#id_bb_api_key').val(data.bb_api_key);
+        $('#id_bb_api_secret_key').val(data.bb_api_secret_key);
+        $('#id_cc_api_key').val(data.cc_api_key);
+        $('#id_cc_api_secret_key').val(data.cc_api_secret_key);
+        
         $('#id_email_for_notice').val(data.email_for_notice);
     })
     .fail(function(data, textStatus, xhr) {
@@ -1864,18 +1885,21 @@ function init_user_info_tab(is_initial = false) {
     if (is_initial) {
         $('#id_update_user_info_button').on('click', function() {
             var full_name = $('#id_full_name').val();
-            var api_key = $('#id_api_key').val();
-            var api_secret_key = $('#id_api_secret_key').val();
+            var bb_api_key = $('#id_bb_api_key').val();
+            var bb_api_secret_key = $('#id_bb_api_secret_key').val();
+            var cc_api_key = $('#id_cc_api_key').val();
+            var cc_api_secret_key = $('#id_cc_api_secret_key').val();
+            
             var email_for_notice = $('#id_email_for_notice').val();
 
             if(!email_for_notice.match(/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/)){
                 // 不正なメールアドレスの場合
-                set_error_message(message_target, 'メールアドレスの形式が不正です');
+                set_error_message($message_target, 'メールアドレスの形式が不正です');
                 $('#id_email_for_notice').focus();
                 return;
             }
 
-            call_user('POST', full_name, api_key, api_secret_key, email_for_notice)
+            call_user('POST', full_name, bb_api_key, bb_api_secret_key, cc_api_key, cc_api_secret_key, email_for_notice)
             .done(function(res) {
                 if (res.error) {
                     console.log(res.error);

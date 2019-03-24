@@ -17,7 +17,8 @@ from django.db.models import Q
 from datetime import datetime
 import time
 from django.template.loader import get_template
-
+from .coincheck.coincheck import CoinCheck
+import python_bitbankcc
 
 class ASCIIFileSystemStorage(FileSystemStorage):
     """
@@ -32,24 +33,24 @@ class UserManager(BaseUserManager):
 
     use_in_migrations = True
 
-    def _create_user(self, email, password, **extra_fields):
+    def _create_user(self, full_name, email, password, **extra_fields):
         """メールアドレスでの登録を必須にする"""
         if not email:
             raise ValueError('The given email must be set')
         email = self.normalize_email(email)
 
-        user = self.model(email=email, **extra_fields)
+        user = self.model(full_name=full_name, email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, full_name, email, password=None, **extra_fields):
         """is_staff(管理サイトにログインできるか)と、is_superuer(全ての権限)をFalseに"""
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(full_name, email, password, **extra_fields)
 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, full_name, email, password, **extra_fields):
         """スーパーユーザーは、is_staffとis_superuserをTrueに"""
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
@@ -59,7 +60,7 @@ class UserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(full_name, email, password, **extra_fields)
 
 
 
@@ -73,19 +74,25 @@ class User(AbstractBaseUser, PermissionsMixin):
             ('OFF', 'OFF')
     )
     email = models.EmailField(_('登録メールアドレス'), unique=True)
-    email_for_notice = models.EmailField(_('通知用メールアドレス'), blank=True)
-    full_name = models.CharField(_('名前'), max_length=150, blank=True)
-    api_key = models.CharField(_('API KEY'), max_length=255, blank=True)
-    api_secret_key = models.CharField(_('API SECRET KEY'), max_length=255, blank=True)
+    email_for_notice = models.EmailField(_('通知用メールアドレス'), blank=False, default = 'sample@example.com')
+    full_name = models.CharField(_('名前'), max_length=150, blank=False, default = 'no name')
+    bb_api_key = models.CharField(_('BITBANK API KEY'), max_length=255, blank=False, default = 'fake')
+    bb_api_secret_key = models.CharField(_('BITBANK API SECRET KEY'), max_length=255, blank=False, default = 'fake')
+    cc_api_key = models.CharField(_('COINCHECK API KEY'), max_length=255, blank=False, default = 'fake')
+    cc_api_secret_key = models.CharField(_('COINCHECK API SECRET KEY'), max_length=255, blank=False, default = 'fake')
     notify_if_filled = models.CharField(
         verbose_name = _('約定通知'),
         max_length = 10,
+        blank = False,
+        null = False,
         default = 'ON',
         choices = NOTIFY_STR,
     )
     use_alert = models.CharField(
         verbose_name = _('アラートメール通知'),
         max_length = 10,
+        blank = False,  
+        null = False,
         default = 'ON',
         choices = NOTIFY_STR,
     )
@@ -207,7 +214,6 @@ class Order(models.Model):
     market = models.CharField(
         verbose_name = _('取引所'),
         max_length = 50,
-        default = 'bitbank'
     )
    
     pair = models.CharField(
@@ -253,7 +259,10 @@ class Order(models.Model):
     trail_price = models.FloatField(
         verbose_name = 'トレール金額',
         blank = True,
-        null = True
+        null = True,
+        validators = [
+            MinValueValidator(0.0)
+        ]
     )
 
     start_amount = models.FloatField(
@@ -285,7 +294,10 @@ class Order(models.Model):
     average_price = models.FloatField(
         verbose_name = _('約定平均価格'),
         null = True,
-        blank = True
+        blank = True,
+        validators = [
+            MinValueValidator(0.0)
+        ]
     )
 
     status = models.CharField(
@@ -322,57 +334,137 @@ class Order(models.Model):
         auto_now = True,
     )
     
-    def place(self, prv):
-        print('place called')
-        try:
-            ret = prv.order(
-                self.pair, # ペア
-                self.price, # 価格
-                self.start_amount, # 注文枚数
-                self.side, # 注文サイド
-                'market' if self.order_type.find("limit") == -1 else 'limit' # 注文タイプ
+    def place(self):
+        prv_bitbank = python_bitbankcc.private(self.user.bb_api_key, self.user.bb_api_secret_key)
+        prv_coincheck = CoinCheck(self.user.cc_api_key, self.user.cc_api_secret_key)
+        
+        if self.market == 'bitbank':
+            try:
+                ret = prv_bitbank.order(
+                    self.pair, # ペア
+                    self.price, # 価格
+                    self.start_amount, # 注文枚数
+                    self.side, # 注文サイド
+                    'market' if self.order_type.find("limit") == -1 else 'limit' # 注文タイプ
+                )
+                self.remaining_amount = ret.get('remaining_amount')
+                self.executed_amount = ret.get('executed_amount')
+                self.average_price = ret.get('average_price')
+                self.status = ret.get('status')
+                self.ordered_at = ret.get('ordered_at')
+                self.order_id = ret.get('order_id')
+                self.save()
+                return True
+            except Exception as e:
+                self.status = Order.STATUS_FAILED_TO_ORDER
+                self.error_message = str(e.args)
+                self.save()
+                return False
+        elif self.market == 'coincheck':
+            try:
+                ret = prv_coincheck.order.create({
+                    'rate': None if 'limit' not in self.order_type else self.price,
+                    'amount': self.start_amount,
+                    'order_type': self.side if 'limit' in self.order_type else 'market_' + self.side,
+                    'pair': self.pair
+                })
+                if ret.get('success'):
+                    self.order_id = ret.get('id')
+                    self.remaining_amount = ret.get('amount')
+                    self.ordered_at = int(datetime.strptime(ret.get('created_at'), '%Y-%m-%dT%H:%M:%S.%fZ').timestamp() * 1000)
+                    self.status = self.STATUS_UNFILLED
+                    self.save()
+                    return True
+                else:
+                    self.status = self.STATUS_FAILED_TO_ORDER
+                    self.save()
+                    return False
+
+            except Exception as e:
+                self.status = Order.STATUS_FAILED_TO_ORDER
+                self.error_message = str(e.args)
+                self.save()
+                return False
+
+
+    def cancel(self):
+        prv_bitbank = python_bitbankcc.private(self.user.bb_api_key, self.user.bb_api_secret_key)
+        prv_coincheck = CoinCheck(self.user.cc_api_key, self.user.cc_api_secret_key)
+        
+        if self.market == 'bitbank':
+            try:
+                ret = prv_bitbank.cancel_order(
+                    self.pair, # ペア
+                    self.order_id # 注文ID
+                )
+                self.remaining_amount = ret.get('remaining_amount')
+                self.executed_amount = ret.get('executed_amount')
+                self.average_price = ret.get('average_price')
+                self.status = ret.get('status')
+                self.save()
+                return True
+            except:
+                return False
+        elif self.market == 'coincheck':
+            try:
+                ret = prv_coincheck.order.cancel({
+                    'id': self.order_id # 注文ID
+                })
+                if ret.get('success'):
+                    self.status = self.STATUS_CANCELED_UNFILLED
+                    self.save()
+                    return True
+                else:
+                    return False
+            except:
+                return False
+
+    def update(self):
+        prv_bitbank = python_bitbankcc.private(self.user.bb_api_key, self.user.bb_api_secret_key)
+        prv_coincheck = CoinCheck(self.user.cc_api_key, self.user.cc_api_secret_key)
+        
+        if self.market == 'bitbank':
+            ret = prv_bitbank.get_order(
+                self.pair, 
+                self.order_id
             )
             self.remaining_amount = ret.get('remaining_amount')
             self.executed_amount = ret.get('executed_amount')
             self.average_price = ret.get('average_price')
-            self.status = ret.get('status')
-            self.ordered_at = ret.get('ordered_at')
-            self.order_id = ret.get('order_id')
+            status = ret.get('status')
+            self.status = status
             self.save()
-            return True
-        except Exception as e:
-            self.status = Order.STATUS_FAILED_TO_ORDER
-            self.error_message = str(e.args)
-            self.save()
-            return False
+            return status
+        
+        elif self.market == 'coincheck':
+            _open = prv_coincheck.order.open({})
+            _close = prv_coincheck.order.transactions({
+                'limit': 1,
+                'starting_after': self.order_id,
+                'ending_before': self.order_id
+            })
 
-    def cancel(self, prv):
-        try:
-            ret = prv.cancel_order(
-                self.pair, # ペア
-                self.order_id # 注文ID
-            )
-            self.remaining_amount = ret.get('remaining_amount')
-            self.executed_amount = ret.get('executed_amount')
-            self.average_price = ret.get('average_price')
-            self.status = ret.get('status')
-            self.save()
-            return True
-        except:
-            return False
+            if not _open.get('success') or not _close.get('success'):
+                return False
+            
+            is_open = False
+            for oo in _open.get('orders'):
+                if oo.get('id') == self.order_id:
+                    is_open = True
+                    return self.STATUS_UNFILLED
 
-    def update(self, prv):
-        ret = prv.get_order(
-            self.pair, 
-            self.order_id
-        )
-        self.remaining_amount = ret.get('remaining_amount')
-        self.executed_amount = ret.get('executed_amount')
-        self.average_price = ret.get('average_price')
-        status = ret.get('status')
-        self.status = status
-        self.save()
-        return status
+            if not is_open:
+                if len(_close.get('data')) != 0:
+                    # filled
+                    self.status = self.STATUS_FULLY_FILLED
+                    self.executed_amount = self.start_amount
+                    self.remaining_amount = 0
+                    self.average_price = float(_close.get('data')[0].get('rate'))
+                else:
+                    # canceled
+                    self.status = self.STATUS_CANCELED_UNFILLED
+                self.save()
+                return self.STATUS_FULLY_FILLED
 
     def notify_user(self):
         readable_datetime = datetime.fromtimestamp(int(int(self.ordered_at) / 1000))
@@ -484,6 +576,9 @@ class Alert(models.Model):
     threshold = models.FloatField(
         verbose_name = _('通知レート'),
         null = False,
+        validators = [
+            MinValueValidator(0),
+        ]
     )
 
     over_or_under = models.CharField(

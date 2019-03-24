@@ -1,15 +1,15 @@
 from rest_framework import serializers
 from .models import *
 import logging
+from .coincheck.coincheck import CoinCheck
+import python_bitbankcc
+
 
 class UserSerializer(serializers.ModelSerializer):
 
-    use_alert = serializers.CharField(allow_null = True)
-    notify_if_filled = serializers.CharField(allow_null = True)
-
     class Meta:
         model = User
-        fields = ('pk', 'full_name', 'email', 'email_for_notice', 'api_key', 'api_secret_key', 'notify_if_filled', 'use_alert', 'date_joined')
+        fields = ('pk', 'full_name', 'email', 'email_for_notice', 'bb_api_key', 'bb_api_secret_key','cc_api_key', 'cc_api_secret_key', 'notify_if_filled', 'use_alert', 'date_joined')
 
         read_only_fields = ('pk', 'email', 'date_joined')
 
@@ -18,37 +18,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         logger = logging.getLogger('transaction_logger')
+        print('here is update validated data')
         print(validated_data)
         logger.info('update called')
-        full_name = validated_data.pop("full_name")
-        api_key = validated_data.pop("api_key")
-        api_secret_key = validated_data.pop("api_secret_key")
-        email_for_notice = validated_data.pop("email_for_notice")
-        notify_if_filled = validated_data.pop('notify_if_filled')
-        use_alert = validated_data.pop('use_alert')
-
-        try:
-            if full_name != None and full_name != "":
-                logger.info('full name is::' + full_name) 
-                instance.full_name = full_name
-            if api_key != None and api_key != "":
-                instance.api_key = api_key
-            if api_secret_key != None and api_secret_key != "":
-                instance.api_secret_key = api_secret_key
-            if email_for_notice != None and email_for_notice != "":
-                instance.email_for_notice = email_for_notice
-            if notify_if_filled != None and notify_if_filled != "":
-                instance.notify_if_filled = notify_if_filled
-            if use_alert != None and use_alert != "":
-                instance.use_alert = use_alert
-            logger.info('full name = ' + instance.full_name)
-            print('api_key = ' + instance.api_key)
-         
-            instance.save()
-        except Exception as e:
-            logger.info('error: ' + str(e.args))
-        finally:
-            return instance
+        User.objects.filter(pk = instance.pk).update(**validated_data)
+        return instance
 
 
 class AlertSerializer(serializers.ModelSerializer):
@@ -60,17 +34,14 @@ class AlertSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        print(user)
-        market = validated_data.pop('market')
-        pair = validated_data.pop('pair')
-        threshold = validated_data.pop('threshold')
-        over_or_under = validated_data.pop('over_or_under')
 
         try:
-            instance = Alert(user=user, market = market, pair=pair, threshold=threshold, over_or_under=over_or_under, is_active=True, alerted_at=None)
+            instance = Alert(**validated_data)
+            instance.user = user
+            instance.is_active = True
             instance.save()
         except Exception as e:
-            traceback.print_exc()
+            print(str(e.args))
         finally:
             return instance
 
@@ -78,16 +49,66 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('pk', 'market', 'pair', 'side', 'order_type', 'price', 'price_for_stop', 'trail_width', 'trail_price', 'start_amount', 'remaining_amount', 'executed_amount', 'average_price', 'status', 'order_id', 'ordered_at', 'error_message', 'updated_at')
-        read_only_fields = ('pk', 'status', 'remaining_amount', 'executed_amount', 'average_price', 'status', 'order_id', 'ordered_at', 'error_message', 'updated_at')
+        read_only_fields = ('pk', 'status', 'trail_price', 'remaining_amount', 'executed_amount', 'average_price', 'status', 'order_id', 'ordered_at', 'error_message', 'updated_at')
     
-    
+    def create(self, validated_data):
+        user = self.context['request'].user
+        is_ready = self.context['is_ready']
+        try:
+            instance = Order(**validated_data)
+            instance.user = user
+            instance.status = Order.STATUS_READY_TO_ORDER if is_ready else Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
+            
+            if validated_data['order_type'] == Order.TYPE_TRAIL:
+                try:
+                    ret = python_bitbankcc.public().get_ticker(validated_data['pair']) if validated_data['market'] == 'bitbnak' else CoinCheck('fake', 'fake').ticker.all()['last']
+                    instance.trail_price = float(ret['last'])
+                except Exception:
+                    instance.trail_price = 0
+
+            instance.save()
+
+            if instance.order_type in {Order.TYPE_MARKET, Order.TYPE_LIMIT} and is_ready:       
+                instance.place()
+
+            return instance
+        except Exception as e:
+            print(str(e.args))
+            
+    # def validate(self, data):
+    #     print(data)
+    #     market = data['market']
+    #     pair = data['pair']
+    #     order_type = data['order_type']
+    #     amount = float(data['start_amount'])
+    #     price = float(data['price'])
+    #     stop_price = float(data['price_for_stop'])
+    #     trail_width = float(data['trail_width'])
+        
+
+    #     if market not in ('bitbank', 'coincheck'):
+    #         raise serializers.ValidationError("マーケットが不正です")
+    #     if pair == None:
+    #         raise serializers.ValidationError("通貨ペアは必須です")
+    #     if amount == '' or amount == '0':
+    #         raise serializers.ValidationError("注文数量は必須です")
+    #     if order_type in {Order.TYPE_LIMIT, Order.TYPE_STOP_LIMIT} and price == None:
+    #         raise serializers.ValidationError('注文の価格は必須です')
+    #     if order_type in {Order.TYPE_STOP_MARKET, Order.TYPE_STOP_LIMIT} and stop_price == None:
+    #         raise serializers.ValidationError('注文の発動価格は必須です')
+    #     if order_type == Order.TYPE_TRAIL and trail_width == None:
+    #         raise serializers.ValidationError('注文のトレール幅は必須です')
+
+    #     return data
+
 
 class RelationSerializer(serializers.ModelSerializer):
-    # market = serializers.ReadOnlyField()
-    order_1 = OrderSerializer(many = False, read_only = True)
-    order_2 = OrderSerializer(many = False, read_only = True)
-    order_3 = OrderSerializer(many = False, read_only = True)
+    order_1 = OrderSerializer(many = False, required = False)
+    order_2 = OrderSerializer(many = False, required = False)
+    order_3 = OrderSerializer(many = False, required = False)
     
     class Meta:
         model = Relation
         fields = ('pk', 'market', 'pair', 'special_order', 'order_1', 'order_2', 'order_3', 'placed_at', 'is_active')
+        read_only_fields = ('pk', 'placed_at', 'is_active')
+    

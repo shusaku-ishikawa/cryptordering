@@ -23,7 +23,7 @@ class UserCreateForm(UserCreationForm):
     class Meta:
         model = User
         if User.USERNAME_FIELD == 'email':
-            fields = ('email', 'full_name', 'api_key', 'api_secret_key', 'email_for_notice', 'notify_if_filled')
+            fields = ('email', 'full_name', 'bb_api_key', 'bb_api_secret_key','cc_api_key', 'cc_api_secret_key', 'email_for_notice', 'notify_if_filled')
         else:
             fields = ('username', 'email')
 
@@ -43,7 +43,7 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         if User.USERNAME_FIELD == 'email':
-            fields = ('email', 'full_name', 'api_key', 'api_secret_key', 'email_for_notice', 'notify_if_filled')
+            fields = ('email', 'full_name', 'bb_api_key', 'bb_api_secret_key','cc_api_key', 'cc_api_secret_key', 'email_for_notice', 'notify_if_filled')
         else:
             fields = ('username', 'email', 'first_name', 'last_name')
 

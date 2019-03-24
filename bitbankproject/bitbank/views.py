@@ -4,6 +4,7 @@ import os
 import traceback
 
 import python_bitbankcc
+from .coincheck.coincheck import CoinCheck
 from django import forms, http
 from django.conf import settings
 from django.contrib import messages
@@ -33,6 +34,7 @@ from .forms import (LoginForm, MyPasswordChangeForm, MyPasswordResetForm,
 from .models import (Alert, Attachment, Order, Inquiry, Relation,
                      User)
 from .serializer import *
+
 
 # User = get_user_model()
 
@@ -185,6 +187,7 @@ def ajax_user(request):
         return JsonResponse(serizlized)
 
     elif method == 'POST':
+        print(request.POST)
         serializer = UserSerializer(user, data = request.POST)
         if serializer.is_valid():
             serializer.save()
@@ -204,16 +207,19 @@ def ajax_alerts(request):
             offset = int(request.GET.get('offset'))
             to = int(request.GET.get('limit')) + offset
             search_market = request.GET.get('market')
-
             search_pair = request.GET.get('pair')
-            if search_pair == 'all':
-                alerts = Alert.objects.filter(user=user).filter(is_active=True)
-            else:
-                alerts = Alert.objects.filter(user=user).filter(is_active=True).filter(pair=search_pair)
+
+            alerts = Alert.objects.filter(user=user).filter(is_active=True)
+
+            
+            if search_market != 'all':
+                alerts = alerts.filter(market=search_market)
+            if search_pair != 'all':
+                alerts = alerts.filter(pair=search_pair)
                 
             data = {
                 'total_count': alerts.count(),
-                'data': AlertSerializer(alerts[offset:to], many=True ).data
+                'data': AlertSerializer(alerts.order_by('-pk')[offset:to], many=True ).data
             }
         except Exception as e:
             data = {
@@ -233,14 +239,13 @@ def ajax_alerts(request):
                 traceback.print_exc()
                 return JsonResponse({'error': e.args})
         elif op == 'POST':
-            print(request.POST)
             serializer = AlertSerializer(data = request.POST, context={'request': request})
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse({'success': True})
             else:
-                print(request.POST.get('threshold'))
-                return JsonResponse({'error': serializer.errors })
+                
+                return JsonResponse({'error': _get_error_message(serializer.errors, '') })
 def ajax_ticker(request):
     if request.user.is_anonymous or request.user.is_active == False:
         return JsonResponse({'error' : 'authentication failed'}, status=401)
@@ -250,16 +255,15 @@ def ajax_ticker(request):
         pair = request.GET.get('pair')
         
         try:
-            pub = python_bitbankcc.public()
-            res_dict = pub.get_ticker(pair)
-
+            res = python_bitbankcc.public().get_ticker(pair) if market == 'bitbank' else CoinCheck('fake', 'fake').ticker.all()
+            #print(res)
         except Exception as e:
-            res_dict = {
+            res = {
                 'error': e.args
             }
             traceback.print_exc()
 
-        return JsonResponse(res_dict)
+        return JsonResponse(res, safe = False)
 
 def ajax_assets(request):
     if request.user.is_anonymous or request.user.is_active == False:
@@ -268,13 +272,13 @@ def ajax_assets(request):
     if request.method == 'GET':
         user = request.user
 
-        if user.api_key == "" or user.api_secret_key == "":
+        if user.bb_api_key == "" or user.bb_api_secret_key == "":
             res_dict = {
                 'error': 'API KEYが登録されていません'
             }
         else:
             try:
-                res_dict = python_bitbankcc.private(user.api_key, user.api_secret_key).get_asset()
+                res_dict = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key).get_asset()
             except Exception as e:
                 res_dict = {
                     'error': e.args
@@ -283,69 +287,25 @@ def ajax_assets(request):
 
         return JsonResponse(res_dict)
 
-def validate_input(obj):
-    if not obj == None:
-        order_type = obj.get('order_type')
-        amount = obj.get('start_amount')
-        price = obj.get('price')
-        stop_price = obj.get('price_for_stop')
-        trail_width = obj.get('trail_width')
-
-        if amount == '' or amount == '0':
-            return {'error': '注文数量は必須です'}
-        if order_type in {Order.TYPE_LIMIT, Order.TYPE_STOP_LIMIT} and price == None:
-            return {'error': '注文の価格は必須です'}
-        if order_type in {Order.TYPE_STOP_MARKET, Order.TYPE_STOP_LIMIT} and stop_price == None:
-            return {'error': '注文の発動価格は必須です'}
-        if order_type == Order.TYPE_TRAIL and trail_width == None:
-            return {'error': '注文のトレール幅は必須です'}
-
-    return {'success': True}
-
-def create_order(user, order_params, is_ready):
-    print('create order called')
-    prv = python_bitbankcc.private(user.api_key, user.api_secret_key)
-    order = Order()
-    print(user)
-    order.user = user
-    order.pair = order_params.get('pair')
-    order.side = order_params.get('side')
-    order.order_type = order_params.get('order_type')
-    order.price = None if order.order_type.find('limit') == -1 else order_params.get('price')
-    order.price_for_stop = None if order.order_type.find('stop') == -1 else order_params.get('price_for_stop')
-    
-    if order.order_type == Order.TYPE_TRAIL:
-        order.trail_width = order_params.get('trail_width')
-        try:
-            pub = python_bitbankcc.public()
-            ret = pub.get_ticker(order.pair)
-            order.trail_price = float(ret['last'])
-        except Exception:
-            order.trail_price = 0
-    else:
-        order.trail_width = None
-        order.trail_price = None
-        
-    order.trail_width = None if order.order_type != Order.TYPE_TRAIL else order_params.get('trail_width')
-    order.start_amount = order_params.get('start_amount')
-    order.order_id = None
-    if is_ready:
-        order.status = Order.STATUS_READY_TO_ORDER
-    else:
-        order.status = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
-    order.save()
-
-    if order.order_type in {Order.TYPE_MARKET, Order.TYPE_LIMIT} and is_ready:       
-        order.place(prv)
-
-    return order
+def _get_error_message(errors, str_order):
+    _fields = {
+        'pair': '通貨',
+        'market': '取引所',
+        'start_amount': '注文数量',
+        'price': '指値金額',
+        'price_for_stop': '逆指値金額',
+        'trail_width': 'トレール幅',
+        'threshold': '通知レート'
+    }
+    error_key = list(errors.keys())[0]
+    error_val = errors[error_key][0]
+    return str_order + ' ' + _fields[error_key] + ':' + error_val
 
 def ajax_orders(request):
     if request.user.is_anonymous or request.user.is_active == False:
         return JsonResponse({'error' : 'authentication failed'}, status=401)
 
     user = request.user
-    prv = python_bitbankcc.private(user.api_key, user.api_secret_key)
     method = request.method
     if method == 'GET': 
         if request.GET.get('type') == 'active':
@@ -356,7 +316,7 @@ def ajax_orders(request):
             search_pair = request.GET.get('pair')
 
 
-            active_orders = Relation.objects.filter(Q(order_1__user = user) | Q(order_2__user = user) | Q(order_3__user = user)).filter(is_active = True)
+            active_orders = Relation.objects.filter(user = user).filter(is_active = True)
 
             if search_market != "all":
                 active_orders = active_orders.filter(market=search_market)
@@ -392,144 +352,117 @@ def ajax_orders(request):
                 return JsonResponse({'error': e.args})
 
     elif method == 'POST':
-        if user.api_key == "" or user.api_secret_key == "":
-            res = {
-                'error': 'API KEYが登録されていません'
-            }
-            return JsonResponse(res)
         op = request.POST.get('method')
-        
-        
         if op == 'POST':
-
+            
+            market = request.POST.get('market')
             pair = request.POST.get('pair')
             special_order = request.POST.get('special_order')
+
+            relation = Relation()
+            relation.user = user
+            relation.market = market
+            relation.pair = pair
+            relation.special_order = special_order
             
             if special_order == 'SINGLE':
-                params_1 =  json.loads(request.POST.get('order_1'))
-                validate_1 = validate_input(params_1)
-                if 'error' in validate_1:
-                    return JsonResponse(validate_1)
-
-                relation = Relation()
-                relation.user = user
+                o_1_serializer = OrderSerializer(data = json.loads(request.POST.get('order_1')), context = {'request': request, 'is_ready': True})
                 
-                relation.pair = pair
-                relation.special_order = special_order
-                o_1 = create_order(user, params_1, True)
+                if o_1_serializer.is_valid():
+                    o_1 = o_1_serializer.save()
+                else:
+
+                    return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
+
                 if o_1.status == Order.STATUS_FAILED_TO_ORDER:
                     relation = None
                     return JsonResponse({'error': o_1.error_message})
+
                 relation.order_1 = o_1
-                relation.is_active = True
-                relation.save()
-                return JsonResponse({'success': True})
 
             elif special_order == 'IFD':
-                params_1 =  json.loads(request.POST.get('order_1'))
-                params_2 =  json.loads(request.POST.get('order_2'))
-                validate_1 = validate_input(params_1)
-                if 'error' in validate_1:
-                    return JsonResponse(validate_1)
-                validate_2 = validate_input(params_2)
-                if 'error' in validate_2:
-                    return JsonResponse(validate_2)
-                
-                relation = Relation()
-                relation.user = user
-                relation.pair = pair
-                relation.special_order = special_order
-                o_1 = create_order(user, params_1, True)
-                relation.order_1 = o_1
+                o_1_serializer = OrderSerializer(data = json.loads(request.POST.get('order_1')), context = {'request': request, 'is_ready': True})
+                o_2_serializer = OrderSerializer(data = json.loads(request.POST.get('order_2')), context = {'request': request, 'is_ready': False})
+               
+                if not o_1_serializer.is_valid():
+                    return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
+
+                if not o_2_serializer.is_valid():
+                    return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
+
+
+                o_1 = o_1_serializer.save()
+                # 新規が失敗した場合
                 if o_1.status == Order.STATUS_FAILED_TO_ORDER:
-                    return JsonResponse({'error': True})
-                
-
-                o_2 = create_order(user, params_2, False)
+                    relation = None
+                    return JsonResponse({'error': o_1.error_message})
+                o_2 = o_2_serializer.save()
+                relation.order_1 = o_1
                 relation.order_2 = o_2
-                if o_2.status == Order.STATUS_FAILED_TO_ORDER:
-                    o_1.cancel(prv)
-                    return JsonResponse({'error': o_2.error_message})
-
-                relation.is_active = True
-                relation.save()
-
-                return JsonResponse({'success': True})
 
             elif special_order == 'OCO':
-                params_2 =  json.loads(request.POST.get('order_2'))
-                params_3 =  json.loads(request.POST.get('order_3'))
-                validate_2 = validate_input(params_2)
-                if 'error' in validate_2:
-                    return JsonResponse(validate_2)
-                validate_3 = validate_input(params_3)
-                if 'error' in validate_3:
-                    return JsonResponse(validate_3)
+                o_2_serializer = OrderSerializer(data = json.loads(request.POST.get('order_2')), context = {'request': request, 'is_ready': True})
+                o_3_serializer = OrderSerializer(data = json.loads(request.POST.get('order_3')), context = {'request': request, 'is_ready': True})
                 
-                relation = Relation()
-                relation.user = user
-                relation.pair = pair
-                relation.special_order = special_order
-                o_2 = create_order(user, params_2, True)
-                relation.order_2 = o_2
+                if not o_2_serializer.is_valid():
+                    return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
+
+                if not o_3_serializer.is_valid():
+                    return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
+
+
+                o_2 = o_2_serializer.save()
+                o_3 = o_3_serializer.save()
+                
                 if o_2.status == Order.STATUS_FAILED_TO_ORDER:
+                    o_3.cancel()
+                    relation = None
                     return JsonResponse({'error': o_2.error_message})
-                
-                o_3 = create_order(user, params_3, True)
-                relation.order_3 = o_3
                 if o_3.status == Order.STATUS_FAILED_TO_ORDER:
-                    o_2.cancel(prv)
+                    o_2.cancel()
+                    relation = None
                     return JsonResponse({'error': o_3.error_message})
-                relation.is_active = True
-                relation.save()
-                return JsonResponse({'success': True})
+
+                relation.order_2 = o_2
+                relation.order_3 = o_3
+                
             elif special_order == 'IFDOCO':
-                params_1 =  json.loads(request.POST.get('order_1'))
-                params_2 =  json.loads(request.POST.get('order_2'))
-                params_3 =  json.loads(request.POST.get('order_3'))
 
-                validate_1 = validate_input(params_1)
-                if 'error' in validate_1:
-                    return JsonResponse(validate_1)
+                o_1_serializer = OrderSerializer(data = json.loads(request.POST.get('order_1')), context = {'request': request, 'is_ready': True})
+                o_2_serializer = OrderSerializer(data = json.loads(request.POST.get('order_2')), context = {'request': request, 'is_ready': False})
+                o_3_serializer = OrderSerializer(data = json.loads(request.POST.get('order_3')), context = {'request': request, 'is_ready': False})
                 
-                validate_2 = validate_input(params_2)
-                if 'error' in validate_2:
-                    return JsonResponse(validate_2)
-                validate_3 = validate_input(params_3)
-                if 'error' in validate_3:
-                    return JsonResponse(validate_3)
-                
-                relation = Relation()
-                relation.user = user
-                relation.pair = pair
-                relation.special_order = special_order
+                if not o_1_serializer.is_valid():
+                    return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
 
-                o_1 = create_order(user, params_1, True)
-                relation.order_1 = o_1
+                if not o_2_serializer.is_valid():
+                    return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
+                if not o_3_serializer.is_valid():
+                    return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
+
+                o_1 = o_1_serializer.save()
                 if o_1.status == Order.STATUS_FAILED_TO_ORDER:
+                    relation = None
                     return JsonResponse({'error': o_1.error_message})
                 
-                o_2 = create_order(user, params_2, False)
-                relation.order_2 = o_2
-                if o_2.status == Order.STATUS_FAILED_TO_ORDER:
-                    return JsonResponse({'error': o_2.error_message})
-                
-                o_3 = create_order(user, params_3, False)
-                relation.order_3 = o_3
-                if o_3.status == Order.STATUS_FAILED_TO_ORDER:
-                    o_2.cancel(prv)
-                    return JsonResponse({'error': o_3.error_message})
-                relation.is_active = True
-                relation.save()
-                return JsonResponse({'success': True})
+                o_2 = o_2_serializer.save()
+                o_3 = o_3_serializer.save()
 
+                relation.order_1 = o_1
+                relation.order_2 = o_2
+                relation.order_3 = o_3
+                
+            relation.is_active = True
+            relation.save()
+            return JsonResponse({'success': True})
+            
         elif op == 'DELETE':
             pk = request.POST.get("pk")
             
             cancel_succeeded = True
             order = Order.objects.filter(pk = pk).get()
             if order.order_id != None:
-                cancel_succeeded = order.cancel(prv)
+                cancel_succeeded = order.cancel()
             else:
                 # 未発注の場合はステータスをキャンセル済みに変更
                 order.status = 'CANCELED_UNFILLED'

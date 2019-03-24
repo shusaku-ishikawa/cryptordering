@@ -7515,3 +7515,15 @@
 [ERROR]	asctime:2019-03-22 15:03:27,521	module:sync_orders	message:user:ishikawasyuusaku@gmail.com message: ('エラーコード: 40006 内容: count値が不正です',)
 [ERROR]	asctime:2019-03-22 15:03:49,010	module:sync_orders	message:user:ishikawasyuusaku@gmail.com message: ('get_trade_history() takes 3 positional arguments but 4 were given',)
 [ERROR]	asctime:2019-03-22 15:08:30,257	module:sync_orders	message:user:ishikawasyuusaku@gmail.com message: ("name 'ret' is not defined",)
+[INFO]	asctime:2019-03-23 09:45:30,719	module:models	message:notice sent to:ishikawasyuusaku@gmail.com
+[INFO]	asctime:2019-03-23 09:45:31,730	module:models	message:notice sent to:ishikawasyuusaku@gmail.com
+[INFO]	asctime:2019-03-23 09:45:33,080	module:models	message:notice sent to:ishikawasyuusaku@gmail.com
+[INFO]	asctime:2019-03-23 09:56:58,025	module:models	message:notice sent to:ishikawasyuusaku@gmail.com
+[INFO]	asctime:2019-03-23 09:56:58,759	module:models	message:notice sent to:ishikawasyuusaku@gmail.com
+[INFO]	asctime:2019-03-23 10:22:35,943	module:models	message:notice sent to:ishikawasyuusaku@gmail.com
+[INFO]	asctime:2019-03-23 11:36:17,295	module:models	message:notice sent to:ishikawasyuusaku@gmail.com
+[INFO]	asctime:2019-03-23 11:36:19,495	module:models	message:notice sent to:ishikawasyuusaku@gmail.com
+[INFO]	asctime:2019-03-23 20:09:36,694	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-03-23 21:29:20,008	module:monitor_order_status	message:completed
+[INFO]	asctime:2019-03-23 22:56:49,579	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-03-24 20:02:08,945	module:models	message:notice sent to:ishikawasyuusaku@gmail.com

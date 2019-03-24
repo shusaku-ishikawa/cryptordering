@@ -1,0 +1,1 @@
+name = 'coincheck_pachage'

@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 from datetime import datetime
 import time
@@ -15,10 +14,3 @@ from .models import Order, Order, User
 logger = logging.getLogger('batch_logger')
 
 def notify_user(user, order_obj):
-    readable_datetime = datetime.fromtimestamp(int(int(order_obj.ordered_at) / 1000))
-    context = { "user": user, "order": order_obj, 'readable_datetime': readable_datetime }
-    subject = get_template('bitbank/mail_template/fill_notice/subject.txt').render(context)
-    message = get_template('bitbank/mail_template/fill_notice/message.txt').render(context)
-    user.email_user(subject, message)
-    logger.info('notice sent to:' + user.email_for_notice)
-

@@ -24,7 +24,7 @@ class MyUserCreationForm(UserCreationForm):
 class MyUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('full_name', 'remaining_days','email', 'password')}),
-        (_('Personal info'), {'fields': ('api_key', 'api_secret_key', 'notify_if_filled', 'email_for_notice')}),
+        (_('Personal info'), {'fields': ('bb_api_key', 'bb_api_secret_key', 'cc_api_key', 'cc_api_secret_key', 'notify_if_filled', 'email_for_notice')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
