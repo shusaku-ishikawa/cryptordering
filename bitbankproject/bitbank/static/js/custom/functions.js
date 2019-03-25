@@ -579,6 +579,7 @@ function init_order_tab(is_initial = false) {
         $input_market
         .on('value_change', function() {
             $.cookie(COOKIE_ORDER_MARKET, $(this).val(), { expires: 7 });
+            
             reset_input_all();
             if ($(this).val() == 'bitbank') {
                 $bitbank_button.addClass('active');
