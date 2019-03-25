@@ -86,7 +86,7 @@ class UserCreate(generic.CreateView):
 
         user.email_user(subject, message)
         for su in User.objects.filter(is_superuser = True):
-            su.send_mail(subject_for_admin, message_for_admin)
+            su.email_user(subject_for_admin, message_for_admin)
 
         return redirect('bitbank:user_create_done')
 

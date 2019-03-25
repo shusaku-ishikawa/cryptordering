@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     email = models.EmailField(_('登録メールアドレス'), unique=True)
     email_for_notice = models.EmailField(_('通知用メールアドレス'), blank=False, null = False)
-    full_name = models.CharField(_('名前'), max_length=150, blank=False, null = False)
+    full_name = models.CharField(_('名前'), max_length=150, blank=True, null = True)
     bb_api_key = models.CharField(_('bitbank API KEY'), max_length=255, blank=True, null = True)
     bb_api_secret_key = models.CharField(_('bitbank API SECRET KEY'), max_length=255, blank=True, null = True)
     cc_api_key = models.CharField(_('coincheck API KEY'), max_length=255, blank=True, null = True)

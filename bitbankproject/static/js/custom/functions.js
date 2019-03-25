@@ -33,6 +33,27 @@ function call_ticker(method, market, pair, is_async = true) {
     });
 }
 
+function call_notify_if_filled(new_val) {
+    return $.ajax({
+        url: BASE_URL_NOTIFY_IF_FILLED,
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            notify_if_filled: new_val
+        }
+    });
+}
+function call_use_alert(new_val) {
+    return $.ajax({
+        url: BASE_URL_USE_ALERT,
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            use_alert: new_val
+        }
+    });
+}
+
 function call_user(method, full_name  = null, bb_api_key = null, bb_api_secret_key = null, cc_api_key = null, cc_api_secret_key = null, email_for_notice = null, notify_if_filled = null, use_alert = null) {
     return $.ajax({
         url: BASE_URL_USER,
@@ -151,7 +172,24 @@ function init_free_amount_json($message_target) {
                 if (data.status == 401) {
                     window.location.href = BASE_URL_LOGIN;
                 }
-                alert('init free failed');
+                
+                set_error_message($message_target, xhr);
+            });
+        } else {
+            call_assets('GET', market)
+            .done(function(res) {
+                if (res.error) {
+                    set_error_message($message_target, res.error);
+                    return;
+                }
+               
+                free_amount_json[market]['jpy'] = res.jpy;
+            })
+            .fail(function(data, textStatus, xhr) {
+                if (data.status == 401) {
+                    window.location.href = BASE_URL_LOGIN;
+                }
+                
                 set_error_message($message_target, xhr);
             });
         }
@@ -448,11 +486,11 @@ function set_default_price(tab_num, market, pair, $message_target, called_at = n
     console.log(called_at);
     call_ticker('GET', market, pair)
     .done(function(res) {
-        console.log('inside set default price');
         if (res.error) {
             set_error_message($message_target, res.error);
             return;
         }
+        console.log(res);
         var new_order_type = $('#id_order_type_' + tab_num).val();
         if (new_order_type != 'market') {
             $('#id_price_' + tab_num).val(res.last);
@@ -475,12 +513,6 @@ function reset_input(i) {
     set_slidevalue(i, 0, false);
 }
 function reset_input_all() {
-    var $input = $('input[type="number"]');
-    var $message_target = $('#id_ajax_message_target');
-    var market = $('#id_market').val();
-    var pair = $('#id_pair').val();
-
-    //$input.val(null);
 
     for (let i = 1; i < 4; i++) {
         set_slidevalue(i, 0, false);
@@ -557,8 +589,12 @@ function init_order_tab(is_initial = false) {
  
         $input_market
         .on('value_change', function() {
+            $.cookie(COOKIE_ORDER_MARKET, $(this).val(), { expires: 7 });
+            
             reset_input_all();
             if ($(this).val() == 'bitbank') {
+                $('.show_if_coincheck').hide();
+
                 $bitbank_button.addClass('active');
                 $coincheck_button.removeClass('active');
                 $input_pair.empty();
@@ -569,6 +605,7 @@ function init_order_tab(is_initial = false) {
                     }).appendTo($input_pair);
                 });
             } else {
+                $('.show_if_coincheck').show();
                 $bitbank_button.removeClass('active');
                 $coincheck_button.addClass('active');
                 $input_pair.val('btc_jpy');
@@ -576,7 +613,8 @@ function init_order_tab(is_initial = false) {
                 .empty()
                 .append($('<option>', {
                     value: 'btc_jpy',
-                    text: PAIRS['btc_jpy']
+                    text: PAIRS['btc_jpy'],
+                    readonly: true
                 }));
             }
         });
@@ -747,14 +785,17 @@ function init_order_tab(is_initial = false) {
                 }).appendTo($('#id_order_type_' + i));
             });
 
-            // $('#id_side_' + i).val(Object.keys(SELL_BUY)[1]).trigger('value_change');
-            // $('#id_order_type_' + i).val(Object.keys(ORDER_TYPES)[1]).trigger('change');
-            //set_slidevalue(i, 0, false);
-            //display_price_div(i, $('#id_order_type_' + i).val());
         }
         
-        $input_market.val(Object.keys(MARKETS)[0]).trigger('value_change');
-        
+        var ck_market = $.cookie(COOKIE_ORDER_MARKET);
+        if (ck_market != undefined && Object.keys(MARKETS).indexOf(ck_market) >= 0) {
+           // alert(ck_market);
+            $input_market.val(ck_market).trigger('value_change');
+        } else {
+            // 無ければ先頭の選択肢をセット
+            $input_market.val(Object.keys(MARKETS)[0]).trigger('value_change');
+        }
+
         // クッキーにあればデフォルトセット
         var ck_pair = $.cookie(COOKIE_ORDER_PAIR);
         if (ck_pair != undefined && Object.keys(PAIRS).indexOf(ck_pair) >= 0) {
@@ -1640,7 +1681,7 @@ function init_alerts_tab(is_initial = false) {
             if ($(this).hasClass('on')) {
                 // すでにONの場合は何もしない
             } else {
-                call_user('POST', null, null, null, null, null, null, 'ON', null)
+                call_notify_if_filled('ON')
                 .done(function(res) {
                     if (res.error) {
                         alert('on button init faile');
@@ -1665,7 +1706,7 @@ function init_alerts_tab(is_initial = false) {
                 // すでにOFFの場合は何もしない
                
             } else {
-                call_user('POST',null, null, null, null, null, null, 'OFF', null)
+                call_notify_if_filled('OFF')
                 .done(function(res) {
                     if (res.error) {
                         set_error_message($message_target, res.error);
@@ -1688,7 +1729,7 @@ function init_alerts_tab(is_initial = false) {
             if ($(this).hasClass('on')) {
                 // すでにONの場合は何もしない
             } else {
-                call_user('POST', null, null, null, null, null, null, null, 'ON')
+                call_use_alert('ON')
                 .done(function(res) {
                     if (res.error) {
                         set_error_message($message_target, res.error);
@@ -1709,7 +1750,7 @@ function init_alerts_tab(is_initial = false) {
             if ($(this).hasClass('off')) {
                 // すでにOFFの場合は何もしない
             } else {
-                call_user('POST',null, null, null, null, null, null, null, 'OFF')
+                call_use_alert('OFF')
                 .done(function(res) {
                     if (res.error) {
                         set_error_message($message_target, res.error);
@@ -1776,8 +1817,9 @@ function init_alerts_tab(is_initial = false) {
     
     
         $alert_market.val('bitbank');
-        
+
         var ck_alert_pair = $.cookie(COOKIE_ALERT_PAIR);
+        
         if (ck_alert_pair != undefined && Object.keys(PAIRS).indexOf(ck_alert_pair) >= 0) {
             $alert_pair.val(ck_alert_pair).trigger('change');
         } else {
@@ -1787,26 +1829,25 @@ function init_alerts_tab(is_initial = false) {
     init_alerts_content($message_target);
 }
 function init_asset_tab(is_initial = false) {
-    var market = 'bitbank';
     var $message_target = $('#id_ajax_message');
-    call_assets('GET', market)
+    var $total_asset_bb = $('#total_in_jpy_bb');
+    call_assets('GET', 'bitbank')
     .done(response => {
         if (response.assets) {
-            var asset_html = "";
             var total_asset_in_jpy = 0;
             response.assets.forEach(asset => {
-                $('#' + asset.asset).html(asset.onhand_amount);
+                $('#' + asset.asset + '_bb').html(asset.onhand_amount);
                 if (asset.asset == 'ltc' || asset.asset == 'eth') {
-                    call_ticker('GET', market, asset.asset + '_' + 'btc')
+                    call_ticker('GET', 'bitbank', asset.asset + '_' + 'btc')
                     .done(function(res) {
                         if (res.error) {
                             set_error_message($message_target, res.error);
                             return;
                         }
-                        call_ticker('GET', market, 'btc_jpy')
+                        call_ticker('GET', 'bitbank', 'btc_jpy')
                         .done(function(res2) {
                             total_asset_in_jpy += parseFloat(res.buy) * parseFloat(res2.buy) * asset.onhand_amount;
-                            $('#total_in_jpy').html(parseInt(total_asset_in_jpy));
+                            $total_asset_bb.html(parseInt(total_asset_in_jpy));
                         })
                         .fail(function(data, textStatus, xhr) {
                             if (data.status == 401) {
@@ -1822,14 +1863,14 @@ function init_asset_tab(is_initial = false) {
                         set_error_message($message_target, xhr);
                     });
                 } else if (asset.asset != 'jpy') {
-                    call_ticker('GET', market, asset.asset + '_jpy')
+                    call_ticker('GET', 'bitbank', asset.asset + '_jpy')
                     .done(function(res) {
                         if (res.error) {
                             set_error_message($message_target, res.error);
                             return;
                         }
                         total_asset_in_jpy += parseInt(res.buy * asset.onhand_amount);
-                        $('#total_in_jpy').html(parseInt(total_asset_in_jpy));
+                        $total_asset_bb.html(parseInt(total_asset_in_jpy));
                     })
                     .fail(function(data, textStatus, xhr) {
                         if (data.status == 401) {
@@ -1839,7 +1880,7 @@ function init_asset_tab(is_initial = false) {
                     });
                 } else {
                     total_asset_in_jpy += parseInt(asset.onhand_amount);
-                    $('#total_in_jpy').html(parseInt(total_asset_in_jpy));
+                    $total_asset_bb.html(parseInt(total_asset_in_jpy));
                 }
             });
             //$("#asset_table").html(asset_html);
@@ -1855,6 +1896,24 @@ function init_asset_tab(is_initial = false) {
         }
         set_error_message($message_target, xhr);
     });
+    call_assets('GET', 'coincheck')
+    .done(response => {
+        if (!response.success) {
+            set_error_message($message_target, 'coincheck 残高の取得に失敗しました');
+            return;
+        }
+        console.log(response.jpy);
+        $('#jpy_cc').html(response.jpy);
+        $('#btc_cc').html(response.btc);
+        $('#eth_cc').html(response.eth);
+        $('#etc_cc').html(response.etc);
+        $('#lsk_cc').html(response.lsk);
+        $('#fct_cc').html(response.fct);
+        $('#xrp_cc').html(response.xrp);
+        $('#xem_cc').html(response.xem);
+        $('#ltc_cc').html(response.ltc);
+        $('#bcc_cc').html(response.bch);        
+    })
 }
 function init_user_info_tab(is_initial = false) {
     var $message_target = $('#id_ajax_message');
