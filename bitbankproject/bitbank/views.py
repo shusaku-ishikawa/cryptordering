@@ -305,7 +305,7 @@ def ajax_assets(request):
             user = request.user
             market = request.GET.get('market')
             if market == 'bitbank':
-                if user.bb_api_key == "" or user.bb_api_secret_key == "":
+                if user.bb_api_key == None or user.bb_api_secret_key == None:
                     res_dict = {
                         'error': 'bitbankのAPI KEYが登録されていません'
                     }
@@ -313,7 +313,7 @@ def ajax_assets(request):
                     res_dict = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key).get_asset()
                     
             elif market == 'coincheck':
-                if user.cc_api_key == "" or user.cc_api_secret_key == "":
+                if user.cc_api_key == None or user.cc_api_secret_key == None:
                     res_dict = {
                         'error': 'coincheckのAPI KEYが登録されていません'
                     }

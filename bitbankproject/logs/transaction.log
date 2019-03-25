@@ -1030,3 +1030,9 @@
 [INFO]	asctime:2019-03-24 20:02:20,943	module:serializer	message:update called
 [INFO]	asctime:2019-03-24 20:02:21,151	module:serializer	message:update called
 [INFO]	asctime:2019-03-24 20:02:21,185	module:serializer	message:update called
+[INFO]	asctime:2019-03-25 21:49:59,881	module:views	message:('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-25 21:49:59,934	module:views	message:("'NoneType' object has no attribute 'encode'",)
+[INFO]	asctime:2019-03-25 21:50:00,758	module:views	message:('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-25 21:50:00,793	module:views	message:("'NoneType' object has no attribute 'encode'",)
+[INFO]	asctime:2019-03-25 21:50:01,256	module:views	message:('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-25 21:50:01,333	module:views	message:("'NoneType' object has no attribute 'encode'",)
