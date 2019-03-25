@@ -1,5 +1,6 @@
 
 import logging
+import json
 from django import forms
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
@@ -362,12 +363,17 @@ class Order(models.Model):
                 return False
         elif self.market == 'coincheck':
             try:
-                ret = prv_coincheck.order.create({
-                    'rate': None if 'limit' not in self.order_type else self.price,
-                    'amount': self.start_amount,
+                print(self.start_amount)
+                
+                current_rate = float(json.loads(prv_coincheck.ticker.all())['last'])
+
+                ret = json.loads(prv_coincheck.order.create({
+                    'rate': self.price if 'limit' in self.order_type else None,
+                    'amount': self.start_amount if not (self.order_type == 'market' and self.side == 'buy') else None,
+                    'market_buy_amount': current_rate * self.start_amount if (self.order_type == 'market' and self.side == 'buy') else None,
                     'order_type': self.side if 'limit' in self.order_type else 'market_' + self.side,
                     'pair': self.pair
-                })
+                }))
                 if ret.get('success'):
                     self.order_id = ret.get('id')
                     self.remaining_amount = ret.get('amount')
@@ -376,7 +382,9 @@ class Order(models.Model):
                     self.save()
                     return True
                 else:
+                    print(ret)
                     self.status = self.STATUS_FAILED_TO_ORDER
+                    self.error_message = ret.get('error')
                     self.save()
                     return False
 

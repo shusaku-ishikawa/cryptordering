@@ -61,7 +61,7 @@ class OrderSerializer(serializers.ModelSerializer):
             
             if validated_data['order_type'] == Order.TYPE_TRAIL:
                 try:
-                    ret = python_bitbankcc.public().get_ticker(validated_data['pair']) if validated_data['market'] == 'bitbnak' else CoinCheck('fake', 'fake').ticker.all()['last']
+                    ret = python_bitbankcc.public().get_ticker(validated_data['pair']) if validated_data['market'] == 'bitbnak' else json.loads(CoinCheck('fake', 'fake').ticker.all())['last']
                     instance.trail_price = float(ret['last'])
                 except Exception:
                     instance.trail_price = 0
@@ -73,7 +73,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
             return instance
         except Exception as e:
-            print(str(e.args))
+            print('serializer ' + str(e.args))
             
 
 

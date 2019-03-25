@@ -402,14 +402,14 @@ def ajax_orders(request):
             relation.special_order = special_order
             
             if special_order == 'SINGLE':
+                
                 o_1_serializer = OrderSerializer(data = json.loads(request.POST.get('order_1')), context = {'request': request, 'is_ready': True})
                 
                 if o_1_serializer.is_valid():
                     o_1 = o_1_serializer.save()
                 else:
-
                     return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
-
+                
                 if o_1.status == Order.STATUS_FAILED_TO_ORDER:
                     relation = None
                     return JsonResponse({'error': o_1.error_message})

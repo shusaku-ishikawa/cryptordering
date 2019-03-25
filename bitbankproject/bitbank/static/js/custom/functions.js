@@ -4,7 +4,7 @@ var free_amount_json = {
 };
 var market_price_json = {
     'bitbank': {},
-    'coincheck': {}
+    'coincheck': {'btc_jpy':{}}
 };
 
 function call_assets(method, market, is_async = true) {
@@ -221,7 +221,10 @@ function init_ticker_json($message_target) {
             set_error_message($message_target , res.error);
             return;
         }
-        market_price_json['coincheck']['btc_jpy'] = res;              
+        console.log(res);
+        market_price_json['coincheck']['btc_jpy']['buy'] = res.ask;
+        market_price_json['coincheck']['btc_jpy']['sell'] = res.bid;
+                      
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
@@ -293,6 +296,7 @@ function update_amount_by_slider(tab_num) {
     var currency = (side == 'sell') ? pair.split('_')[0] : pair.split('_')[1];
     if (parseInt(newVal) != 0) {
         var free_amount = free_amount_json[market][currency];
+        console.log(market_price_json['coincheck']);
         var price = (order_type.match(/limit/)) ? ($('#id_price_' + tab_num).val() != '') ? parseFloat($('#id_price_' + tab_num).val()) : 0 : market_price_json[market][pair][side];
         var floored = (side == 'sell') ? Math.floor((free_amount * newVal / 100) * 10000) / 10000 : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * 10000) / 10000 : 0;
         $('#id_start_amount_' + tab_num).val(floored).trigger('calculate');
@@ -387,6 +391,7 @@ function create_order_json(market, pair, side, order_type, price, price_for_stop
 function _order(market, pair, special_order, order_1, order_2, order_3,  $message_target) {
     call_orders('POST', market, pair, null, null, null, null, special_order, order_1, order_2, order_3)
     .done(function(res) {
+        console.log(res);
         if (res.error) {
             set_error_message($message_target, res.error);
             return;
