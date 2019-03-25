@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand
 from django.template.loader import get_template
 from datetime import datetime, timedelta
 from ...models import User
+from django.conf import settings
 
 
 # BaseCommandを継承して作成
@@ -28,6 +29,7 @@ class Command(BaseCommand):
             
             context = {
                 'customer': customer,
+                'bankinfo': settings.BANKINFO
             }
 
             if new_remaning_days == alert_if:

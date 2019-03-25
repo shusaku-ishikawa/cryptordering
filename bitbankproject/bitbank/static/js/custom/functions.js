@@ -33,6 +33,27 @@ function call_ticker(method, market, pair, is_async = true) {
     });
 }
 
+function call_notify_if_filled(new_val) {
+    return $.ajax({
+        url: BASE_URL_NOTIFY_IF_FILLED,
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            notify_if_filled: new_val
+        }
+    });
+}
+function call_use_alert(new_val) {
+    return $.ajax({
+        url: BASE_URL_USE_ALERT,
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            use_alert: new_val
+        }
+    });
+}
+
 function call_user(method, full_name  = null, bb_api_key = null, bb_api_secret_key = null, cc_api_key = null, cc_api_secret_key = null, email_for_notice = null, notify_if_filled = null, use_alert = null) {
     return $.ajax({
         url: BASE_URL_USER,
@@ -557,6 +578,7 @@ function init_order_tab(is_initial = false) {
  
         $input_market
         .on('value_change', function() {
+            $.cookie(COOKIE_ORDER_MARKET, $(this).val(), { expires: 7 });
             reset_input_all();
             if ($(this).val() == 'bitbank') {
                 $bitbank_button.addClass('active');
@@ -754,7 +776,14 @@ function init_order_tab(is_initial = false) {
         }
         
         $input_market.val(Object.keys(MARKETS)[0]).trigger('value_change');
-        
+        var ck_market = $.cookie(COOKIE_ORDER_MARKET);
+        if (ck_market != undefined && Object.keys(MARKETS).indexOf(ck_market) >= 0) {
+            $input_market.val(ck_market).trigger('change');
+        } else {
+            // 無ければ先頭の選択肢をセット
+            $input_market.val(Object.keys(MARKETS)[0]).trigger('change');
+        }
+
         // クッキーにあればデフォルトセット
         var ck_pair = $.cookie(COOKIE_ORDER_PAIR);
         if (ck_pair != undefined && Object.keys(PAIRS).indexOf(ck_pair) >= 0) {
@@ -1640,7 +1669,7 @@ function init_alerts_tab(is_initial = false) {
             if ($(this).hasClass('on')) {
                 // すでにONの場合は何もしない
             } else {
-                call_user('POST', null, null, null, null, null, null, 'ON', null)
+                call_notify_if_filled('ON')
                 .done(function(res) {
                     if (res.error) {
                         alert('on button init faile');
@@ -1665,7 +1694,7 @@ function init_alerts_tab(is_initial = false) {
                 // すでにOFFの場合は何もしない
                
             } else {
-                call_user('POST',null, null, null, null, null, null, 'OFF', null)
+                call_notify_if_filled('OFF')
                 .done(function(res) {
                     if (res.error) {
                         set_error_message($message_target, res.error);
@@ -1688,7 +1717,7 @@ function init_alerts_tab(is_initial = false) {
             if ($(this).hasClass('on')) {
                 // すでにONの場合は何もしない
             } else {
-                call_user('POST', null, null, null, null, null, null, null, 'ON')
+                call_use_alert('ON')
                 .done(function(res) {
                     if (res.error) {
                         set_error_message($message_target, res.error);
@@ -1709,7 +1738,7 @@ function init_alerts_tab(is_initial = false) {
             if ($(this).hasClass('off')) {
                 // すでにOFFの場合は何もしない
             } else {
-                call_user('POST',null, null, null, null, null, null, null, 'OFF')
+                call_use_alert('OFF')
                 .done(function(res) {
                     if (res.error) {
                         set_error_message($message_target, res.error);
@@ -1776,8 +1805,9 @@ function init_alerts_tab(is_initial = false) {
     
     
         $alert_market.val('bitbank');
-        
+
         var ck_alert_pair = $.cookie(COOKIE_ALERT_PAIR);
+        
         if (ck_alert_pair != undefined && Object.keys(PAIRS).indexOf(ck_alert_pair) >= 0) {
             $alert_pair.val(ck_alert_pair).trigger('change');
         } else {

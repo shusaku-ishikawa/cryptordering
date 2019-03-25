@@ -74,12 +74,12 @@ class User(AbstractBaseUser, PermissionsMixin):
             ('OFF', 'OFF')
     )
     email = models.EmailField(_('登録メールアドレス'), unique=True)
-    email_for_notice = models.EmailField(_('通知用メールアドレス'), blank=False, default = 'sample@example.com')
-    full_name = models.CharField(_('名前'), max_length=150, blank=False, default = 'no name')
-    bb_api_key = models.CharField(_('BITBANK API KEY'), max_length=255, blank=False, default = 'fake')
-    bb_api_secret_key = models.CharField(_('BITBANK API SECRET KEY'), max_length=255, blank=False, default = 'fake')
-    cc_api_key = models.CharField(_('COINCHECK API KEY'), max_length=255, blank=False, default = 'fake')
-    cc_api_secret_key = models.CharField(_('COINCHECK API SECRET KEY'), max_length=255, blank=False, default = 'fake')
+    email_for_notice = models.EmailField(_('通知用メールアドレス'), blank=False, null = False)
+    full_name = models.CharField(_('名前'), max_length=150, blank=False, null = False)
+    bb_api_key = models.CharField(_('bitbank API KEY'), max_length=255, blank=True, null = True)
+    bb_api_secret_key = models.CharField(_('bitbank API SECRET KEY'), max_length=255, blank=True, null = True)
+    cc_api_key = models.CharField(_('coincheck API KEY'), max_length=255, blank=True, null = True)
+    cc_api_secret_key = models.CharField(_('coincheck API SECRET KEY'), max_length=255, blank=True, null = True)
     notify_if_filled = models.CharField(
         verbose_name = _('約定通知'),
         max_length = 10,

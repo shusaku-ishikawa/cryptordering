@@ -35,9 +35,6 @@ from .models import (Alert, Attachment, Order, Inquiry, Relation,
                      User)
 from .serializer import *
 
-
-# User = get_user_model()
-
 class Login(LoginView):
     """ログインページ"""
     form_class = LoginForm
@@ -53,8 +50,6 @@ class OnlyYouMixin(UserPassesTestMixin):
     def test_func(self):
         user = self.request.user
         return user.pk == self.kwargs['pk'] or user.is_superuser
-
-
 
 class UserCreate(generic.CreateView):
     """ユーザー仮登録"""
@@ -72,20 +67,27 @@ class UserCreate(generic.CreateView):
         # アクティベーションURLの送付
         current_site = get_current_site(self.request)
         domain = current_site.domain
+      
         context = {
             'protocol': self.request.scheme,
             'domain': domain,
             'token': dumps(user.pk),
             'user': user,
+            'bank': settings.BANK,
+            'branch': settings.BRANCH,
+            'type': settings.TYPE,
+            'number': settings.NUMBER
         }
 
-        subject_template = get_template('bitbank/mail_template/create/subject.txt')
-        subject = subject_template.render(context)
-
-        message_template = get_template('bitbank/mail_template/create/message.txt')
-        message = message_template.render(context)
+        subject = get_template('bitbank/mail_template/create/subject.txt').render(context)
+        message = get_template('bitbank/mail_template/create/message.txt').render(context)
+        subject_for_admin =  get_template('bitbank/mail_template/create_to_admin/subject.txt').render(context)
+        message_for_admin = get_template('bitbank/mail_template/create_to_admin/message.txt').render(context)
 
         user.email_user(subject, message)
+        for su in User.objects.filter(is_superuser = True):
+            su.send_mail(subject_for_admin, message_for_admin)
+
         return redirect('bitbank:user_create_done')
 
 
@@ -172,6 +174,34 @@ class MainPage(LoginRequiredMixin, generic.TemplateView):
         context = super(MainPage, self).get_context_data(**kwargs)
         context['notify_if_filled'] = User.objects.filter(pk=self.request.user.pk).get().notify_if_filled
         return context
+
+def change_notify_if_filled(request):
+    if request.user.is_anonymous or request.user.is_active == False:
+        return JsonResponse({'error' : 'authentication failed'}, status=401)
+    
+    user = request.user
+    if request.method == 'POST':
+        try:
+            val = request.POST.get('notify_if_filled')
+            user.notify_if_filled = val
+            user.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'error': str(e.args)})
+
+def change_use_alert(request):
+    if request.user.is_anonymous or request.user.is_active == False:
+        return JsonResponse({'error' : 'authentication failed'}, status=401)
+    
+    user = request.user
+    if request.method == 'POST':
+        try:
+            val = request.POST.get('use_alert')
+            user.use_alert = val
+            user.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'error': str(e.args)})
 
 
 def ajax_user(request):

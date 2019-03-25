@@ -714,6 +714,8 @@
         BASE_URL_ASSETS = '{% url "bitbank:ajax_assets" %}';
         BASE_URL_TICKER = '{% url "bitbank:ajax_ticker" %}';
         BASE_URL_USER = '{% url "bitbank:ajax_user" %}';
+        BASE_URL_NOTIFY_IF_FILLED = '{% url "bitbank:ajax_notify_if_filled" %}';
+        BASE_URL_USE_ALERT = '{% url "bitbank:ajax_use_alert" %}';
         BASE_URL_ORDERS = '{% url "bitbank:ajax_orders" %}';
         BASE_URL_ALERTS = '{% url "bitbank:ajax_alerts" %}';
         BASE_URL_ATTACHMENTS = '{% url "bitbank:ajax_attachment" %}';
@@ -723,6 +725,8 @@
 
 
         COUNT_PER_PAGE = 10;
+
+        COOKIE_ORDER_MARKET = "ck_order_market"
         COOKIE_ORDER_PAIR = "ck_order_pair";
         COOKIE_SPECIAL_ORDER = "ck_special_order";
         COOKIE_ALERT_PAIR = "ck_alert_pair";
