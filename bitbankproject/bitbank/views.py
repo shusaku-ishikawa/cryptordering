@@ -295,28 +295,32 @@ def ajax_ticker(request):
         return JsonResponse(res)
 
 def ajax_assets(request):
+    logger = logging.getLogger('transaction_logger')
+
     if request.user.is_anonymous or request.user.is_active == False:
         return JsonResponse({'error' : 'authentication failed'}, status=401)
 
     if request.method == 'GET':
-        user = request.user
-        market = request.GET.get('market')
-        if market == 'bitbank':
-            if user.bb_api_key == "" or user.bb_api_secret_key == "":
-                res_dict = {
-                    'error': 'bitbankのAPI KEYが登録されていません'
-                }
-            else:
-                res_dict = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key).get_asset()
-                
-        elif market == 'coincheck':
-            if user.cc_api_key == "" or user.cc_api_secret_key == "":
-                res_dict = {
-                    'error': 'coincheckのAPI KEYが登録されていません'
-                }
-            else:
-                res_dict = json.loads(CoinCheck(user.cc_api_key, user.cc_api_secret_key).account.balance({}))
-                
+        try:
+            user = request.user
+            market = request.GET.get('market')
+            if market == 'bitbank':
+                if user.bb_api_key == "" or user.bb_api_secret_key == "":
+                    res_dict = {
+                        'error': 'bitbankのAPI KEYが登録されていません'
+                    }
+                else:
+                    res_dict = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key).get_asset()
+                    
+            elif market == 'coincheck':
+                if user.cc_api_key == "" or user.cc_api_secret_key == "":
+                    res_dict = {
+                        'error': 'coincheckのAPI KEYが登録されていません'
+                    }
+                else:
+                    res_dict = json.loads(CoinCheck(user.cc_api_key, user.cc_api_secret_key).account.balance({}))
+        except Exception as e:
+            logger.info(str(e.args))  
         return JsonResponse(res_dict)
 
 def _get_error_message(errors, str_order):
