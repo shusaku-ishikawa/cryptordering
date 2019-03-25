@@ -75,31 +75,7 @@ class OrderSerializer(serializers.ModelSerializer):
         except Exception as e:
             print(str(e.args))
             
-    # def validate(self, data):
-    #     print(data)
-    #     market = data['market']
-    #     pair = data['pair']
-    #     order_type = data['order_type']
-    #     amount = float(data['start_amount'])
-    #     price = float(data['price'])
-    #     stop_price = float(data['price_for_stop'])
-    #     trail_width = float(data['trail_width'])
-        
 
-    #     if market not in ('bitbank', 'coincheck'):
-    #         raise serializers.ValidationError("マーケットが不正です")
-    #     if pair == None:
-    #         raise serializers.ValidationError("通貨ペアは必須です")
-    #     if amount == '' or amount == '0':
-    #         raise serializers.ValidationError("注文数量は必須です")
-    #     if order_type in {Order.TYPE_LIMIT, Order.TYPE_STOP_LIMIT} and price == None:
-    #         raise serializers.ValidationError('注文の価格は必須です')
-    #     if order_type in {Order.TYPE_STOP_MARKET, Order.TYPE_STOP_LIMIT} and stop_price == None:
-    #         raise serializers.ValidationError('注文の発動価格は必須です')
-    #     if order_type == Order.TYPE_TRAIL and trail_width == None:
-    #         raise serializers.ValidationError('注文のトレール幅は必須です')
-
-    #     return data
 
 
 class RelationSerializer(serializers.ModelSerializer):

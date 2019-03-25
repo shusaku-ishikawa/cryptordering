@@ -30,7 +30,6 @@ class UserCreateForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.required = True
             field.widget.attrs['class'] = 'form-control'
             if field.label == '名前':
                 field.widget.attrs['placeholder'] = '名前（本名）'

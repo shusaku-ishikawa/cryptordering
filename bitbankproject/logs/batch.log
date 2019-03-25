@@ -7533,3 +7533,5 @@
 [INFO]	asctime:2019-03-24 20:15:00,510	module:monitor_ticker	message:completed
 [INFO]	asctime:2019-03-24 20:16:00,082	module:monitor_ticker	message:completed
 [INFO]	asctime:2019-03-24 20:16:00,181	module:monitor_order_status	message:completed
+[INFO]	asctime:2019-03-25 20:01:14,646	module:models	message:notice sent to:ishikawasyuusaku@gmail.com
+[INFO]	asctime:2019-03-25 20:02:09,981	module:monitor_order_status	message:completed

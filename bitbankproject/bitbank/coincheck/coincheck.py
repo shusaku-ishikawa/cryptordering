@@ -22,6 +22,7 @@ class CoinCheck:
         self.secretKey = secretKey
         
         sys.path.append(dirname(realpath(__file__)) + '/..')
+        
         if (self.DEBUG):
             logging.basicConfig()
             self.logger = logging.getLogger('CoinCheck')
