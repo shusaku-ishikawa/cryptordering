@@ -560,24 +560,13 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-md-6 offset-md-3 col-12">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text placeholder">検索通貨</div>
-                </div>
-                <select id="id_alerts_pair" class="form-control"></select>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="input-group">
-                
                 <div class="input-group-prepend">
-                    <div class="input-group-text placeholder">通知レート</div>
+                    <select class="form-control" id="id_alerts_pair" style="padding-right: 1.5em !important;padding-left:0em!important">
+                    </select>
                 </div>
-                <input type="number" id="id_notice_rate" class="form-control" min="0">
+                <input type="number" id="id_notice_rate" placeholdder="レート" class="form-control" min="0">
                 <div class="input-group-append">
                     <div class="input-group-text placeholder pair_for_alert">JPY</div>
                 </div>
@@ -588,7 +577,29 @@
         </div>
     </div>
     <hr>
-    
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">検索取引所</div>
+                </div>
+                <select id="id_alerts_search_market" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">検索通貨</div>
+                </div>
+                <select id="id_alerts_search_pair" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+
     <div id="alert_container">
         
     </div> 
