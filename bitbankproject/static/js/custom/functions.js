@@ -4,7 +4,7 @@ var free_amount_json = {
 };
 var market_price_json = {
     'bitbank': {},
-    'coincheck': {}
+    'coincheck': {'btc_jpy':{}}
 };
 
 function call_assets(method, market, is_async = true) {
@@ -94,7 +94,7 @@ function call_orders(method, market, pair, offset = null, limit = null, type = n
     });
 }
 
-function call_alerts(method, pk, market, pair, offset, limit, threshold, over_or_under) {
+function call_alerts(method, pk, market, pair, offset, limit, rate) {
     return $.ajax({
         url: BASE_URL_ALERTS,
         type: (method == 'GET') ? 'GET' : 'POST',
@@ -106,8 +106,7 @@ function call_alerts(method, pk, market, pair, offset, limit, threshold, over_or
             pair: pair,
             offset: offset,
             limit: limit,
-            threshold: threshold,
-            over_or_under: over_or_under
+            rate: rate,
         }
     });
 }
@@ -179,6 +178,7 @@ function init_free_amount_json($message_target) {
             call_assets('GET', market)
             .done(function(res) {
                 if (res.error) {
+                    console.log(res);
                     set_error_message($message_target, res.error);
                     return;
                 }
@@ -218,10 +218,14 @@ function init_ticker_json($message_target) {
     call_ticker('GET', 'coincheck', 'btc_jpy')
     .done(function (res) {
         if (res.error) {
+            console.log(res);
             set_error_message($message_target , res.error);
             return;
         }
-        market_price_json['coincheck']['btc_jpy'] = res;              
+        //console.log(res);
+        market_price_json['coincheck']['btc_jpy']['buy'] = res.ask;
+        market_price_json['coincheck']['btc_jpy']['sell'] = res.bid;
+                      
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {
@@ -293,6 +297,7 @@ function update_amount_by_slider(tab_num) {
     var currency = (side == 'sell') ? pair.split('_')[0] : pair.split('_')[1];
     if (parseInt(newVal) != 0) {
         var free_amount = free_amount_json[market][currency];
+        //console.log(market_price_json['coincheck']);
         var price = (order_type.match(/limit/)) ? ($('#id_price_' + tab_num).val() != '') ? parseFloat($('#id_price_' + tab_num).val()) : 0 : market_price_json[market][pair][side];
         var floored = (side == 'sell') ? Math.floor((free_amount * newVal / 100) * 10000) / 10000 : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * 10000) / 10000 : 0;
         $('#id_start_amount_' + tab_num).val(floored).trigger('calculate');
@@ -387,6 +392,7 @@ function create_order_json(market, pair, side, order_type, price, price_for_stop
 function _order(market, pair, special_order, order_1, order_2, order_3,  $message_target) {
     call_orders('POST', market, pair, null, null, null, null, special_order, order_1, order_2, order_3)
     .done(function(res) {
+        //console.log(res);
         if (res.error) {
             set_error_message($message_target, res.error);
             return;
@@ -483,14 +489,14 @@ function set_slidevalue(tab_num, new_val, trigger_input_event=true) {
 }
 
 function set_default_price(tab_num, market, pair, $message_target, called_at = null) {
-    console.log(called_at);
+    //console.log(called_at);
     call_ticker('GET', market, pair)
     .done(function(res) {
         if (res.error) {
             set_error_message($message_target, res.error);
             return;
         }
-        console.log(res);
+        //consoleconsole.log(res);
         var new_order_type = $('#id_order_type_' + tab_num).val();
         if (new_order_type != 'market') {
             $('#id_price_' + tab_num).val(res.last);
@@ -748,8 +754,7 @@ function init_order_tab(is_initial = false) {
                     $('#myRange_' + i).addClass('slider_for_sell').removeClass('slider_for_buy');
                     $button_order.removeClass('green_button').addClass('red_button');
                 }
-                //console.log('side value change');
-                console.log('before default ' + i);
+              
                 set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'side change_' + i);
             });
             $('#sell_button_' + i).on('click', function() {
@@ -1153,7 +1158,7 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
     }).append($row_1, $row_2, $row_3, $row_4, $row_5, $row_6, $row_7);
 
     if (error_message != null && error_message != "") {
-        console.log('error: ' + error_message);
+       // console.log('error: ' + error_message);
         var $row_8 = $('<div>', {
             class: 'row'
         }).append($('<div>', {
@@ -1169,7 +1174,7 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
             class: 'col-md-8 col-8 card-table-data',
             text: return_formatted_datetime(failed_at * 1000)
         }))
-        console.log($row_8);
+        //console.log($row_8);
         $container.append($row_8).append($row_9);
     }
     return $container;
@@ -1218,15 +1223,15 @@ function init_active_orders_content(market, pair, $message_target) {
                         );
 
                         if (o.order_1) {
-                            console.log(o.order_1.order_id + ':' + o.order_1.status);
+                            //console.log(o.order_1.order_id + ':' + o.order_1.status);
                             $container.append(build_active_order_card(o.special_order == 'SINGLE', 'order_1', o.order_1.pk, o.order_1.order_id, o.order_1.order_type, o.order_1.side, o.order_1.price, o.order_1.price_for_stop, o.order_1.trail_width, o.order_1.trail_price, o.order_1.start_amount, o.order_1.executed_amount, o.order_1.average_price, o.order_1.status, o.order_1.ordered_at));
                         }
                         if (o.order_2) {
-                            console.log(o.order_2.order_id + ':' + o.order_2.status);
+                            //console.log(o.order_2.order_id + ':' + o.order_2.status);
                             $container.append(build_active_order_card(true, 'order_2', o.order_2.pk, o.order_2.order_id, o.order_2.order_type, o.order_2.side, o.order_2.price, o.order_2.price_for_stop, o.order_2.trail_width, o.order_2.trail_price, o.order_2.start_amount, o.order_2.executed_amount, o.order_2.average_price, o.order_2.status, o.order_2.ordered_at));
                         }
                         if (o.order_3) {
-                            console.log(o.order_3.order_id + ':' + o.order_3.status);
+                            //console.log(o.order_3.order_id + ':' + o.order_3.status);
                             $container.append(build_active_order_card(true, 'order_3', o.order_3.pk, o.order_3.order_id, o.order_3.order_type, o.order_3.side, o.order_3.price, o.order_3.price_for_stop, o.order_3.trail_width, o.order_3.trail_price, o.order_3.start_amount, o.order_3.executed_amount, o.order_3.average_price, o.order_3.status, o.order_3.ordered_at));
                         }
                         $inner.append($container).append($('<hr>'));
@@ -1499,14 +1504,12 @@ function build_alert_card(pk, market, pair, rate) {
 
 }
 
-function init_alerts_content($message_target) {
+function init_alerts_content(market, pair, $message_target) {
     var $notify_if_filled_on_button = $('#notify_if_filled_on_button');
     var $notify_if_filled_off_button = $('#notify_if_filled_off_button');
     var $use_alert_on_button = $('#id_use_alert_on_button');
     var $use_alert_off_button = $('#id_use_alert_off_button');
     var $page_selection = $('#page_selection_alerts');
-    var market = $('#id_alerts_market').val();
-    var pair = $('#id_alerts_pair').val();
     var $container = $('#alert_container');
 
 
@@ -1516,7 +1519,7 @@ function init_alerts_content($message_target) {
             set_error_message($message_target, res.error);
             return;
         }
-        console.log(res);
+        //console.log(res);
         if (res.notify_if_filled == 'ON') {
             $notify_if_filled_on_button.click();
         } else {
@@ -1563,7 +1566,7 @@ function init_alerts_content($message_target) {
 
                     res_2.data.forEach(alert => {
                         
-                        $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.threshold)).append($('<hr>'));
+                        $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.rate)).append($('<hr>'));
                        
                     });
 
@@ -1607,10 +1610,30 @@ function init_alerts_content($message_target) {
         set_error_message($message_target, xhr);
     });
 }
+
+function init_alert_rate(market, pair, $target, $message_target) {
+    call_ticker('GET', market, pair)
+    .done((data) => {
+        if (data.error) {
+            set_error_message($message_target, data.error);
+            return;
+        }
+        $target.val(data.last);
+    })
+    .fail((data, textStatus, xhr) => {
+        if (data.status == 401) {
+            window.location.href = BASE_URL_LOGIN;
+        }
+        set_error_message($message_target, xhr);
+    });
+}
+
 function init_alerts_tab(is_initial = false) {
     var $message_target = $('#id_ajax_message');
     var $alert_market = $('#id_alerts_market');
     var $alert_pair = $('#id_alerts_pair');
+    var $alert_search_market = $('#id_alerts_search_market');
+    var $alert_search_pair = $('#id_alerts_search_pair');
 
     var $notify_if_filled_on_button = $('#notify_if_filled_on_button');
     var $notify_if_filled_off_button = $('#notify_if_filled_off_button');
@@ -1623,21 +1646,6 @@ function init_alerts_tab(is_initial = false) {
 
     // 初回時のみの処理
     if (is_initial) {
-        
-        Object.keys(MARKETS).forEach(key => {
-            $('<option>', {
-                value: key,
-                text: MARKETS[key],
-            }).appendTo($alert_market);
-        });
-
-        Object.keys(PAIRS).forEach(key => {
-            $('<option>', {
-                value: key,
-                text: PAIRS[key]
-            }).appendTo($alert_pair);
-           
-        });
 
         $alert_market.on('change', function() {
             $alert_pair.empty();
@@ -1645,37 +1653,42 @@ function init_alerts_tab(is_initial = false) {
                 Object.keys(PAIRS).forEach(key => {
                     $('<option>', {
                         value: key,
-                        text: PAIRS[key],
+                        text: PAIRS[key]
                     }).appendTo($alert_pair);
                 });
             } else {
                 $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_pair);
-
             }
-            init_alerts_content($message_target);
+            init_alert_rate($alert_market.val(), $alert_pair.val(), $notice_rate, $message_target);
         });
+        $alert_search_market.on('change', function() {
+            $alert_search_pair.empty();
+            if ($(this).val() == 'bitbank') {
+                Object.keys(PAIRS).forEach(key => {
+                    $('<option>', {
+                        value: key,
+                        text: PAIRS[key],
+                    }).appendTo($alert_search_pair);
+                });
+            } else {
+                $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_search_pair);
+            }
+            init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
+        })
 
         $alert_pair.on('change', function() {
+            
             $.cookie(COOKIE_ALERT_PAIR, $(this).val(), {expire: 7});
             var currency = $(this).val().split('_')[1].toUpperCase();
-            call_ticker('GET', $alert_market.val(), $(this).val())
-            .done((data) => {
-                if (data.error) {
-                    set_error_message($message_target, data.error);
-                    return;
-                }
-                console.log(data.last);
-                $notice_rate.val(data.last);
-            })
-            .fail((data, textStatus, xhr) => {
-                if (data.status == 401) {
-                    window.location.href = BASE_URL_LOGIN;
-                }
-                set_error_message($message_target, xhr);
-            });
             $pair_for_alert_class.html(currency);
-            init_alerts_content($message_target);
+            init_alert_rate($alert_market.val(), $alert_pair.val(), $notice_rate, $message_target);
         });
+
+        $alert_search_pair.on('change', function() {
+            init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
+        });
+
+
         
         $notify_if_filled_on_button.on('click', function() {
             if ($(this).hasClass('on')) {
@@ -1684,7 +1697,7 @@ function init_alerts_tab(is_initial = false) {
                 call_notify_if_filled('ON')
                 .done(function(res) {
                     if (res.error) {
-                        alert('on button init faile');
+                       
                         console.log(res);
                         set_error_message($message_target, res.error);
                         return;
@@ -1771,52 +1784,54 @@ function init_alerts_tab(is_initial = false) {
 
         $add_button.on('click', function() {
         
-            var threshold = $notice_rate.val();
+            var rate = $notice_rate.val();
             var market = $alert_market.val();
             var pair = $alert_pair.val();
             var over_or_under;
 
-            if (threshold == '' || threshold == 0) {
+            if (rate == '' || rate == 0) {
                 set_error_message($message_target,'通知金額を入力して下さい');
                 return;
             }
 
-            call_ticker('GET', market, pair)
+            call_alerts('POST', null, market, pair, null, null, rate)
             .done(function(res) {
+                console.log(res);
                 if (res.error) {
+                    console.log(res.error);
                     set_error_message($message_target, res.error)
                     return;
                 }
-                if (parseFloat(threshold) >= parseFloat(res.buy)) {
-                    over_or_under = '以上';
-                } else {
-                    over_or_under = '以下';
-                }
-                call_alerts('POST', null, market, pair, null, null, threshold, over_or_under)
-                .done(function(res) {
-                    
-                    if (res.error) {
-                        console.log(res.error);
-                        set_error_message($message_target, res.error)
-                        return;
-                    }
-                    set_success_message($message_target, 'アラートを追加しました');
+                set_success_message($message_target, 'アラートを追加しました');
 
-                    $('#alerts_button').click();
-                   $message_target.show();
-                })
-                .fail(function(data, textStatus, xhr) {
-                    if (data.status == 401) {
-                        window.location.href = BASE_URL_LOGIN;
-                    }
-                    set_error_message($message_target, xhr);
-                });
+                $('#alerts_button').click();
+                $message_target.show();
+            })
+            .fail(function(data, textStatus, xhr) {
+                if (data.status == 401) {
+                    window.location.href = BASE_URL_LOGIN;
+                }
+                set_error_message($message_target, xhr);
             });
         });
         
+        Object.keys(MARKETS).forEach(key => {
+            $('<option>', { value: key, text: MARKETS[key] }).appendTo($alert_market);
+            $('<option>', { value: key, text: MARKETS[key] }).appendTo($alert_search_market);
+         
+        });
+
+        Object.keys(PAIRS).forEach(key => {
+            $('<option>', { value: key, text: PAIRS[key]}).appendTo($alert_pair);
+            $('<option>', { value: key, text: PAIRS[key]}).appendTo($alert_search_pair);
+        });
+
+        var op_all = $('<option>', { value: 'all', text: '全て' });
+        op_all.appendTo($alert_search_market);
+        op_all.appendTo($alert_search_pair);
     
-    
-        $alert_market.val('bitbank');
+        $alert_market.val('bitbank').trigger('change');
+        $alert_search_market.val('bitbank').trigger('change');
 
         var ck_alert_pair = $.cookie(COOKIE_ALERT_PAIR);
         
@@ -1825,8 +1840,9 @@ function init_alerts_tab(is_initial = false) {
         } else {
             $alert_pair.val(Object.keys(PAIRS)[0]).trigger('change');
         }
+        $alert_search_pair.val('btc_jpy').trigger('change');
     }
-    init_alerts_content($message_target);
+    init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
 }
 function init_asset_tab(is_initial = false) {
     var $message_target = $('#id_ajax_message');
@@ -1902,7 +1918,7 @@ function init_asset_tab(is_initial = false) {
             set_error_message($message_target, 'coincheck 残高の取得に失敗しました');
             return;
         }
-        console.log(response.jpy);
+        //console.log(response.jpy);
         $('#jpy_cc').html(response.jpy);
         $('#btc_cc').html(response.btc);
         $('#eth_cc').html(response.eth);
@@ -1923,7 +1939,7 @@ function init_user_info_tab(is_initial = false) {
             set_error_message($message_target, data.error);
             return;
         }
-        console.log(data);
+        //console.log(data);
         $('#id_date_joined').html(return_formatted_datetime(Date.parse(data.date_joined), false));
         $('#id_email').html(data.email);
         $('#id_full_name').val(data.full_name);

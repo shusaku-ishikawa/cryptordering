@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 [INFO]	asctime:2019-03-28 15:37:50,192	module:monitor_ticker	message:started
 [INFO]	asctime:2019-03-28 15:38:47,683	module:monitor_ticker	message:completed
+=======
+[INFO]	asctime:2019-03-28 15:59:03,011	module:monitor_ticker	message:started
+>>>>>>> c37cca00aeafebe8498ad619c22c9287d39f7777

@@ -1655,9 +1655,11 @@ function init_alerts_tab(is_initial = false) {
                         value: key,
                         text: PAIRS[key]
                     }).appendTo($alert_pair);
+                    $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
                 });
             } else {
                 $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_pair);
+                $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
             }
             init_alert_rate($alert_market.val(), $alert_pair.val(), $notice_rate, $message_target);
         });
@@ -1669,9 +1671,11 @@ function init_alerts_tab(is_initial = false) {
                         value: key,
                         text: PAIRS[key],
                     }).appendTo($alert_search_pair);
+                    $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
                 });
             } else {
                 $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_search_pair);
+                $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
             }
             init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
         })
