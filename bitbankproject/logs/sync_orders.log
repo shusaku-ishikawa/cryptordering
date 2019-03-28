@@ -1,0 +1,66 @@
+[INFO]	asctime:2019-03-28 15:39:37,003	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:39:41,946	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:39:42,824	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:39:43,847	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:39:49,094	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:39:49,656	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:39:50,668	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:39:55,366	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:39:55,919	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:39:56,928	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:50:16,824	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:50:21,373	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:50:22,011	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:50:23,018	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:50:27,389	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:50:27,875	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:50:28,885	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:50:33,565	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:50:34,099	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:50:35,112	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:50:39,490	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:50:39,992	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:50:41,008	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:50:45,239	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:50:45,759	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:50:46,773	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 15:50:47,777	module:sync_orders	message:while sync bitbank:user:hoge@hoge.com message: (MaxRetryError('HTTPSConnectionPool(host=\'api.bitbank.cc\', port=443): Max retries exceeded with url: /v1/user/spot/trade_history?count=10&since=1553755247308&end=1553755847308&pair=xrp_jpy (Caused by SSLError(SSLError("bad handshake: Error([(\'SSL routines\', \'tls_process_server_certificate\', \'certificate verify failed\')])")))'),)
+[INFO]	asctime:2019-03-28 15:50:47,780	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:50:48,357	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:50:49,372	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:50:53,902	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:50:54,431	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:50:55,452	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:50:59,755	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:51:00,281	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:51:01,304	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:51:05,845	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:51:06,348	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:51:07,359	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:51:12,054	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:51:12,621	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:52:01,458	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:52:08,191	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:52:08,930	module:sync_orders	message:this order does not exist in db. start sync : 1512731294
+[INFO]	asctime:2019-03-28 15:52:15,490	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:52:20,158	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:52:20,693	module:sync_orders	message:this order already exists in db
+[INFO]	asctime:2019-03-28 15:52:21,698	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:52:26,499	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:52:27,039	module:sync_orders	message:this order already exists in db
+[INFO]	asctime:2019-03-28 15:52:28,041	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:52:32,675	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:52:33,204	module:sync_orders	message:this order already exists in db
+[INFO]	asctime:2019-03-28 15:52:34,207	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 15:52:34,999	module:sync_orders	message:while sync bitbank:user:hoge@hoge.com message: (MaxRetryError('HTTPSConnectionPool(host=\'api.bitbank.cc\', port=443): Max retries exceeded with url: /v1/user/spot/active_orders?since=1553755354&end=1553755954&pair=xrp_jpy (Caused by SSLError(SSLError("bad handshake: Error([(\'SSL routines\', \'tls_process_server_certificate\', \'certificate verify failed\')])")))'),)
+[INFO]	asctime:2019-03-28 15:52:35,003	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:52:35,604	module:sync_orders	message:this order already exists in db
+[INFO]	asctime:2019-03-28 15:52:36,608	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:52:41,400	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:52:41,962	module:sync_orders	message:this order already exists in db
+[INFO]	asctime:2019-03-28 15:52:42,968	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:52:47,543	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:52:48,064	module:sync_orders	message:this order already exists in db
+[INFO]	asctime:2019-03-28 15:52:49,068	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 15:52:53,683	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 15:52:54,278	module:sync_orders	message:this order already exists in db

@@ -15,7 +15,7 @@ class Command(BaseCommand):
     # コマンドが実行された際に呼ばれるメソッド
     def handle(self, *args, **options):
         logger = logging.getLogger('monitor_order_status')
-        #logger.info('started')
+        logger.info('started')
         time_started = time.time()
         n = 0
         while True:

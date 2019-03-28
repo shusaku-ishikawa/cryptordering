@@ -112,15 +112,17 @@ class Command(BaseCommand):
                     }
                     ao = json.loads(prv_cc.order.opens({}))
                     co = json.loads(prv_cc.order.transactions(pag))
-                    print(ao)
-                    print(co)
                     if ao['success']:
                         for o in ao['orders']:
                             exist = Order.objects.filter(order_id = o['id'])
                             if len(exist) == 0:
                                 logger.info('this order does not exist in db. start sync : ' + str(o['id']))
+                                o['market'] = 'coincheck'
                                 o['order_id'] = o['id']
+                                o['side'] = 'sell' if 'sell' in o['order_type'] else 'buy'
+                                o['order_type'] = 'market' if 'market' in o['order_type'] else 'limit'
                                 o['price'] = o['rate']
+                                o['start_amount'] = o['pending_amount']
                                 o['status'] = Order.STATUS_UNFILLED
                                 os = OrderSerializer(data = o, context = {'user': user})
                                 if os.is_valid():
