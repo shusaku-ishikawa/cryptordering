@@ -7,7 +7,7 @@ from .models import *
 from django.utils.safestring import mark_safe
 # from django.contrib.auth import get_user_model
 
-# User = get_user_model()
+#User = get_user_model()
 
 class MyUserChangeForm(UserChangeForm):
     class Meta:
@@ -132,9 +132,10 @@ class MyInquiryAdmin(admin.ModelAdmin):
 
 class MyBankInfoAdmin(admin.ModelAdmin):
     list_display = ('bank', 'branch', 'type', 'number')
-    def has_add_permission(self, request, obj=None):
-        return False
-    
+    # def has_add_permission(self, request, obj=None):
+    #     return False
+
+
 class MyAdminSite(admin.AdminSite):
     site_header = 'bitbank-order.com'
     site_title  = 'サイト管理'
@@ -150,14 +151,14 @@ class MyAdminSite(admin.AdminSite):
             "取引履歴": 3,
             "発注一覧": 2,
             "通知設定":4,
-            '振込口座情報':6
+            '振込口座情報':6,
+
         }
         app_dict = self._build_app_dict(request)
-        # a.sort(key=lambda x: b.index(x[0]))
-        # Sort the apps alphabetically.
+        print(app_dict)
+       
         app_list = sorted(app_dict.values(), key=lambda x: x['name'].lower())
 
-        # Sort the models alphabetically within each app.
         for app in app_list:
             app['models'].sort(key=lambda x: ordering[x['name']])
 
@@ -169,4 +170,4 @@ admin_site.register(Relation, MyRelationAdmin)
 admin_site.register(Order, MyOrderAdmin)
 admin_site.register(Alert, MyAlertAdmin)
 admin_site.register(Inquiry, MyInquiryAdmin)
-admin.site.register(BankInfo, MyBankInfoAdmin)
+admin_site.register(BankInfo, MyBankInfoAdmin)

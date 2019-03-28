@@ -679,9 +679,6 @@ class Inquiry(models.Model):
 
     )
 
-@receiver(post_delete, sender=Attachment)
-def delete_file(sender, instance, **kwargs):
-    instance.file.delete(False)
 
 class BankInfo(models.Model):
     def __str__(self):
@@ -733,3 +730,6 @@ class BankInfo(models.Model):
             BankInfo.number = 'no data'
         return instance
 
+@receiver(post_delete, sender=Attachment)
+def delete_file(sender, instance, **kwargs):
+    instance.file.delete(False)

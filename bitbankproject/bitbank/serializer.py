@@ -77,8 +77,6 @@ class OrderSerializer(serializers.ModelSerializer):
         if data['market'] == 'coincheck' and data['start_amount'] < 0.005:
             raise serializers.ValidationError(str(data['start_amount']) + ":coincheckの最小取引量を下回っております")
         return data
-   
-
 
 
 class RelationSerializer(serializers.ModelSerializer):
