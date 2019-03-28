@@ -14,7 +14,7 @@ class Command(BaseCommand):
     help = '注文のステータスを更新します'
     # コマンドが実行された際に呼ばれるメソッド
     def handle(self, *args, **options):
-        logger = logging.getLogger('batch_logger')
+        logger = logging.getLogger('monitor_order_status')
         #logger.info('started')
         time_started = time.time()
         n = 0

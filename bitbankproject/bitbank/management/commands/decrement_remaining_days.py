@@ -27,9 +27,14 @@ class Command(BaseCommand):
                 customer.is_active = False 
             customer.save()
             
+            bankinfo = BankInfo.get_bank_info()
+
             context = {
                 'customer': customer,
-                'bankinfo': settings.BANKINFO
+                'bank': bankinfo.bank,
+                'branch': bankinfo.branch,
+                'type': bankinfo.type,
+                'number': bankinfo.number
             }
 
             if new_remaning_days == alert_if:

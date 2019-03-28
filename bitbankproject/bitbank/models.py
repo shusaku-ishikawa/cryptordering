@@ -581,7 +581,7 @@ class Alert(models.Model):
         default = 'btc_jpy',
     )
 
-    threshold = models.FloatField(
+    rate = models.FloatField(
         verbose_name = _('通知レート'),
         null = False,
         validators = [
@@ -682,3 +682,54 @@ class Inquiry(models.Model):
 @receiver(post_delete, sender=Attachment)
 def delete_file(sender, instance, **kwargs):
     instance.file.delete(False)
+
+class BankInfo(models.Model):
+    def __str__(self):
+        return '口座情報'
+    class Meta:
+        verbose_name = "振込口座情報"
+        verbose_name_plural = "振込口座情報"
+    
+    types = [
+        ('普通', '普通'),
+        ('当座', '当座')
+    ]
+    bank = models.CharField(
+        verbose_name = '金融機関名',
+        max_length = 20,
+        default = 'xxx銀行',
+        blank = False,
+        null = False
+    )
+    branch = models.CharField(
+        verbose_name = '支店名',
+        max_length = 20,
+        default = 'xxx支店',
+        blank = False,
+        null = False
+    )
+    type = models.CharField(
+        verbose_name = '口座種別',
+        max_length = 20,
+        choices = types,
+        default = '普通'
+    )
+    number = models.CharField(
+        verbose_name = '口座番号',
+        max_length = 20,
+        default = '00000',
+        null = False,
+        blank = False
+    )
+
+    @staticmethod
+    def get_bank_info():
+        instance = BankInfo.objects.all()[0]
+        if instance == None:
+            instance = BankInfo()
+            BankInfo.bank = 'no data'
+            BankInfo.branch = 'no data'
+            BankInfo.type = '普通'
+            BankInfo.number = 'no data'
+        return instance
+

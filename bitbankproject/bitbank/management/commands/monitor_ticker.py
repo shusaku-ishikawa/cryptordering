@@ -26,8 +26,8 @@ class Command(BaseCommand):
 
     # コマンドが実行された際に呼ばれるメソッド
     def handle(self, *args, **options):
-        logger = logging.getLogger('batch_logger')
-        #logger.info('started')
+        logger = logging.getLogger('monitor_ticker')
+        logger.info('started')
         time_started = time.time()
         n = 0
         
@@ -47,8 +47,8 @@ class Command(BaseCommand):
                     try:
                         rate = self._get_market_price(alert.market, pair)
 
-                        if (alert.over_or_under == '以上' and rate >= alert.threshold) or \
-                            (alert.over_or_under == '以上' and rate >= alert.threshold):
+                        if (alert.over_or_under == 'over' and rate >= alert.rate) or \
+                            (alert.over_or_under == 'over' and rate >= alert.rate):
 
                             if alert.user.use_alert == 'ON':
                                 context = { "user": alert.user, "rate": rate, "pair": pair }

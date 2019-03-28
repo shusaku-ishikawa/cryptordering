@@ -94,7 +94,7 @@ function call_orders(method, market, pair, offset = null, limit = null, type = n
     });
 }
 
-function call_alerts(method, pk, market, pair, offset, limit, threshold, over_or_under) {
+function call_alerts(method, pk, market, pair, offset, limit, rate) {
     return $.ajax({
         url: BASE_URL_ALERTS,
         type: (method == 'GET') ? 'GET' : 'POST',
@@ -106,8 +106,7 @@ function call_alerts(method, pk, market, pair, offset, limit, threshold, over_or
             pair: pair,
             offset: offset,
             limit: limit,
-            threshold: threshold,
-            over_or_under: over_or_under
+            rate: rate,
         }
     });
 }
@@ -1567,7 +1566,7 @@ function init_alerts_content(market, pair, $message_target) {
 
                     res_2.data.forEach(alert => {
                         
-                        $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.threshold)).append($('<hr>'));
+                        $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.rate)).append($('<hr>'));
                        
                     });
 
@@ -1654,7 +1653,7 @@ function init_alerts_tab(is_initial = false) {
                 Object.keys(PAIRS).forEach(key => {
                     $('<option>', {
                         value: key,
-                        text: PAIRS[key],
+                        text: PAIRS[key]
                     }).appendTo($alert_pair);
                 });
             } else {
@@ -1785,46 +1784,34 @@ function init_alerts_tab(is_initial = false) {
 
         $add_button.on('click', function() {
         
-            var threshold = $notice_rate.val();
+            var rate = $notice_rate.val();
             var market = $alert_market.val();
             var pair = $alert_pair.val();
             var over_or_under;
 
-            if (threshold == '' || threshold == 0) {
+            if (rate == '' || rate == 0) {
                 set_error_message($message_target,'通知金額を入力して下さい');
                 return;
             }
 
-            call_ticker('GET', market, pair)
+            call_alerts('POST', null, market, pair, null, null, rate)
             .done(function(res) {
+                console.log(res);
                 if (res.error) {
+                    console.log(res.error);
                     set_error_message($message_target, res.error)
                     return;
                 }
-                if (parseFloat(threshold) >= parseFloat(res.buy)) {
-                    over_or_under = '以上';
-                } else {
-                    over_or_under = '以下';
-                }
-                call_alerts('POST', null, market, pair, null, null, threshold, over_or_under)
-                .done(function(res) {
-                    
-                    if (res.error) {
-                        console.log(res.error);
-                        set_error_message($message_target, res.error)
-                        return;
-                    }
-                    set_success_message($message_target, 'アラートを追加しました');
+                set_success_message($message_target, 'アラートを追加しました');
 
-                    $('#alerts_button').click();
-                   $message_target.show();
-                })
-                .fail(function(data, textStatus, xhr) {
-                    if (data.status == 401) {
-                        window.location.href = BASE_URL_LOGIN;
-                    }
-                    set_error_message($message_target, xhr);
-                });
+                $('#alerts_button').click();
+                $message_target.show();
+            })
+            .fail(function(data, textStatus, xhr) {
+                if (data.status == 401) {
+                    window.location.href = BASE_URL_LOGIN;
+                }
+                set_error_message($message_target, xhr);
             });
         });
         

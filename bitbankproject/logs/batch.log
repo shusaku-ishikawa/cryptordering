@@ -7591,3 +7591,155 @@
 [INFO]	asctime:2019-03-25 21:53:00,260	module:monitor_ticker	message:completed
 [INFO]	asctime:2019-03-25 21:53:59,569	module:monitor_order_status	message:completed
 [INFO]	asctime:2019-03-25 21:54:00,034	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-03-27 09:55:20,818	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-27 09:55:21,628	module:sync_orders	message:while sync bitbank:user:hoge@hoge.com message: ('can only concatenate str (not "int") to str',)
+[INFO]	asctime:2019-03-27 09:55:23,262	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-27 09:55:23,899	module:sync_orders	message:while sync bitbank:user:hoge@hoge.com message: ('can only concatenate str (not "int") to str',)
+[INFO]	asctime:2019-03-27 09:55:25,389	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-27 09:55:26,061	module:sync_orders	message:while sync bitbank:user:hoge@hoge.com message: ('can only concatenate str (not "int") to str',)
+[INFO]	asctime:2019-03-27 09:55:27,619	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-27 09:55:28,245	module:sync_orders	message:while sync bitbank:user:hoge@hoge.com message: ('can only concatenate str (not "int") to str',)
+[INFO]	asctime:2019-03-27 09:55:29,687	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-27 09:55:30,317	module:sync_orders	message:while sync bitbank:user:hoge@hoge.com message: ('can only concatenate str (not "int") to str',)
+[INFO]	asctime:2019-03-27 09:55:31,827	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-27 09:55:32,403	module:sync_orders	message:while sync bitbank:user:hoge@hoge.com message: ('can only concatenate str (not "int") to str',)
+[INFO]	asctime:2019-03-27 09:56:15,659	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 09:56:16,376	module:sync_orders	message:bitbank closed order found : 567750989
+[INFO]	asctime:2019-03-27 09:56:22,437	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 09:56:23,061	module:sync_orders	message:bitbank closed order found : 567750989
+[INFO]	asctime:2019-03-27 09:56:28,744	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 09:56:29,380	module:sync_orders	message:bitbank closed order found : 567750989
+[INFO]	asctime:2019-03-27 09:56:35,004	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 09:56:35,635	module:sync_orders	message:bitbank closed order found : 567750989
+[INFO]	asctime:2019-03-27 09:56:41,490	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 09:56:42,126	module:sync_orders	message:bitbank closed order found : 567750989
+[INFO]	asctime:2019-03-27 09:56:47,991	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 09:58:04,837	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 09:58:11,875	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 09:58:18,429	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 09:58:24,909	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:52:12,861	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:52:13,723	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:52:13,729	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:52:19,870	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:52:20,494	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:52:20,497	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:52:26,464	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:52:27,095	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:52:27,100	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:53:08,420	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:53:09,164	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:53:09,169	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:53:15,596	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:53:16,231	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:53:16,238	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:53:22,226	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:53:22,914	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:53:22,919	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:53:52,894	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:53:53,759	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:53:53,772	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:53:59,994	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:54:00,716	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:54:00,722	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:54:06,913	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:54:07,525	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:54:07,534	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:54:13,957	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:54:14,641	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:54:14,660	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:54:21,422	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:54:22,191	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:54:22,200	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:54:29,094	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:54:29,703	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:54:29,709	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:54:35,954	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:54:36,574	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:54:36,582	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:54:43,081	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:54:43,733	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:54:43,739	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:56:14,285	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:56:15,098	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:56:15,105	module:sync_orders	message:this order does not exist in db. start sync : 567763372
+[INFO]	asctime:2019-03-27 10:56:25,959	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:56:26,574	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:56:32,718	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:56:33,432	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:56:39,636	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:56:40,396	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:56:46,861	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:56:47,646	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:56:54,933	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:56:55,810	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:57:02,893	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:57:03,616	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 10:57:09,316	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 10:57:10,142	module:sync_orders	message:bitbank closed order found : 567763372
+[INFO]	asctime:2019-03-27 11:05:08,238	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:05:15,125	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:05:21,658	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:05:28,588	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:05:35,368	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:05:42,108	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:05:48,573	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:05:55,025	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:06:01,627	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:06:32,344	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:06:37,160	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:06:38,748	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:06:44,332	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:06:45,852	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:06:51,035	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:06:52,635	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:06:57,446	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:06:58,993	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:07:04,187	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:07:05,698	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:07:10,844	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:07:12,372	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:07:17,311	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:07:18,795	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:07:23,605	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:07:25,155	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:07:30,521	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:07:40,446	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:07:45,302	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:07:46,834	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:07:51,921	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:07:53,702	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:07:58,484	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:08:00,031	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:08:05,511	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:08:07,063	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:08:12,463	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:08:13,930	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:08:19,237	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:08:20,771	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:08:25,978	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:08:27,530	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:08:32,895	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:08:34,398	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:08:39,925	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:13:30,487	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:13:35,516	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:13:37,166	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:13:42,376	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:13:43,991	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:13:49,070	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:13:50,622	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:13:55,718	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:13:57,304	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:14:02,782	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:14:04,374	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:14:10,350	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:14:12,172	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:14:17,519	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:14:19,164	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:14:24,902	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:17:49,670	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:17:54,963	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:17:56,597	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-27 11:18:01,839	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-27 11:18:03,356	module:sync_orders	message:start sync bitbank

@@ -67,16 +67,18 @@ class UserCreate(generic.CreateView):
         # アクティベーションURLの送付
         current_site = get_current_site(self.request)
         domain = current_site.domain
-      
+
+        bankinfo = BankInfo.get_bank_info()
+
         context = {
             'protocol': self.request.scheme,
             'domain': domain,
             'token': dumps(user.pk),
             'user': user,
-            'bank': settings.BANK,
-            'branch': settings.BRANCH,
-            'type': settings.TYPE,
-            'number': settings.NUMBER
+            'bank': bankinfo.bank,
+            'branch': bankinfo.branch,
+            'type': bankinfo.type,
+            'number': bankinfo.number
         }
 
         subject = get_template('bitbank/mail_template/create/subject.txt').render(context)
@@ -233,31 +235,32 @@ def ajax_alerts(request):
     method = request.method
 
     if method == 'GET':
-        try:
-            offset = int(request.GET.get('offset'))
-            to = int(request.GET.get('limit')) + offset
-            search_market = request.GET.get('market')
-            search_pair = request.GET.get('pair')
 
-            alerts = Alert.objects.filter(user=user).filter(is_active=True)
+        offset = int(request.GET.get('offset'))
+        to = int(request.GET.get('limit')) + offset
+        search_market = request.GET.get('market')
+        search_pair = request.GET.get('pair')
 
+        alerts = Alert.objects.filter(user=user).filter(is_active=True)
+
+        
+        if search_market != 'all':
+            alerts = alerts.filter(market=search_market)
+        if search_pair != 'all':
+            alerts = alerts.filter(pair=search_pair)
             
-            if search_market != 'all':
-                alerts = alerts.filter(market=search_market)
-            if search_pair != 'all':
-                alerts = alerts.filter(pair=search_pair)
-                
-            data = {
-                'total_count': alerts.count(),
-                'data': AlertSerializer(alerts.order_by('-pk')[offset:to], many=True ).data
-            }
-        except Exception as e:
-            data = {
-                'error': e.args
-            }
-            traceback.print_exc()
-        finally:
-            return JsonResponse(data)
+        data = {
+            'total_count': alerts.count(),
+            'data': AlertSerializer(alerts.order_by('-pk')[offset:to], many=True ).data
+        }
+        # except Exception as e:
+        #     data = {
+        #         'error': e.args
+        #     }
+        #     print('get ticker error')
+        #     traceback.print_exc()
+        # finally:
+        return JsonResponse(data)
     elif method == 'POST':
         op = request.POST.get('method')
         if op == 'DELETE':
@@ -269,12 +272,13 @@ def ajax_alerts(request):
                 traceback.print_exc()
                 return JsonResponse({'error': e.args})
         elif op == 'POST':
-            serializer = AlertSerializer(data = request.POST, context={'request': request})
+            #print(request.POST)
+            serializer = AlertSerializer(data = request.POST, context={'user': user})
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse({'success': True})
             else:
-                
+                print(str(serializer.errors) + " gttetetet")
                 return JsonResponse({'error': _get_error_message(serializer.errors, '') })
 def ajax_ticker(request):
     if request.user.is_anonymous or request.user.is_active == False:
@@ -331,7 +335,7 @@ def _get_error_message(errors, str_order):
         'price': '指値金額',
         'price_for_stop': '逆指値金額',
         'trail_width': 'トレール幅',
-        'threshold': '通知レート'
+        'rate': '通知レート'
     }
     error_key = list(errors.keys())[0]
     error_val = errors[error_key][0]
@@ -403,7 +407,9 @@ def ajax_orders(request):
             
             if special_order == 'SINGLE':
                 
-                o_1_serializer = OrderSerializer(data = json.loads(request.POST.get('order_1')), context = {'request': request, 'is_ready': True})
+                dic_o1 = json.loads(request.POST.get('order_1'))
+                dic_o1['status'] = Order.STATUS_READY_TO_ORDER
+                o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
                 
                 if o_1_serializer.is_valid():
                     o_1 = o_1_serializer.save()
@@ -417,8 +423,13 @@ def ajax_orders(request):
                 relation.order_1 = o_1
 
             elif special_order == 'IFD':
-                o_1_serializer = OrderSerializer(data = json.loads(request.POST.get('order_1')), context = {'request': request, 'is_ready': True})
-                o_2_serializer = OrderSerializer(data = json.loads(request.POST.get('order_2')), context = {'request': request, 'is_ready': False})
+                dic_o1 = json.loads(request.POST.get('order_1'))
+                dic_o1['status'] = Order.STATUS_READY_TO_ORDER
+                dic_o2 = json.loads(request.POST.get('order_2'))
+                dic_o2['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
+
+                o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
+                o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
                
                 if not o_1_serializer.is_valid():
                     return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
@@ -437,8 +448,13 @@ def ajax_orders(request):
                 relation.order_2 = o_2
 
             elif special_order == 'OCO':
-                o_2_serializer = OrderSerializer(data = json.loads(request.POST.get('order_2')), context = {'request': request, 'is_ready': True})
-                o_3_serializer = OrderSerializer(data = json.loads(request.POST.get('order_3')), context = {'request': request, 'is_ready': True})
+                dic_o2 = json.loads(request.POST.get('order_2'))
+                dic_o2['status'] = Order.STATUS_READY_TO_ORDER
+                dic_o3 = json.loads(request.POST.get('order_3'))
+                dic_o3['status'] = Order.STATUS_READY_TO_ORDER
+
+                o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
+                o_3_serializer = OrderSerializer(data = dic_o3, context = {'user': user})
                 
                 if not o_2_serializer.is_valid():
                     return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
@@ -463,10 +479,16 @@ def ajax_orders(request):
                 relation.order_3 = o_3
                 
             elif special_order == 'IFDOCO':
+                dic_o1 = json.loads(request.POST.get('order_1'))
+                dic_o1['status'] = Order.STATUS_READY_TO_ORDER
+                dic_o2 = json.loads(request.POST.get('order_2'))
+                dic_o2['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
+                dic_o3 = json.loads(request.POST.get('order_3'))
+                dic_o3['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
 
-                o_1_serializer = OrderSerializer(data = json.loads(request.POST.get('order_1')), context = {'request': request, 'is_ready': True})
-                o_2_serializer = OrderSerializer(data = json.loads(request.POST.get('order_2')), context = {'request': request, 'is_ready': False})
-                o_3_serializer = OrderSerializer(data = json.loads(request.POST.get('order_3')), context = {'request': request, 'is_ready': False})
+                o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
+                o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
+                o_3_serializer = OrderSerializer(data = dic_o3, context = {'user': user})
                 
                 if not o_1_serializer.is_valid():
                     return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})

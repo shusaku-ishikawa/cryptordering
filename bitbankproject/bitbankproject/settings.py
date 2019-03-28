@@ -123,6 +123,11 @@ LOGGING = {
         },
     },
     'handlers': {  # ログをどこに出すかの設定
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
         'file_transaction': { 
             'level': 'DEBUG',  # DEBUG以上のログを取り扱うという意味
             'class': 'logging.handlers.RotatingFileHandler',
@@ -131,25 +136,29 @@ LOGGING = {
             'maxBytes': 1024 * 1024,
             'backupCount': 10,
         },
-        'file_batch': { 
+        'file_monitor_order_status': { 
             'level': 'DEBUG',  # DEBUG以上のログを取り扱うという意味
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/batch.log'),
+            'filename': os.path.join(BASE_DIR, 'logs/monitor_order_status.log'),
             'formatter': 'all',
             'maxBytes': 100024 * 1024,
             'backupCount': 1,
         },
-        'console': { # どこに出すかの設定をもう一つ、こちらの設定には`console`という名前
-            'level': 'DEBUG',
-            # こちらは標準出力に出してくれるクラスを指定
-            'class': 'logging.StreamHandler', 
-            'formatter': 'all'
+        'file_monitor_ticker': { 
+            'level': 'DEBUG',  # DEBUG以上のログを取り扱うという意味
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/monitor_ticker.log'),
+            'formatter': 'all',
+            'maxBytes': 100024 * 1024,
+            'backupCount': 1,
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'include_html': True,
-            'filters': ['require_debug_false'],
+        'file_sync_orders': { 
+            'level': 'DEBUG',  # DEBUG以上のログを取り扱うという意味
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/sync_orders.log'),
+            'formatter': 'all',
+            'maxBytes': 100024 * 1024,
+            'backupCount': 1,
         },
     },
     'loggers': {  # どんなloggerがあるかを設定する
@@ -157,8 +166,16 @@ LOGGING = {
             'handlers': ['file_transaction', 'console'],  # 先述のfile, consoleの設定で出力
             'level': 'DEBUG',
         },
-        'batch_logger': { 
-            'handlers': ['file_batch', 'console'],  # 先述のfile, consoleの設定で出力
+        'monitor_order_status': { 
+            'handlers': ['file_monitor_order_status', 'console'],  # 先述のfile, consoleの設定で出力
+            'level': 'DEBUG',
+        },
+        'monitor_ticker': { 
+            'handlers': ['file_monitor_ticker', 'console'],  # 先述のfile, consoleの設定で出力
+            'level': 'DEBUG',
+        },
+        'sync_orders': { 
+            'handlers': ['file_sync_orders', 'console'],  # 先述のfile, consoleの設定で出力
             'level': 'DEBUG',
         },
     },

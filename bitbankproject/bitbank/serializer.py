@@ -13,14 +13,8 @@ class UserSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('pk', 'email', 'date_joined')
 
-    def create(self, validated_data):
-        print('create called')
 
     def update(self, instance, validated_data):
-        logger = logging.getLogger('transaction_logger')
-        print('here is update validated data')
-        print(validated_data)
-        logger.info('update called')
         User.objects.filter(pk = instance.pk).update(**validated_data)
         return instance
 
@@ -29,14 +23,16 @@ class AlertSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Alert
-        fields = ('pk', 'market', 'pair', 'threshold', 'over_or_under')
-        read_only_fields = ('pk',)
+        fields = ('pk', 'market', 'pair', 'rate', 'over_or_under')
+        read_only_fields = ('pk', 'over_or_under')
 
     def create(self, validated_data):
-        user = self.context['request'].user
+        user = self.context['user']
 
         try:
             instance = Alert(**validated_data)
+            last = python_bitbankcc.public().get_ticker(validated_data['pair'])['last'] if validated_data['market'] == 'bitbank' else json.loads(CoinCheck('fake', 'fake').ticker.all())['last']
+            instance.over_or_under = 'over' if validated_data['rate'] <= float(last) else 'under' 
             instance.user = user
             instance.is_active = True
             instance.save()
@@ -45,36 +41,43 @@ class AlertSerializer(serializers.ModelSerializer):
         finally:
             return instance
 
+
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('pk', 'market', 'pair', 'side', 'order_type', 'price', 'price_for_stop', 'trail_width', 'trail_price', 'start_amount', 'remaining_amount', 'executed_amount', 'average_price', 'status', 'order_id', 'ordered_at', 'error_message', 'updated_at')
-        read_only_fields = ('pk', 'status', 'trail_price', 'remaining_amount', 'executed_amount', 'average_price', 'status', 'order_id', 'ordered_at', 'error_message', 'updated_at')
+        read_only_fields = ('pk', 'trail_price', 'error_message', 'updated_at')
     
     def create(self, validated_data):
-        user = self.context['request'].user
-        is_ready = self.context['is_ready']
+        user = self.context['user']
+       
         try:
             instance = Order(**validated_data)
             instance.user = user
-            instance.status = Order.STATUS_READY_TO_ORDER if is_ready else Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
             
             if validated_data['order_type'] == Order.TYPE_TRAIL:
                 try:
-                    ret = python_bitbankcc.public().get_ticker(validated_data['pair']) if validated_data['market'] == 'bitbnak' else json.loads(CoinCheck('fake', 'fake').ticker.all())['last']
+                    ret = python_bitbankcc.public().get_ticker(validated_data['pair']) if validated_data['market'] == 'bitbank' else json.loads(CoinCheck('fake', 'fake').ticker.all())['last']
                     instance.trail_price = float(ret['last'])
                 except Exception:
                     instance.trail_price = 0
 
             instance.save()
 
-            if instance.order_type in {Order.TYPE_MARKET, Order.TYPE_LIMIT} and is_ready:       
+            if instance.order_type in {Order.TYPE_MARKET, Order.TYPE_LIMIT} and instance.status == Order.STATUS_READY_TO_ORDER:       
                 instance.place()
 
             return instance
         except Exception as e:
             print('serializer ' + str(e.args))
-            
+    
+    def validate(self, data):
+        # coincheckの場合は0.005以上の取引であること
+        if data['market'] == 'coincheck' and data['start_amount'] < 0.005:
+            raise serializers.ValidationError(str(data['start_amount']) + ":coincheckの最小取引量を下回っております")
+        return data
+   
 
 
 

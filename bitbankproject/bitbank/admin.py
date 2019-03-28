@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import ugettext_lazy as _
-from .models import User, Relation, Order, Alert, Inquiry, Attachment
+from .models import *
 
 from django.utils.safestring import mark_safe
 # from django.contrib.auth import get_user_model
@@ -80,7 +80,7 @@ class MyOrderAdmin(admin.ModelAdmin):
     
     
 class MyAlertAdmin(admin.ModelAdmin):
-    list_display = ('user_display', 'pair_display', 'threshold', 'is_active')
+    list_display = ('user_display', 'pair_display', 'rate', 'is_active')
     def pair_display(self, obj):
         return Order.PAIR[obj.pair]
     def user_display(self, obj):
@@ -130,6 +130,11 @@ class MyInquiryAdmin(admin.ModelAdmin):
     show_attachment_2.short_description = '添付ファイル２'
     show_attachment_3.short_description = '添付ファイル３'
 
+class MyBankInfoAdmin(admin.ModelAdmin):
+    list_display = ('bank', 'branch', 'type', 'number')
+    def has_add_permission(self, request, obj=None):
+        return False
+    
 class MyAdminSite(admin.AdminSite):
     site_header = 'bitbank-order.com'
     site_title  = 'サイト管理'
@@ -144,7 +149,8 @@ class MyAdminSite(admin.AdminSite):
             "問い合せ": 5,
             "取引履歴": 3,
             "発注一覧": 2,
-            "通知設定":4
+            "通知設定":4,
+            '振込口座情報':6
         }
         app_dict = self._build_app_dict(request)
         # a.sort(key=lambda x: b.index(x[0]))
@@ -163,3 +169,4 @@ admin_site.register(Relation, MyRelationAdmin)
 admin_site.register(Order, MyOrderAdmin)
 admin_site.register(Alert, MyAlertAdmin)
 admin_site.register(Inquiry, MyInquiryAdmin)
+admin.site.register(BankInfo, MyBankInfoAdmin)
