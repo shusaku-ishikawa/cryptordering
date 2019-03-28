@@ -1,1 +1,6 @@
 [INFO]	asctime:2019-03-28 15:37:26,193	module:monitor_order_status	message:started
+[INFO]	asctime:2019-03-28 16:09:02,169	module:monitor_order_status	message:started
+[INFO]	asctime:2019-03-28 16:09:59,478	module:monitor_order_status	message:completed
+[INFO]	asctime:2019-03-28 16:10:02,500	module:monitor_order_status	message:started
+[INFO]	asctime:2019-03-28 16:10:59,808	module:monitor_order_status	message:completed
+[INFO]	asctime:2019-03-28 16:11:03,243	module:monitor_order_status	message:started

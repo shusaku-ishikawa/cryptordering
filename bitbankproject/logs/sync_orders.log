@@ -64,3 +64,397 @@
 [INFO]	asctime:2019-03-28 15:52:49,068	module:sync_orders	message:start sync bitbank
 [INFO]	asctime:2019-03-28 15:52:53,683	module:sync_orders	message:start sync coincheck
 [INFO]	asctime:2019-03-28 15:52:54,278	module:sync_orders	message:this order already exists in db
+[INFO]	asctime:2019-03-28 16:10:03,505	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:03,578	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:03,664	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:03,847	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:04,060	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:04,060	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:04,060	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:05,065	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:05,114	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:05,327	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:05,498	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:05,585	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:05,585	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:05,586	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:06,592	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:06,652	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:06,753	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:06,941	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:07,048	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:07,049	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:07,049	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:08,056	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:08,118	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:08,213	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:08,334	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:08,441	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:08,442	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:08,442	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:09,448	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:09,507	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:09,606	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:09,722	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:09,839	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:09,840	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:09,840	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:10,847	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:10,906	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:11,004	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:11,127	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:11,329	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:11,330	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:11,330	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:12,339	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:12,416	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:12,516	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:12,654	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:12,757	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:12,758	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:12,758	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:13,764	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:13,835	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:13,939	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:14,077	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:14,179	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:14,179	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:14,180	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:15,187	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:15,301	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:15,395	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:15,535	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:15,653	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:15,654	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:15,654	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:16,663	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:16,727	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:16,857	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:17,024	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:17,125	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:17,125	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:17,126	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:18,136	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:18,212	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:18,316	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:18,453	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:18,565	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:18,571	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:18,572	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:19,580	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:19,661	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:19,762	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:19,876	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:19,980	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:19,981	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:19,982	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:20,989	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:21,043	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:21,145	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:21,284	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:21,397	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:21,398	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:21,398	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:22,405	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:22,455	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:22,569	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:22,709	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:22,825	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:22,825	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:22,826	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:23,833	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:23,935	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:24,058	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:24,185	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:24,298	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:24,298	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:24,299	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:25,305	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:25,402	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:25,505	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:25,658	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:25,762	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:25,762	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:25,762	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:26,768	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:26,815	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:26,908	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:27,053	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:27,174	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:27,174	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:27,174	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:28,185	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:28,246	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:28,345	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:28,464	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:28,564	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:28,565	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:28,565	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:29,571	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:29,673	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:29,798	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:29,975	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:30,123	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:30,124	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:30,125	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:31,130	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:31,188	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:31,306	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:31,419	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:31,529	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:31,529	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:31,530	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:32,538	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:32,643	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:32,757	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:32,937	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:33,052	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:33,053	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:33,053	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:34,062	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:34,135	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:34,225	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:34,368	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:34,475	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:34,476	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:34,476	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:35,486	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:35,545	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:35,667	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:35,847	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:35,958	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:35,958	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:35,958	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:36,968	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:37,040	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:37,148	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:37,292	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:37,403	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:37,404	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:37,404	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:38,411	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:38,464	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:38,578	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:38,714	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:38,832	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:38,832	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:38,833	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:39,841	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:39,931	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:40,041	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:40,142	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:40,260	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:40,261	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:40,261	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:41,268	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:41,329	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:41,430	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:41,602	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:41,717	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:41,717	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:41,717	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:42,725	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:42,814	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:42,960	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:43,064	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:43,163	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:43,163	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:43,164	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:44,168	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:44,234	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:44,328	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:44,448	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:44,560	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:44,561	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:44,561	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:45,570	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:45,651	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:45,749	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:45,896	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:46,024	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:46,025	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:46,025	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:47,032	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:47,150	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:47,241	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:47,356	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:47,487	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:47,488	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:47,489	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:48,497	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:48,559	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:48,660	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:48,822	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:48,958	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:48,959	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:48,959	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:49,968	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:50,067	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:50,179	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:50,332	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:50,506	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:50,507	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:50,507	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:51,514	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:51,600	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:51,706	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:51,814	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:51,935	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:51,935	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:51,935	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:52,944	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:53,013	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:53,116	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:53,251	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:53,362	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:53,363	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:53,363	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:54,373	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:54,441	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:54,527	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:54,693	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:54,797	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:54,804	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:54,804	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:55,813	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:55,867	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:55,991	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:56,138	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:56,252	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:56,252	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:56,252	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:57,259	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:57,347	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:57,442	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:57,551	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:57,666	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:57,667	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:57,667	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:58,674	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:58,755	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:58,856	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:10:58,978	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:10:59,103	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:10:59,103	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:10:59,103	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:04,134	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:04,201	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:04,344	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:04,483	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:04,587	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:04,587	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:04,588	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:05,593	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:05,675	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:05,767	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:05,905	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:06,022	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:06,022	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:06,023	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:07,029	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:07,078	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:07,300	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:07,467	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:07,585	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:07,586	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:07,587	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:08,596	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:08,658	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:08,749	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:08,852	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:08,960	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:08,960	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:08,960	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:09,968	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:10,054	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:10,280	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:10,468	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:10,568	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:10,568	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:10,569	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:11,576	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:11,626	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:11,736	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:11,941	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:12,064	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:12,064	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:12,064	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:13,071	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:13,138	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:13,228	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:13,286	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:13,383	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:13,384	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:13,384	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:14,391	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:14,476	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:14,588	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:14,705	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:14,813	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:14,814	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:14,814	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:15,823	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:15,901	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:15,992	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:16,152	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:16,270	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:16,270	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:16,271	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:17,279	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:17,347	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:17,454	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:17,585	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:17,739	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:17,740	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:17,740	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:18,749	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:18,871	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:18,962	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:19,150	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:19,258	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:19,258	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:19,258	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:20,266	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:20,321	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:20,421	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:20,615	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:20,745	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:20,746	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:20,746	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:21,762	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:21,830	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:21,969	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:22,096	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:22,235	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:22,235	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:22,235	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:23,243	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:23,340	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:23,443	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:23,581	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:23,708	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:23,708	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:23,708	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:24,718	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:24,775	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:24,881	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:25,027	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:25,145	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:25,146	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:25,146	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:26,155	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:26,249	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:26,363	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:26,505	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:26,626	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:26,627	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:26,627	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:27,634	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:27,705	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:27,797	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:27,911	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:28,034	module:sync_orders	message:start sync bitbank
+[ERROR]	asctime:2019-03-28 16:11:28,035	module:sync_orders	message:while sync bitbank:user:a@hoge.com message: ('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-28 16:11:28,035	module:sync_orders	message:start sync coincheck
+[INFO]	asctime:2019-03-28 16:11:29,046	module:sync_orders	message:start sync bitbank
+[INFO]	asctime:2019-03-28 16:11:29,114	module:sync_orders	message:start sync coincheck
