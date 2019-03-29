@@ -162,7 +162,7 @@ LOGGING = {
         },
     },
     'loggers': {  # どんなloggerがあるかを設定する
-        'transaction_logger': { 
+        'api': { 
             'handlers': ['file_transaction', 'console'],  # 先述のfile, consoleの設定で出力
             'level': 'DEBUG',
         },
@@ -244,10 +244,6 @@ EMAIL_HOST_USER = 'kenkenpar55@kenkenpar.com'
 EMAIL_HOST_PASSWORD = '1q1q1q1q'
 EMAIL_USE_TLS = False
 
-BANK = '三井住友'
-BRANCH = '立川'
-TYPE = '普通'
-NUMBER = '22222'
 
 # JOBs
 CRONJOBS = [

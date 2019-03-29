@@ -336,6 +336,8 @@ class Order(models.Model):
     )
     
     def place(self):
+        logger = logging.getLogger('api')
+
         prv_bitbank = python_bitbankcc.private(self.user.bb_api_key, self.user.bb_api_secret_key)
         prv_coincheck = CoinCheck(self.user.cc_api_key, self.user.cc_api_secret_key)
         
@@ -357,16 +359,14 @@ class Order(models.Model):
                 self.save()
                 return True
             except Exception as e:
+                logger.error('place bitbank order: ' + str(e.args))
                 self.status = Order.STATUS_FAILED_TO_ORDER
                 self.error_message = str(e.args)
                 self.save()
                 return False
         elif self.market == 'coincheck':
             try:
-                print(self.start_amount)
-                
                 current_rate = float(json.loads(prv_coincheck.ticker.all())['last'])
-
                 ret = json.loads(prv_coincheck.order.create({
                     'rate': self.price if 'limit' in self.order_type else None,
                     'amount': self.start_amount if not (self.order_type == 'market' and self.side == 'buy') else None,
@@ -389,6 +389,7 @@ class Order(models.Model):
                     return False
 
             except Exception as e:
+                logger.error('place coincheck order: ' + str(e.args))
                 self.status = Order.STATUS_FAILED_TO_ORDER
                 self.error_message = str(e.args)
                 self.save()
@@ -396,6 +397,7 @@ class Order(models.Model):
 
 
     def cancel(self):
+        logger = logging.getLogger('api')
         prv_bitbank = python_bitbankcc.private(self.user.bb_api_key, self.user.bb_api_secret_key)
         prv_coincheck = CoinCheck(self.user.cc_api_key, self.user.cc_api_secret_key)
         
@@ -411,76 +413,91 @@ class Order(models.Model):
                 self.status = ret.get('status')
                 self.save()
                 return True
-            except:
+            except Exception as e:
+                logger.error('cancel bitbank order: ' + str(e.args))
                 return False
+
         elif self.market == 'coincheck':
             try:
-                ret = prv_coincheck.order.cancel({
+                ret = json.loads(prv_coincheck.order.cancel({
                     'id': self.order_id # 注文ID
-                })
+                }))
+                print(ret)
                 if ret.get('success'):
                     self.status = self.STATUS_CANCELED_UNFILLED
                     self.save()
                     return True
                 else:
                     return False
-            except:
+            except Exception as e:
+                logger.error('cancel coincheck order: ' + str(e.args))
                 return False
 
     def update(self):
+        logger  = logging.getLogger('api')
+    
         prv_bitbank = python_bitbankcc.private(self.user.bb_api_key, self.user.bb_api_secret_key)
         prv_coincheck = CoinCheck(self.user.cc_api_key, self.user.cc_api_secret_key)
         
         if self.market == 'bitbank':
-            ret = prv_bitbank.get_order(
-                self.pair, 
-                self.order_id
-            )
-            self.remaining_amount = ret.get('remaining_amount')
-            self.executed_amount = ret.get('executed_amount')
-            self.average_price = ret.get('average_price')
-            status = ret.get('status')
-            self.status = status
-            self.save()
-            return status
+            try:
+                ret = prv_bitbank.get_order(
+                    self.pair, 
+                    self.order_id
+                )
+                self.remaining_amount = ret.get('remaining_amount')
+                self.executed_amount = ret.get('executed_amount')
+                self.average_price = ret.get('average_price')
+                status = ret.get('status')
+                self.status = status
+                self.save()
+                return status
+            except Exception as e:
+                logger.error('update bitbank order: ' + str(e.args))
         
         elif self.market == 'coincheck':
-            _open = prv_coincheck.order.open({})
-            _close = prv_coincheck.order.transactions({
-                'limit': 1,
-                'starting_after': self.order_id,
-                'ending_before': self.order_id
-            })
+            try:
+                _open = json.loads(prv_coincheck.order.opens({}))
+                _close = json.loads(prv_coincheck.order.transactions({
+                    'limit': 1,
+                    'starting_after': self.order_id,
+                    'ending_before': self.order_id
+                }))
+                print(_close)
+                if not _open.get('success') or not _close.get('success'):
+                    return False
+                
+                is_open = False
+                for oo in _open.get('orders'):
+                    if oo.get('id') == self.order_id:
+                        is_open = True
+                        return self.STATUS_UNFILLED
 
-            if not _open.get('success') or not _close.get('success'):
-                return False
-            
-            is_open = False
-            for oo in _open.get('orders'):
-                if oo.get('id') == self.order_id:
-                    is_open = True
-                    return self.STATUS_UNFILLED
-
-            if not is_open:
-                if len(_close.get('data')) != 0:
-                    # filled
-                    self.status = self.STATUS_FULLY_FILLED
-                    self.executed_amount = self.start_amount
-                    self.remaining_amount = 0
-                    self.average_price = float(_close.get('data')[0].get('rate'))
-                else:
-                    # canceled
-                    self.status = self.STATUS_CANCELED_UNFILLED
-                self.save()
-                return self.STATUS_FULLY_FILLED
+                if not is_open:
+                    if len(_close.get('transactions')) != 0:
+                        # filled
+                        self.status = self.STATUS_FULLY_FILLED
+                        self.executed_amount = self.start_amount
+                        self.remaining_amount = 0
+                        self.average_price = float(_close.get('transactions')[0].get('rate'))
+                    else:
+                        # canceled
+                        self.status = self.STATUS_CANCELED_UNFILLED
+                    self.save()
+                    return self.STATUS_FULLY_FILLED
+            except Exception as e:
+                logger.error('update coincheck order: ' + str(e.args))
 
     def notify_user(self):
-        readable_datetime = datetime.fromtimestamp(int(int(self.ordered_at) / 1000))
-        context = { "user": self.user, "order": self, 'readable_datetime': readable_datetime }
-        subject = get_template('bitbank/mail_template/fill_notice/subject.txt').render(context)
-        message = get_template('bitbank/mail_template/fill_notice/message.txt').render(context)
-        self.user.email_user(subject, message)
-        logger.info('notice sent to:' + self.user.email_for_notice)
+        try:
+            readable_datetime = datetime.fromtimestamp(int(int(self.ordered_at) / 1000))
+            context = { "user": self.user, "order": self, 'readable_datetime': readable_datetime }
+            subject = get_template('bitbank/mail_template/fill_notice/subject.txt').render(context)
+            message = get_template('bitbank/mail_template/fill_notice/message.txt').render(context)
+            self.user.email_user(subject, message)
+            logger.info('notice sent to:' + self.user.email_for_notice)
+        except Exception as e:
+            logger.error('notify user: ' + str(e.args))
 
 
 class Relation(models.Model):

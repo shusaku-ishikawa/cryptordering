@@ -299,7 +299,7 @@ def ajax_ticker(request):
         return JsonResponse(res)
 
 def ajax_assets(request):
-    logger = logging.getLogger('transaction_logger')
+    logger = logging.getLogger('api')
 
     if request.user.is_anonymous or request.user.is_active == False:
         return JsonResponse({'error' : 'authentication failed'}, status=401)
@@ -328,6 +328,7 @@ def ajax_assets(request):
         return JsonResponse(res_dict)
 
 def _get_error_message(errors, str_order):
+    print(errors)
     _fields = {
         'pair': '通貨',
         'market': '取引所',
@@ -335,13 +336,16 @@ def _get_error_message(errors, str_order):
         'price': '指値金額',
         'price_for_stop': '逆指値金額',
         'trail_width': 'トレール幅',
-        'rate': '通知レート'
+        'rate': '通知レート',
+        'non_field_errors': ''
     }
     error_key = list(errors.keys())[0]
     error_val = errors[error_key][0]
-    return str_order + ' ' + _fields[error_key] + ':' + error_val
+    return str_order + ' ' + _fields[error_key] + ': ' + error_val
 
 def ajax_orders(request):
+    logger = logging.getLogger('api')
+
     if request.user.is_anonymous or request.user.is_active == False:
         return JsonResponse({'error' : 'authentication failed'}, status=401)
 
@@ -349,25 +353,27 @@ def ajax_orders(request):
     method = request.method
     if method == 'GET': 
         if request.GET.get('type') == 'active':
-           
-            offset = int(request.GET.get('offset'))
-            to = int(request.GET.get('limit')) + offset
-            search_market = request.GET.get('market')
-            search_pair = request.GET.get('pair')
+            try:
+                offset = int(request.GET.get('offset'))
+                to = int(request.GET.get('limit')) + offset
+                search_market = request.GET.get('market')
+                search_pair = request.GET.get('pair')
 
+                active_orders = Relation.objects.filter(user = user).filter(is_active = True)
 
-            active_orders = Relation.objects.filter(user = user).filter(is_active = True)
+                if search_market != "all":
+                    active_orders = active_orders.filter(market=search_market)
+                if search_pair != "all":
+                    active_orders = active_orders.filter(pair=search_pair)
 
-            if search_market != "all":
-                active_orders = active_orders.filter(market=search_market)
-            if search_pair != "all":
-                active_orders = active_orders.filter(pair=search_pair)
-
-            data = {
-                'total_count': active_orders.count(),
-                'data': RelationSerializer(active_orders.order_by('-pk')[offset:to], many=True ).data
-            }
-            return JsonResponse(data)
+                data = {
+                    'total_count': active_orders.count(),
+                    'data': RelationSerializer(active_orders.order_by('-pk')[offset:to], many=True ).data
+                }
+                return JsonResponse(data)
+            except Exception as e:
+                logger.error('get active orders: ' + str(e.args))
+                return JsonResponse({'error': str(e.args)})
            
         elif request.GET.get('type') == 'history':
             try:
@@ -394,7 +400,7 @@ def ajax_orders(request):
     elif method == 'POST':
         op = request.POST.get('method')
         if op == 'POST':
-            
+
             market = request.POST.get('market')
             pair = request.POST.get('pair')
             special_order = request.POST.get('special_order')
@@ -404,189 +410,213 @@ def ajax_orders(request):
             relation.market = market
             relation.pair = pair
             relation.special_order = special_order
-            
             if special_order == 'SINGLE':
-                
-                dic_o1 = json.loads(request.POST.get('order_1'))
-                dic_o1['status'] = Order.STATUS_READY_TO_ORDER
-                o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
-                
-                if o_1_serializer.is_valid():
-                    o_1 = o_1_serializer.save()
-                else:
-                    return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
-                
-                if o_1.status == Order.STATUS_FAILED_TO_ORDER:
-                    relation = None
-                    return JsonResponse({'error': o_1.error_message})
+                try:
+                    dic_o1 = json.loads(request.POST.get('order_1'))
+                    dic_o1['status'] = Order.STATUS_READY_TO_ORDER
+                    o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
+                    
+                    if o_1_serializer.is_valid():
+                        o_1 = o_1_serializer.save()
+                    else:
+                        return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
+                    
+                    if o_1.status == Order.STATUS_FAILED_TO_ORDER:
+                        relation = None
+                        return JsonResponse({'error': o_1.error_message})
 
-                relation.order_1 = o_1
+                    relation.order_1 = o_1
+                except Exception as e:
+                    print(e.args)
+                    logger.error('single order: ' + str(e.args))
+                    return JsonResponse({'error': str(e.args)})
 
             elif special_order == 'IFD':
-                dic_o1 = json.loads(request.POST.get('order_1'))
-                dic_o1['status'] = Order.STATUS_READY_TO_ORDER
-                dic_o2 = json.loads(request.POST.get('order_2'))
-                dic_o2['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
+                try:
+                    dic_o1 = json.loads(request.POST.get('order_1'))
+                    dic_o1['status'] = Order.STATUS_READY_TO_ORDER
+                    dic_o2 = json.loads(request.POST.get('order_2'))
+                    dic_o2['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
 
-                o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
-                o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
-               
-                if not o_1_serializer.is_valid():
-                    return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
+                    o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
+                    o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
+                
+                    if not o_1_serializer.is_valid():
+                        return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
 
-                if not o_2_serializer.is_valid():
-                    return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
+                    if not o_2_serializer.is_valid():
+                        return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
 
 
-                o_1 = o_1_serializer.save()
-                # 新規が失敗した場合
-                if o_1.status == Order.STATUS_FAILED_TO_ORDER:
-                    relation = None
-                    return JsonResponse({'error': o_1.error_message})
-                o_2 = o_2_serializer.save()
-                relation.order_1 = o_1
-                relation.order_2 = o_2
+                    o_1 = o_1_serializer.save()
+                    # 新規が失敗した場合
+                    if o_1.status == Order.STATUS_FAILED_TO_ORDER:
+                        relation = None
+                        return JsonResponse({'error': o_1.error_message})
+                    o_2 = o_2_serializer.save()
+                    relation.order_1 = o_1
+                    relation.order_2 = o_2
+                except Exception as e:
+                    logger.error('ifd order: ' + str(e.args))
+                    return JsonResponse({'error': str(e.args)})
 
             elif special_order == 'OCO':
-                dic_o2 = json.loads(request.POST.get('order_2'))
-                dic_o2['status'] = Order.STATUS_READY_TO_ORDER
-                dic_o3 = json.loads(request.POST.get('order_3'))
-                dic_o3['status'] = Order.STATUS_READY_TO_ORDER
+                try:
+                    dic_o2 = json.loads(request.POST.get('order_2'))
+                    dic_o2['status'] = Order.STATUS_READY_TO_ORDER
+                    dic_o3 = json.loads(request.POST.get('order_3'))
+                    dic_o3['status'] = Order.STATUS_READY_TO_ORDER
 
-                o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
-                o_3_serializer = OrderSerializer(data = dic_o3, context = {'user': user})
-                
-                if not o_2_serializer.is_valid():
-                    return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
+                    o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
+                    o_3_serializer = OrderSerializer(data = dic_o3, context = {'user': user})
+                    
+                    if not o_2_serializer.is_valid():
+                        return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
 
-                if not o_3_serializer.is_valid():
-                    return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
+                    if not o_3_serializer.is_valid():
+                        return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
 
 
-                o_2 = o_2_serializer.save()
-                o_3 = o_3_serializer.save()
-                
-                if o_2.status == Order.STATUS_FAILED_TO_ORDER:
-                    o_3.cancel()
-                    relation = None
-                    return JsonResponse({'error': o_2.error_message})
-                if o_3.status == Order.STATUS_FAILED_TO_ORDER:
-                    o_2.cancel()
-                    relation = None
-                    return JsonResponse({'error': o_3.error_message})
+                    o_2 = o_2_serializer.save()
+                    o_3 = o_3_serializer.save()
+                    
+                    if o_2.status == Order.STATUS_FAILED_TO_ORDER:
+                        o_3.cancel()
+                        relation = None
+                        return JsonResponse({'error': o_2.error_message})
+                    if o_3.status == Order.STATUS_FAILED_TO_ORDER:
+                        o_2.cancel()
+                        relation = None
+                        return JsonResponse({'error': o_3.error_message})
 
-                relation.order_2 = o_2
-                relation.order_3 = o_3
+                    relation.order_2 = o_2
+                    relation.order_3 = o_3
+
+                except Exception as e:
+                    logger.error('oco order: ' + str(e.args))
+                    return JsonResponse({'error': str(e.args)})
                 
             elif special_order == 'IFDOCO':
-                dic_o1 = json.loads(request.POST.get('order_1'))
-                dic_o1['status'] = Order.STATUS_READY_TO_ORDER
-                dic_o2 = json.loads(request.POST.get('order_2'))
-                dic_o2['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
-                dic_o3 = json.loads(request.POST.get('order_3'))
-                dic_o3['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
+                try:
+                    dic_o1 = json.loads(request.POST.get('order_1'))
+                    dic_o1['status'] = Order.STATUS_READY_TO_ORDER
+                    dic_o2 = json.loads(request.POST.get('order_2'))
+                    dic_o2['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
+                    dic_o3 = json.loads(request.POST.get('order_3'))
+                    dic_o3['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
 
-                o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
-                o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
-                o_3_serializer = OrderSerializer(data = dic_o3, context = {'user': user})
-                
-                if not o_1_serializer.is_valid():
-                    return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
+                    o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
+                    o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
+                    o_3_serializer = OrderSerializer(data = dic_o3, context = {'user': user})
+                    
+                    if not o_1_serializer.is_valid():
+                        return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
 
-                if not o_2_serializer.is_valid():
-                    return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
-                if not o_3_serializer.is_valid():
-                    return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
+                    if not o_2_serializer.is_valid():
+                        return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
+                    if not o_3_serializer.is_valid():
+                        return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
 
-                o_1 = o_1_serializer.save()
-                if o_1.status == Order.STATUS_FAILED_TO_ORDER:
-                    relation = None
-                    return JsonResponse({'error': o_1.error_message})
-                
-                o_2 = o_2_serializer.save()
-                o_3 = o_3_serializer.save()
+                    o_1 = o_1_serializer.save()
+                    if o_1.status == Order.STATUS_FAILED_TO_ORDER:
+                        relation = None
+                        return JsonResponse({'error': o_1.error_message})
+                    
+                    o_2 = o_2_serializer.save()
+                    o_3 = o_3_serializer.save()
 
-                relation.order_1 = o_1
-                relation.order_2 = o_2
-                relation.order_3 = o_3
-                
+                    relation.order_1 = o_1
+                    relation.order_2 = o_2
+                    relation.order_3 = o_3
+                except Exception as e:
+                    logger.error('ifdoco order: ' + str(e.args))
+                    return JsonResponse({'error': str(e.args)})
+                    
             relation.is_active = True
             relation.save()
+
             return JsonResponse({'success': True})
             
         elif op == 'DELETE':
-            pk = request.POST.get("pk")
-            
-            cancel_succeeded = True
-            order = Order.objects.filter(pk = pk).get()
-            if order.order_id != None:
-                cancel_succeeded = order.cancel()
-            else:
-                # 未発注の場合はステータスをキャンセル済みに変更
-                order.status = 'CANCELED_UNFILLED'
-                order.save()
-            if cancel_succeeded:
-                
-                if Relation.objects.filter(order_1 = order).count() > 0:
-                    relation = Relation.objects.get(order_1 = order)
-                    relation.is_active = False
+            try:
+                pk = request.POST.get("pk")
+                cancel_succeeded = True
+                order = Order.objects.filter(pk = pk).get()
+                if order.order_id != None:
+                    cancel_succeeded = order.cancel()
+                else:
+                    # 未発注の場合はステータスをキャンセル済みに変更
+                    order.status = 'CANCELED_UNFILLED'
+                    order.save()
+                if cancel_succeeded:
+                    if Relation.objects.filter(order_1 = order).count() > 0:
+                        relation = Relation.objects.get(order_1 = order)
+                        relation.is_active = False
 
-                elif Relation.objects.filter(order_2 = order).count() > 0:
-                    relation = Relation.objects.get(order_2 = order)
-                    # IFD
-                    if relation.order_3 == None:
-                        relation.order_2 = None
-                        relation.special_order = 'SINGLE'
-                    # OCO
-                    elif relation.order_1 == None:
-                        relation.order_1 = relation.order_3
-                        relation.order_2 = None
-                        relation.order_3 = None
-                        relation.special_order = 'SINGLE'
-                    # IFDOCO
-                    else:
-                        relation.order_2 = relation.order_3
-                        relation.order_3 = None
-                        relation.special_order = 'IFD'
+                    elif Relation.objects.filter(order_2 = order).count() > 0:
+                        relation = Relation.objects.get(order_2 = order)
+                        # IFD
+                        if relation.order_3 == None:
+                            relation.order_2 = None
+                            relation.special_order = 'SINGLE'
+                        # OCO
+                        elif relation.order_1 == None:
+                            relation.order_1 = relation.order_3
+                            relation.order_2 = None
+                            relation.order_3 = None
+                            relation.special_order = 'SINGLE'
+                        # IFDOCO
+                        else:
+                            relation.order_2 = relation.order_3
+                            relation.order_3 = None
+                            relation.special_order = 'IFD'
 
-                elif Relation.objects.filter(order_3 = order).count() > 0:
-                    relation = Relation.objects.get(order_3 = order)
-                    # OCO
-                    if relation.order_1 == None:
-                        relation.order_1 = relation.order_2
-                        relation.order_2 = None
-                        relation.order_3 = None
-                        relation.special_order = 'SINGLE'
-                    # IFDOCO
-                    else:
-                        relation.order_3 = None
-                        relation.special_order = 'IFD'
-                relation.save()
-                return JsonResponse({'success': True})
-            else:
-                return JsonResponse({'error': 'この注文はキャンセルできません'})
-            # except Exception as e:
-            #     return JsonResponse({'error': e.args})
-                
+                    elif Relation.objects.filter(order_3 = order).count() > 0:
+                        relation = Relation.objects.get(order_3 = order)
+                        # OCO
+                        if relation.order_1 == None:
+                            relation.order_1 = relation.order_2
+                            relation.order_2 = None
+                            relation.order_3 = None
+                            relation.special_order = 'SINGLE'
+                        # IFDOCO
+                        else:
+                            relation.order_3 = None
+                            relation.special_order = 'IFD'
+                    relation.save()
+                    return JsonResponse({'success': True})
+                else:
+                    return JsonResponse({'error': 'この注文はキャンセルできません'})
+            except Exception as e:
+                logger.error('cancel order: ' + str(e.args))
+                return JsonReponse({'error': str(e.args)})
 
 def ajax_attachment(request):
+    logger = logging.getLogger('api')
+
     if request.user.is_anonymous or request.user.is_active == False:
         return JsonResponse({'error' : 'authentication failed'}, status=401)
 
     method = request.method
 
     if method == 'POST':
-        if request.POST.get('method') == 'DELETE':
-            pk = request.POST.get('pk')
-            Attachment.objects.filter(pk=pk).delete()
-            return JsonResponse({'success': True})
-        else:
-            a = Attachment()
-            a.file = request.FILES['attachment']
-            a.save()
-            return JsonResponse({'success': True, 'pk': a.pk, 'url': a.file.url})
+        try:
+            if request.POST.get('method') == 'DELETE':
+                pk = request.POST.get('pk')
+                Attachment.objects.filter(pk=pk).delete()
+                return JsonResponse({'success': True})
+            else:
+                a = Attachment()
+                a.file = request.FILES['attachment']
+                a.save()
+                return JsonResponse({'success': True, 'pk': a.pk, 'url': a.file.url})
+        except Exception as e:
+            logger.error('post attchment: ' + str(e.args))
+            return JsonResponse({'error': str(e.args)})
        
 def ajax_inquiry(request):
+    logger = logging.getLogger('api')
+
     if request.user.is_anonymous or request.user.is_active == False:
         return JsonResponse({'error' : 'authentication failed'}, status=401)
         
@@ -656,4 +686,5 @@ def ajax_inquiry(request):
             msg_for_customer.send()
             return JsonResponse({'success': '問い合わせが完了しました'})
         except Exception as e:
-            return JsonResponse({'error': e.args})
+            logger.error('post inquiry: ' + str(e.args))
+            return JsonResponse({'error': str(e.args)})
