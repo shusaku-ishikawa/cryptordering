@@ -323,9 +323,11 @@ def ajax_assets(request):
                     }
                 else:
                     res_dict = json.loads(CoinCheck(user.cc_api_key, user.cc_api_secret_key).account.balance({}))
+            return JsonResponse(res_dict)
         except Exception as e:
-            logger.info(str(e.args))  
-        return JsonResponse(res_dict)
+            logger.info(str(e.args))
+            return JsonResponse({'error': str(e.args)})
+        
 
 def _get_error_message(errors, str_order):
     print(errors)

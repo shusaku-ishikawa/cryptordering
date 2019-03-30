@@ -29,8 +29,9 @@ class Command(BaseCommand):
             for user in User.objects.filter(is_active = True):
                 
                 # bitbank sync start
+               # try:
+                logger.info('start sync bitbank')
                 try:
-                    logger.info('start sync bitbank')
                     prv_bb = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key)
                     for pair in Relation.PAIR:
                         to = datetime.now()
@@ -132,9 +133,10 @@ class Command(BaseCommand):
                                     continue
                             else:
                                 logger.info('this order already exists in db')
-                        
+                    if co['success']:
                         for o in co['transactions']:
-                            path
+                            print(o)
                 except Exception as e:
+                    logger.error('while sync coincheck: ' + 'user:' + user.email + ' message: ' + str(e.args))
                     print(str(e.args))
                 

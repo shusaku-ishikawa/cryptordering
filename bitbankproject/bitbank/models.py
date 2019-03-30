@@ -738,14 +738,15 @@ class BankInfo(models.Model):
 
     @staticmethod
     def get_bank_info():
-        instance = BankInfo.objects.all()[0]
-        if instance == None:
+        qs = BankInfo.objects.all()
+        if len(qs) == 0:
             instance = BankInfo()
             BankInfo.bank = 'no data'
             BankInfo.branch = 'no data'
             BankInfo.type = '普通'
             BankInfo.number = 'no data'
-        return instance
+            return instance
+        return qs[0]
 
 @receiver(post_delete, sender=Attachment)
 def delete_file(sender, instance, **kwargs):
