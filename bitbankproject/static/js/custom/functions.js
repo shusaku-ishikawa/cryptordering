@@ -182,7 +182,7 @@ function init_free_amount_json($message_target) {
                     set_error_message($message_target, res.error);
                     return;
                 }
-               
+                free_amount_json[market]['btc'] = res.btc;
                 free_amount_json[market]['jpy'] = res.jpy;
             })
             .fail(function(data, textStatus, xhr) {
@@ -387,9 +387,9 @@ function create_order_json(market, pair, side, order_type, price, price_for_stop
     order_info.pair = pair;
     order_info.side = side;
     order_info.order_type = order_type;
-    order_info.price = price;
-    order_info.price_for_stop = price_for_stop;
-    order_info.trail_width = trail_width;
+    order_info.price = order_type.match(/limit/) ? price : null;
+    order_info.price_for_stop = order_type.match(/stop/) ? price_for_stop : null;
+    order_info.trail_width = order_type.match(/trail/) ? trail_width : null;
     order_info.start_amount = start_amount;
     return JSON.stringify(order_info);
 }
@@ -753,6 +753,8 @@ function init_order_tab(is_initial = false) {
                     $('#sell_button_' + i).removeClass('sell').addClass('btn-base');
                     $('#buy_button_' + i).addClass('buy').removeClass('btn-base');
                     $('#myRange_' + i).addClass('slider_for_buy').removeClass('slider_for_sell');
+                    $('button[name="perc_button_' + i + '"]').addClass('buy').removeClass('sell');
+                    
                     $button_order.addClass('green_button').removeClass('red_button');
                 } else {
                     
@@ -760,6 +762,7 @@ function init_order_tab(is_initial = false) {
                     $('#buy_button_' + i).removeClass('buy').addClass('btn-base');
                     $('#myRange_' + i).addClass('slider_for_sell').removeClass('slider_for_buy');
                     $button_order.removeClass('green_button').addClass('red_button');
+                    $('button[name="perc_button_' + i + '"]').addClass('sell').removeClass('buy');
                 }
               
                 set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'side change_' + i);
@@ -781,6 +784,11 @@ function init_order_tab(is_initial = false) {
                 } else {
                    // do nothing
                 }
+            });
+            
+            $('button[name="perc_button_' + i + '"]')
+            .on('click', function() {
+                $('#myRange_' + i).val($(this).val()).trigger('input');
             });
 
             Object.keys(SELL_BUY).forEach(key => {
@@ -856,21 +864,26 @@ function init_order_tab(is_initial = false) {
             var start_amount_2 = $('#id_start_amount_2').val();
             var start_amount_3 = $('#id_start_amount_3').val();
             
-            var order_1 = create_order_json(market, pair, side_1, order_type_1, price_1, price_for_stop_1, trail_width_1, start_amount_1);
-            var order_2 = create_order_json(market, pair, side_2, order_type_2, price_2, price_for_stop_2, trail_width_2, start_amount_2);
-            var order_3 = create_order_json(market, pair, side_3, order_type_3, price_3, price_for_stop_3, trail_width_3, start_amount_3);
-        
+            
             switch ($input_special_order.val()) {
                 case 'SINGLE':
+                    var order_1 = create_order_json(market, pair, side_1, order_type_1, price_1, price_for_stop_1, trail_width_1, start_amount_1);
                     place_order(market, pair, special_order, order_1, null, null, $order_result_message_target);
                     break;
                 case 'IFD':
+                    var order_1 = create_order_json(market, pair, side_1, order_type_1, price_1, price_for_stop_1, trail_width_1, start_amount_1);
+                    var order_2 = create_order_json(market, pair, side_2, order_type_2, price_2, price_for_stop_2, trail_width_2, start_amount_2);
                     place_order(market, pair, special_order, order_1, order_2, null, $order_result_message_target);
                     break;
                 case 'OCO':
+                    var order_2 = create_order_json(market, pair, side_2, order_type_2, price_2, price_for_stop_2, trail_width_2, start_amount_2);
+                    var order_3 = create_order_json(market, pair, side_3, order_type_3, price_3, price_for_stop_3, trail_width_3, start_amount_3);        
                     place_order(market, pair, special_order, null, order_2, order_3, $order_result_message_target);
                     break;
                 case 'IFDOCO':
+                    var order_1 = create_order_json(market, pair, side_1, order_type_1, price_1, price_for_stop_1, trail_width_1, start_amount_1);
+                    var order_2 = create_order_json(market, pair, side_2, order_type_2, price_2, price_for_stop_2, trail_width_2, start_amount_2);    
+                    var order_3 = create_order_json(market, pair, side_3, order_type_3, price_3, price_for_stop_3, trail_width_3, start_amount_3);        
                     place_order(market, pair, special_order, order_1, order_2, order_3, $order_result_message_target);
                     break;
             }
