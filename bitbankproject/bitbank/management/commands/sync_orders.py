@@ -12,9 +12,7 @@ from ...coincheck.coincheck import CoinCheck
 
 
 class Command(BaseCommand):
-    # python manage.py help count_entryで表示されるメッセージ
     help = '本家と注文を同期します'
-    # コマンドが実行された際に呼ばれるメソッド
     def handle(self, *args, **options):
         logger = logging.getLogger('sync_orders')
         time_started = time.time()
@@ -27,33 +25,22 @@ class Command(BaseCommand):
                 break;
             
             for user in User.objects.filter(is_active = True):
-                
-                # bitbank sync start
-               # try:
                 logger.info('start sync bitbank')
-                try:
-                    prv_bb = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key)
-                    for pair in Relation.PAIR:
-                        to = datetime.now()
-                        since = to - timedelta(minutes = 10)
-                        
-                        active = prv_bb.get_active_orders(
-                            pair,
-                            {
-                                'since': int(since.timestamp()),
-                                'end': int(to.timestamp())
-                            }
-                        )
-                        history = prv_bb.get_trade_history(
-                            pair,
-                            {
-                                'count': 10,
-                                'since': int(since.timestamp() * 1000),
-                                'end': int(to.timestamp() * 1000)
-                            }
-                        )
-                    
+                prv_bb = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key)
+                for pair in Relation.PAIR:
+                 
+                    time.sleep(0.1)
+                    to = datetime.now()
+                    since = to - timedelta(seconds = 10)
+                    option = {
+                        'count': 10,
+                        'since': int(since.timestamp() * 1000),
+                        'end': int(to.timestamp() * 1000)
+                    }
+                    try:
+                        active = prv_bb.get_active_orders(pair, option)
                         for o in active['orders']:
+                            time.sleep(0.3)
                             logger.info('bitbank active order found : ' + str(o['order_id']))
                             print(o)
                             exist = Order.objects.filter(order_id = o['order_id'])
@@ -77,9 +64,14 @@ class Command(BaseCommand):
                                 relation.save()
                             else:
                                 logger.info('this order already exists in db')
-
+                    except Exception as e:
+                        logger.error('while sync active bb ' + pair + ' user:' + user.email + ' ' + str(e.args))
+                        pass
+                    try:
+                    
+                        history = prv_bb.get_trade_history(pair, option)
                         for o in history['trades']:
-                            print(o)
+                            time.sleep(0.1)
                             logger.info('bitbank closed order found : ' + str(o['order_id']))
                             exist = Order.objects.filter(order_id = o['order_id'])
                             if len(exist) == 0:
@@ -98,9 +90,9 @@ class Command(BaseCommand):
                             else:
                                 logger.info('this order already exists in db')
 
-                except Exception as e:
-                    logger.error('while sync bitbank:' + 'user:' + user.email + ' message: ' +  str(e.args))
-                    pass
+                    except Exception as e:
+                        logger.error('while sync history bb ' + pair + ' user:' + user.email + ' ' + str(e.args))
+                        pass
 
                 try:
                     logger.info('start sync coincheck')
@@ -117,7 +109,7 @@ class Command(BaseCommand):
                         for o in ao['orders']:
                             exist = Order.objects.filter(order_id = o['id'])
                             if len(exist) == 0:
-                                logger.info('this order does not exist in db. start sync : ' + str(o['id']))
+                                logger.info('this active order does not exist in db. start sync : ' + str(o['id']))
                                 o['market'] = 'coincheck'
                                 o['order_id'] = o['id']
                                 o['side'] = 'sell' if 'sell' in o['order_type'] else 'buy'
@@ -131,11 +123,40 @@ class Command(BaseCommand):
                                 else:
                                     print(os.errors)
                                     continue
+                                relation = Relation()
+                                relation.user = user
+                                relation.market = 'coincheck'
+                                relation.pair = o['pair']
+                                relation.special_order = 'SINGLE'
+                                relation.order_1 = o1
+                                relation.save()
                             else:
-                                logger.info('this order already exists in db')
+                                logger.info('this active order already exists in db')
                     if co['success']:
+                        print(co['transactions'])
                         for o in co['transactions']:
-                            print(o)
+                            exist = Order.objects.filter(order_id = o['order_id'])
+                            if len(exist) == 0:
+                                logger.info('this closed order does not exits in db. start sync: ' + str(o[('order_id')]) )
+                                o['market'] = 'coincheck'
+                                o['status'] = Order.STATUS_FULLY_FILLED
+
+                                amount = float(o['funds']['btc']) if o['side'] == 'buy' else -1 * float(o['funds']['btc'])
+                                for o2 in co['transactions']:
+                                    if o['id'] != o2['id'] and o['order_id'] == o2['order_id']:
+                                        amount += float(o2['funds']['btc']) if o2['side'] == 'buy' else -1 * float(o2['funds']['btc'])
+                                
+                                print(amount)
+                                o['executed_amount'] = amount
+                                o['start_amount'] = amount
+                                o['order_type'] = '-'
+                                os = OrderSerializer(data = o, context = {'user': user})
+                                if os.is_valid():
+                                    o1 = os.save()
+                                else:
+                                    print(os.errors)
+                                    continue 
+                                #print(o)
                 except Exception as e:
                     logger.error('while sync coincheck: ' + 'user:' + user.email + ' message: ' + str(e.args))
                     print(str(e.args))

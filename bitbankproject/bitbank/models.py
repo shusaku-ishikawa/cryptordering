@@ -67,7 +67,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
-        return self.full_name
+        if self.full_name == None:
+            return 'no name'
+        else:
+            return self.full_name
         
     """カスタムユーザーモデル."""
     NOTIFY_STR = (
@@ -200,7 +203,8 @@ class Order(models.Model):
         'market': '成行',
         'limit': '指値',
         'stop_market': '逆指値',
-        'stop_limit': 'ストップリミット'
+        'stop_limit': 'ストップリミット',
+        '-': '不明'
     }
     SIDE = {
         'sell': '売',

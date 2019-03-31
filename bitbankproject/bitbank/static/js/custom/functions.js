@@ -753,6 +753,8 @@ function init_order_tab(is_initial = false) {
                     $('#sell_button_' + i).removeClass('sell').addClass('btn-base');
                     $('#buy_button_' + i).addClass('buy').removeClass('btn-base');
                     $('#myRange_' + i).addClass('slider_for_buy').removeClass('slider_for_sell');
+                    $('button[name="perc_button_' + i + '"]').addClass('buy').removeClass('sell');
+                    
                     $button_order.addClass('green_button').removeClass('red_button');
                 } else {
                     
@@ -760,6 +762,7 @@ function init_order_tab(is_initial = false) {
                     $('#buy_button_' + i).removeClass('buy').addClass('btn-base');
                     $('#myRange_' + i).addClass('slider_for_sell').removeClass('slider_for_buy');
                     $button_order.removeClass('green_button').addClass('red_button');
+                    $('button[name="perc_button_' + i + '"]').addClass('sell').removeClass('buy');
                 }
               
                 set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'side change_' + i);
@@ -781,6 +784,11 @@ function init_order_tab(is_initial = false) {
                 } else {
                    // do nothing
                 }
+            });
+            
+            $('button[name="perc_button_' + i + '"]')
+            .on('click', function() {
+                $('#myRange_' + i).val($(this).val()).trigger('input');
             });
 
             Object.keys(SELL_BUY).forEach(key => {
