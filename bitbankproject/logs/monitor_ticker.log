@@ -2834,3 +2834,14 @@
 [INFO]	asctime:2019-04-01 20:32:37,404	module:monitor_ticker	message:trail order found. side:sell trail width:3.0
 [INFO]	asctime:2019-04-01 20:33:33,127	module:monitor_ticker	message:completed
 [INFO]	asctime:2019-04-01 20:35:40,280	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-01 20:42:03,383	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-01 20:43:00,870	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-01 20:43:03,241	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-01 20:44:00,633	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-01 20:44:03,069	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-01 20:45:00,572	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-01 20:45:03,925	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-01 20:46:02,131	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-01 20:46:03,497	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-01 20:47:00,763	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-01 20:47:03,215	module:monitor_ticker	message:started
