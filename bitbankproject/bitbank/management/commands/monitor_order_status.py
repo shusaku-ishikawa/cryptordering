@@ -63,8 +63,7 @@ class Command(BaseCommand):
                                             o_2.cancel()
                                         else:
                                             o_2.status = Order.STATUS_CANCELED_UNFILLED
-                        
-
+                    
                         if relation.user.notify_if_filled == 'ON':
                             # 約定通知メール
                             o_1.notify_user()

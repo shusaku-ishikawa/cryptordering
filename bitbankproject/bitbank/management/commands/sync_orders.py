@@ -42,7 +42,7 @@ class Command(BaseCommand):
                         for o in active['orders']:
                             time.sleep(0.3)
                             logger.info('bitbank active order found : ' + str(o['order_id']))
-                            
+                            print(o)
                             exist = Order.objects.filter(order_id = o['order_id'])
                             if len(exist) == 0:
                                 logger.info('this order does not exist in db. start sync : ' + str(o['order_id']))
@@ -72,6 +72,7 @@ class Command(BaseCommand):
                         history = prv_bb.get_trade_history(pair, option)
                         for o in history['trades']:
                             time.sleep(0.1)
+                            print(o)
                             logger.info('bitbank closed order found : ' + str(o['order_id']))
                             exist = Order.objects.filter(order_id = o['order_id'])
                             if len(exist) == 0:
@@ -80,7 +81,8 @@ class Command(BaseCommand):
                                 o['order_type'] = o['type']
                                 o['status'] = Order.STATUS_FULLY_FILLED
                                 o['ordered_at'] = o['executed_at']
-
+                                o['start_amount'] = o['amount']
+                                o['executed_amount'] = o['amount']
                                 os = OrderSerializer(data = o, context = {'user': user})
                                 if os.is_valid():
                                     o1 = os.save()
@@ -154,7 +156,7 @@ class Command(BaseCommand):
                                 
                                 o['executed_amount'] = amount
                                 o['start_amount'] = amount
-                                o['order_type'] = '-'
+                                o['order_type'] = Order.TYPE_LIMIT
                                 os = OrderSerializer(data = o, context = {'user': user})
                                 if os.is_valid():
                                     o1 = os.save()

@@ -55,7 +55,6 @@ class OrderSerializer(serializers.ModelSerializer):
         try:
             instance = Order(**validated_data)
             instance.user = user
-            
             if validated_data['order_type'] == Order.TYPE_TRAIL:
                 try:
                     ret = python_bitbankcc.public().get_ticker(validated_data['pair']) if validated_data['market'] == 'bitbank' else json.loads(CoinCheck('fake', 'fake').ticker.all())['last']
