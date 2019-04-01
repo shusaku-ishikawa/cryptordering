@@ -1,6 +1,7 @@
 
 import logging
 import json
+from datetime import datetime, timedelta
 from django import forms
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
@@ -381,7 +382,8 @@ class Order(models.Model):
                 if ret.get('success'):
                     self.order_id = ret.get('id')
                     self.remaining_amount = ret.get('amount')
-                    self.ordered_at = int(datetime.strptime(ret.get('created_at'), '%Y-%m-%dT%H:%M:%S.%fZ').timestamp() * 1000)
+                    ordered_date = datetime.strptime(ret.get('created_at'), '%Y-%m-%dT%H:%M:%S.%fZ') + timedelta(hours = 9)
+                    self.ordered_at = int(ordered_date.timestamp() * 1000)
                     self.status = self.STATUS_UNFILLED
                     self.save()
                     return True
