@@ -73,8 +73,8 @@ class OrderSerializer(serializers.ModelSerializer):
             print('serializer ' + str(e.args))
     
     def validate(self, data):
-        # coincheckの場合は0.005以上の取引であること
-        if data['market'] == 'coincheck' and data['start_amount'] < 0.005:
+        # coincheckの新規注文の場合は0.005以上の取引であること
+        if 'order_id' not in data and data['market'] == 'coincheck' and data['start_amount'] < 0.005:
             raise serializers.ValidationError(str(data['start_amount']) + ":coincheckの最小取引量を下回っております")
         return data
 

@@ -42,7 +42,7 @@ class Command(BaseCommand):
                         for o in active['orders']:
                             time.sleep(0.3)
                             logger.info('bitbank active order found : ' + str(o['order_id']))
-                            print(o)
+                            
                             exist = Order.objects.filter(order_id = o['order_id'])
                             if len(exist) == 0:
                                 logger.info('this order does not exist in db. start sync : ' + str(o['order_id']))
@@ -52,7 +52,7 @@ class Command(BaseCommand):
                                 if os.is_valid():
                                     o1 = os.save()
                                 else:
-                                    print(os.errors)
+                                    logger.error(str(os.errors))
                                     continue
 
                                 relation = Relation()
@@ -85,7 +85,7 @@ class Command(BaseCommand):
                                 if os.is_valid():
                                     o1 = os.save()
                                 else:
-                                    print(os.errors)
+                                    logger.error(str(os.errors))
                                     continue
                             else:
                                 logger.info('this order already exists in db')
@@ -94,17 +94,17 @@ class Command(BaseCommand):
                         logger.error('while sync history bb ' + pair + ' user:' + user.email + ' ' + str(e.args))
                         pass
 
-                try:
-                    logger.info('start sync coincheck')
-                    prv_cc = CoinCheck(user.cc_api_key, user.cc_api_secret_key)
-                    pair = 'btc_jpy'
+                
+                logger.info('start sync coincheck')
+                prv_cc = CoinCheck(user.cc_api_key, user.cc_api_secret_key)
+                pair = 'btc_jpy'
 
-                    pag = {
-                        'limit': 10,
-                        'order': 'desc'
-                    }
+                pag = {
+                    'limit': 10,
+                    'order': 'desc'
+                }
+                try:
                     ao = json.loads(prv_cc.order.opens({}))
-                    co = json.loads(prv_cc.order.transactions(pag))
                     if ao['success']:
                         for o in ao['orders']:
                             exist = Order.objects.filter(order_id = o['id'])
@@ -121,7 +121,7 @@ class Command(BaseCommand):
                                 if os.is_valid():
                                     o1 = os.save()
                                 else:
-                                    print(os.errors)
+                                    logger.error(str(os.errors))
                                     continue
                                 relation = Relation()
                                 relation.user = user
@@ -132,8 +132,13 @@ class Command(BaseCommand):
                                 relation.save()
                             else:
                                 logger.info('this active order already exists in db')
+                except Exception as e:
+                    logger.error('while sync open cc ' + pair + ' user:' + user.email + ' ' + str(e.args))
+                    pass
+                
+                try:
+                    co = json.loads(prv_cc.order.transactions(pag))
                     if co['success']:
-                        print(co['transactions'])
                         for o in co['transactions']:
                             exist = Order.objects.filter(order_id = o['order_id'])
                             if len(exist) == 0:
@@ -146,7 +151,7 @@ class Command(BaseCommand):
                                     if o['id'] != o2['id'] and o['order_id'] == o2['order_id']:
                                         amount += float(o2['funds']['btc']) if o2['side'] == 'buy' else -1 * float(o2['funds']['btc'])
                                 
-                                print(amount)
+                                
                                 o['executed_amount'] = amount
                                 o['start_amount'] = amount
                                 o['order_type'] = '-'
@@ -154,10 +159,10 @@ class Command(BaseCommand):
                                 if os.is_valid():
                                     o1 = os.save()
                                 else:
-                                    print(os.errors)
+                                    logger.error(str(os.errors))
                                     continue 
-                                #print(o)
+                                
                 except Exception as e:
-                    logger.error('while sync coincheck: ' + 'user:' + user.email + ' message: ' + str(e.args))
-                    print(str(e.args))
-                
+                    logger.error('while sync close cc ' + pair + ' user:' + user.email + ' ' + str(e.args))
+                    pass
+        logger.info('done')

@@ -253,13 +253,6 @@ def ajax_alerts(request):
             'total_count': alerts.count(),
             'data': AlertSerializer(alerts.order_by('-pk')[offset:to], many=True ).data
         }
-        # except Exception as e:
-        #     data = {
-        #         'error': e.args
-        #     }
-        #     print('get ticker error')
-        #     traceback.print_exc()
-        # finally:
         return JsonResponse(data)
     elif method == 'POST':
         op = request.POST.get('method')
@@ -330,7 +323,6 @@ def ajax_assets(request):
         
 
 def _get_error_message(errors, str_order):
-    print(errors)
     _fields = {
         'pair': '通貨',
         'market': '取引所',
@@ -591,7 +583,7 @@ def ajax_orders(request):
                     return JsonResponse({'error': 'この注文はキャンセルできません'})
             except Exception as e:
                 logger.error('cancel order: ' + str(e.args))
-                return JsonReponse({'error': str(e.args)})
+                return JsonResponse({'error': str(e.args)})
 
 def ajax_attachment(request):
     logger = logging.getLogger('api')
@@ -629,7 +621,6 @@ def ajax_inquiry(request):
             new_inquiry.subject = request.POST.get('subject')
             new_inquiry.body = request.POST.get('body')
             new_inquiry.email_for_reply = request.POST.get('email_for_reply')
-            print(request.POST.get('email_for_reply'))
             att_1_pk = request.POST.get('att_pk_1')
             att_2_pk = request.POST.get('att_pk_2')
             att_3_pk = request.POST.get('att_pk_3')
