@@ -135,7 +135,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         verbose_name = _('利用者')
-        verbose_name_plural = _('利用者')
+        verbose_name_plural = _('1.利用者')
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
@@ -162,7 +162,7 @@ class Order(models.Model):
         
     class Meta:
         verbose_name = "取引履歴"
-        verbose_name_plural = "取引履歴"
+        verbose_name_plural = "3.取引履歴"
         
     TYPE_MARKET = 'market'
     TYPE_LIMIT = 'limit'
@@ -205,6 +205,7 @@ class Order(models.Model):
         'limit': '指値',
         'stop_market': '逆指値',
         'stop_limit': 'ストップリミット',
+        'trail': 'トレール',
         '-': '不明'
     }
     SIDE = {
@@ -512,7 +513,7 @@ class Relation(models.Model):
 
     class Meta:
         verbose_name = "発注一覧"
-        verbose_name_plural = "発注一覧"
+        verbose_name_plural = "2.発注一覧"
     
     PAIR = [
         'btc_jpy',
@@ -590,7 +591,7 @@ class Alert(models.Model):
 
     class Meta:
         verbose_name = "通知設定"
-        verbose_name_plural = "通知設定"
+        verbose_name_plural = "4.通知設定"
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     market = models.CharField(
@@ -652,7 +653,7 @@ class Inquiry(models.Model):
         return self.subject
     class Meta:
         verbose_name = "問い合せ"
-        verbose_name_plural = "問い合せ"
+        verbose_name_plural = "5.問い合せ"
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -708,7 +709,7 @@ class BankInfo(models.Model):
         return '口座情報'
     class Meta:
         verbose_name = "振込口座情報"
-        verbose_name_plural = "振込口座情報"
+        verbose_name_plural = "6.振込口座情報"
     
     types = [
         ('普通', '普通'),

@@ -1147,3 +1147,7 @@
 [ERROR]	asctime:2019-04-01 21:36:05,879	module:models	message:place coincheck order: ("name 'timedelta' is not defined",)
 [ERROR]	asctime:2019-04-01 21:36:58,551	module:models	message:place coincheck order: ("'hour' is an invalid keyword argument for this function",)
 [ERROR]	asctime:2019-04-01 21:36:58,556	module:views	message:single order: ('`create()` did not return an object instance.',)
+[INFO]	asctime:2019-04-02 20:30:45,109	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-02 20:30:45,409	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-02 20:31:24,005	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-02 20:33:19,446	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)

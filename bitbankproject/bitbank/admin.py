@@ -43,7 +43,7 @@ class MyUserAdmin(UserAdmin):
     ordering = ('remaining_days',)
 
 class MyRelationAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'user_display', 'pair_display', 'special_order', 'order_1', 'order_2', 'order_3', 'placed_at', 'is_active')
+    list_display = ('pk', 'market', 'user_display', 'pair_display', 'special_order', 'order_1', 'order_2', 'order_3', 'placed_at', 'is_active')
     list_display_links = ('pk',)
     def pair_display(self, obj):
         return Order.PAIR[obj.pair]
@@ -56,7 +56,7 @@ class MyRelationAdmin(admin.ModelAdmin):
     order_type_display.short_description = '注文'
     
 class MyOrderAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'user_display', 'pair_display', 'side_display', 'order_type_display', 'price', 'start_amount', 'remaining_amount', 'executed_amount', 'status_display', 'error_message')
+    list_display = ('market', 'order_id', 'user_display', 'pair_display', 'side_display', 'order_type_display', 'price', 'start_amount', 'remaining_amount', 'executed_amount', 'status_display', 'error_message')
     list_display_links = ('order_id',)
     def user_display(self, obj):
         return obj.user.full_name
@@ -80,7 +80,7 @@ class MyOrderAdmin(admin.ModelAdmin):
     
     
 class MyAlertAdmin(admin.ModelAdmin):
-    list_display = ('user_display', 'pair_display', 'rate', 'is_active')
+    list_display = ('market', 'user_display', 'pair_display', 'rate', 'is_active')
     def pair_display(self, obj):
         return Order.PAIR[obj.pair]
     def user_display(self, obj):
@@ -146,17 +146,15 @@ class MyAdminSite(admin.AdminSite):
         registered in this site.
         """
         ordering = {
-            "利用者": 1,
-            "問い合せ": 5,
-            "取引履歴": 3,
-            "発注一覧": 2,
-            "通知設定":4,
-            '振込口座情報':6,
-
+            "1.利用者": 1,
+            "5.問い合せ": 5,
+            "3.取引履歴": 3,
+            "2.発注一覧": 2,
+            "4.通知設定":4,
+            '6.振込口座情報':6,
         }
         app_dict = self._build_app_dict(request)
-        print(app_dict)
-       
+        
         app_list = sorted(app_dict.values(), key=lambda x: x['name'].lower())
 
         for app in app_list:

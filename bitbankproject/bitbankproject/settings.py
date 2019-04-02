@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'rest_framework',
 ]
 
+ADMIN_REORDER = (
+    ('bitbankproject.bitbank', ('App1Model1', 'App1Model2', 'App1Model3')),
+)
 
 AUTH_USER_MODEL = 'bitbank.User'
 LOGIN_URL = 'bitbank:login'
