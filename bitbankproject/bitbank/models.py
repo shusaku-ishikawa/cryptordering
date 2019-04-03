@@ -708,8 +708,8 @@ class BankInfo(models.Model):
     def __str__(self):
         return '口座情報'
     class Meta:
-        verbose_name = "振込口座情報"
-        verbose_name_plural = "6.振込口座情報"
+        verbose_name = "口座情報"
+        verbose_name_plural = "6.口座情報"
     
     types = [
         ('普通', '普通'),

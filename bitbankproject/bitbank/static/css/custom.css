@@ -145,6 +145,10 @@ div.card-table-data {
     color: white;
 }
 
+select.form-control.onlyone {
+    color: gray;
+}
+
 div.input-group-text.placeholder {
     color: gray;
     /* font-size: 2vmin; */

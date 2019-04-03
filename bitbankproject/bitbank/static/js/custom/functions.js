@@ -299,9 +299,23 @@ function update_amount_by_slider(tab_num) {
 
     if (parseInt(newVal) != 0) {
         var free_amount = free_amount_json[market][currency];
+        if (tab_num == 2 || tab_num == 3) {
+            var if_done_amount = $('#id_start_amount_1').val();
+            var if_done_side = $('#id_side_1').val();
+            // 新規注文数が入力されている場合
+            if (!isNaN(if_done_amount)) {
+                if (if_done_side == 'buy') {
+                    free_amount -= (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : parseFloat(if_done_amount);
+                } else {
+                    free_amount += (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : parseFloat(if_done_amount);
+                }
+            }
+            console.log(free_amount);
+        }
         var price = (order_type.match(/limit/)) ? (limitprice != '') ? parseFloat(limitprice) : 0 : market_price_json[market][pair][side];
-        var floored = (side == 'sell') ? Math.floor((free_amount * newVal / 100) * 10000) / 10000 : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * 10000) / 10000 : 0;
-    
+        var floored = (side == 'sell') ? Math.floor((parseFloat(free_amount) * parseFloat(newVal) / 100) * 10000) / 10000 : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * 10000) / 10000 : 0;
+        
+        console.log(newVal * free_amount);
         if (isNaN(floored)) {
             $perc.html('資金不足');
         } else {
@@ -612,18 +626,20 @@ function init_order_tab(is_initial = false) {
 
                 $bitbank_button.addClass('active');
                 $coincheck_button.removeClass('active');
-                $input_pair.empty();
+                $input_pair
+                .empty()
+                .removeClass('onlyone');
                 Object.keys(PAIRS).forEach(key => {
                     $('<option>', {
                         value: key,
                         text: PAIRS[key],
                     }).appendTo($input_pair);
                 });
+
             } else {
                 $('.show_if_coincheck').show();
                 $bitbank_button.removeClass('active');
                 $coincheck_button.addClass('active');
-                $input_pair.val('btc_jpy');
                 $input_pair
                 .empty()
                 .append($('<option>', {
@@ -631,6 +647,7 @@ function init_order_tab(is_initial = false) {
                     text: PAIRS['btc_jpy'],
                     readonly: true
                 }));
+                $input_pair.addClass('onlyone');
             }
         });
         $bitbank_button
@@ -1678,27 +1695,30 @@ function init_alerts_tab(is_initial = false) {
                         value: key,
                         text: PAIRS[key]
                     }).appendTo($alert_pair);
-                    $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
+                    $('<option>', { value: 'all', text: '全て' }).appendTo($alert_pair);
                 });
             } else {
                 $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_pair);
-                $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
+                $('<option>', { value: 'all', text: '全て' }).appendTo($alert_pair);
             }
             init_alert_rate($alert_market.val(), $alert_pair.val(), $notice_rate, $message_target);
         });
         $alert_search_market.on('change', function() {
             $alert_search_pair.empty();
             if ($(this).val() == 'bitbank') {
+                $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
                 Object.keys(PAIRS).forEach(key => {
                     $('<option>', {
                         value: key,
                         text: PAIRS[key],
                     }).appendTo($alert_search_pair);
-                    $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
+                    
                 });
+                
             } else {
-                $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_search_pair);
                 $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
+                $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_search_pair);
+                
             }
             init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
         })
@@ -1715,8 +1735,6 @@ function init_alerts_tab(is_initial = false) {
             init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
         });
 
-
-        
         $notify_if_filled_on_button.on('click', function() {
             if ($(this).hasClass('on')) {
                 // すでにONの場合は何もしない
@@ -1841,6 +1859,8 @@ function init_alerts_tab(is_initial = false) {
                 set_error_message($message_target, xhr);
             });
         });
+        $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_market);
+        $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
         
         Object.keys(MARKETS).forEach(key => {
             $('<option>', { value: key, text: MARKETS[key] }).appendTo($alert_market);
@@ -1853,10 +1873,7 @@ function init_alerts_tab(is_initial = false) {
             $('<option>', { value: key, text: PAIRS[key]}).appendTo($alert_search_pair);
         });
 
-        var op_all = $('<option>', { value: 'all', text: '全て' });
-        op_all.appendTo($alert_search_market);
-        op_all.appendTo($alert_search_pair);
-    
+        
         $alert_market.val('bitbank').trigger('change');
         $alert_search_market.val('bitbank').trigger('change');
 

@@ -5,9 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 from .models import *
 
 from django.utils.safestring import mark_safe
-# from django.contrib.auth import get_user_model
-
-#User = get_user_model()
 
 class MyUserChangeForm(UserChangeForm):
     class Meta:
@@ -151,7 +148,7 @@ class MyAdminSite(admin.AdminSite):
             "3.取引履歴": 3,
             "2.発注一覧": 2,
             "4.通知設定":4,
-            '6.振込口座情報':6,
+            '6.口座情報':6,
         }
         app_dict = self._build_app_dict(request)
         
@@ -162,7 +159,7 @@ class MyAdminSite(admin.AdminSite):
 
         return app_list
 
-admin_site = MyAdminSite(name = 'bitbank管理画面')
+admin_site = MyAdminSite(name = '取引所')
 admin_site.register(User, MyUserAdmin)
 admin_site.register(Relation, MyRelationAdmin)
 admin_site.register(Order, MyOrderAdmin)

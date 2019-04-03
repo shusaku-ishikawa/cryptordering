@@ -41,9 +41,10 @@
                 <div class="input-group-prepend">
                     <div class="input-group-text placeholder">取引種類</div>
                 </div>
-                <select id="id_trade_type" class="form-control">
-                    <option selected disabled>現物</option>
+                <select id="id_trade_type" class="form-control onlyone">
+                    <option value="cash">現物</option>
                 </select>
+                   
             </div>
         </div>
     </div>
@@ -169,9 +170,9 @@
                         <div><span style="float:right;" id="amount_percentage_1">0%</span></div>
                     </div>
                 </div>
-                
+                <hr>
                 <div class="row">
-                    <div class="col-md-6 offset-md-3 col-12 text-center">
+                    <div class="col-md-6 offset-md-3 col-12 text-center" style="display: flex;justify-content: space-between;">
                         <button value="25" name="perc_button_1" id="id_25_button_1" class="btn buy">25%</button>
                         <button value="50" name="perc_button_1" id="id_50_button_1" class="btn buy">50%</button>
                         <button value="75" name="perc_button_1" id_="id_75_button_1" class="btn buy">75%</button>
@@ -291,8 +292,9 @@
                         <div><span style="float:right;" id="amount_percentage_2">0%</span></div>
                     </div>
                 </div>
+                <hr>
                 <div class="row">
-                    <div class="col-md-6 offset-md-3 col-12 text-center">
+                    <div class="col-md-6 offset-md-3 col-12 text-center" style="display: flex;justify-content: space-between;">
                         <button value="25" name="perc_button_2" id="id_25_button_2" class="btn buy">25%</button>
                         <button value="50" name="perc_button_2" id="id_50_button_2" class="btn buy">50%</button>
                         <button value="75" name="perc_button_2" id_="id_75_button_2" class="btn buy">75%</button>
@@ -349,7 +351,7 @@
                     <div class="col-md-6 offset-md-3 col-12">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <div id="id_trail_placeholder_3" class="input-group-text placeholder">トレイル幅</div>
+                                <div id="id_trail_placeholder_3" class="input-group-text placeholder">トレール幅</div>
                             </div>
                             <input id="id_trail_width_3" type="number" class="form-control" min="0" step="1">              
                             <div class="input-group-append">
@@ -397,8 +399,7 @@
                             <input id="id_start_amount_3" type="number" class="form-control" min="0" step="0.0001">  
                             <div class="input-group-append">
                                 <div class="input-group-text placeholder unit">BTC</div>
-                            </div>
-                            
+                            </div>     
                         </div>
                     </div>
                 </div>
@@ -409,8 +410,9 @@
                         <div><span style="float:right;" id="amount_percentage_3">0%</span></div>
                     </div>
                 </div>
+                <hr>
                 <div class="row">
-                    <div class="col-md-6 offset-md-3 col-12 text-center">
+                    <div class="col-md-6 offset-md-3 col-12 text-center" style="display: flex;justify-content: space-between;">
                         <button value="25" name="perc_button_3" id="id_25_button_3" class="btn buy">25%</button>
                         <button value="50" name="perc_button_3" id="id_50_button_3" class="btn buy">50%</button>
                         <button value="75" name="perc_button_3" id_="id_75_button_3" class="btn buy">75%</button>
@@ -520,6 +522,7 @@
         <div class="col-md-6 offset-md-3 col-xs12">
             <div class="table-responsive">
                 <table id="asset_table_bb" class="table table-sm table-dark">
+                    <caption style="caption-side: top">bitbank</caption>
                     <tr><th>合計評価額</th><td align="right" id="total_in_jpy_bb"></td></tr>
                     <tr><th>日本円</th><td align="right" id="jpy_bb"></td></tr>
                     <tr><th>ビットコイン</th><td align="right" id="btc_bb"></td></tr>
@@ -532,12 +535,11 @@
             </div>
         </div>
     </div>
-    <hr>
     <div class="row">
         <div class="col-md-6 offset-md-3 col-xs12">
             <div class="table-responsive">
                 <table id="asset_table_cc" class="table table-sm table-dark">
-                    <tr><th>合計評価額</th><td align="right" id="total_in_jpy_cc"></td></tr>
+                    <caption style="caption-side: top">coincheck</caption>
                     <tr><th>日本円</th><td align="right" id="jpy_cc"></td></tr>
                     <tr><th>ビットコイン</th><td align="right" id="btc_cc"></td></tr>
                     <tr><th>リップル</th><td align="right" id="xrp_cc"></td></tr>
