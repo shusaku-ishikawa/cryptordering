@@ -287,35 +287,40 @@ function display_price_div(tab_num, order_type) {
 function update_amount_by_slider(tab_num) {
     var $perc = $('#amount_percentage_' + tab_num);
     var $amount = $('#id_start_amount_' + tab_num);
-    var newVal = $('#myRange_' + tab_num).val();
+    var newVal = parseInt($('#myRange_' + tab_num).val());
     var market = $('#id_market').val();
     var pair = $('#id_pair').val();
     var side = $('#id_side_' + tab_num).val();
-    var limitprice = $('#id_price_' + tab_num).val();
+    var limitprice = parseFloat($('#id_price_' + tab_num).val());
+    var stopprice = parseFloat($('#id_price_for_stop_' + tab_num).val());
     var order_type = $('#id_order_type_' + tab_num).val();
     var currency = (side == 'sell') ? pair.split('_')[0] : pair.split('_')[1];
 
     $perc.html(newVal + '%');
 
-    if (parseInt(newVal) != 0) {
-        var free_amount = free_amount_json[market][currency];
+
+    if (newVal != 0) {
+        var free_amount = parseFloat(free_amount_json[market][currency]);
+        console.log('before ' + free_amount);
         if (tab_num == 2 || tab_num == 3) {
-            var if_done_amount = $('#id_start_amount_1').val();
+            var if_done_order_type = $('#id_order_type_1').val();
+            var if_done_amount = parseFloat($('#id_start_amount_1').val());
             var if_done_side = $('#id_side_1').val();
             // 新規注文数が入力されている場合
             if (!isNaN(if_done_amount)) {
                 if (if_done_side == 'buy') {
-                    free_amount -= (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : parseFloat(if_done_amount);
+                    free_amount -= (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : if_done_amount;
                 } else {
-                    free_amount += (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : parseFloat(if_done_amount);
+                    free_amount += (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : if_done_amount;
                 }
             }
-            console.log(free_amount);
+            console.log('after ' + free_amount);
         }
-        var price = (order_type.match(/limit/)) ? (limitprice != '') ? parseFloat(limitprice) : 0 : market_price_json[market][pair][side];
-        var floored = (side == 'sell') ? Math.floor((parseFloat(free_amount) * parseFloat(newVal) / 100) * 10000) / 10000 : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * 10000) / 10000 : 0;
         
-        console.log(newVal * free_amount);
+        var price = (order_type.match(/limit/)) ? (limitprice != '') ? limitprice : 0 : (order_type.match(/stop/)) ? stopprice : market_price_json[market][pair][side];
+        console.log(price);
+        var floored = (side == 'sell') ? Math.floor((parseFloat(free_amount) * newVal / 100) * 10000) / 10000 : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * 10000) / 10000 : 0;
+        
         if (isNaN(floored)) {
             $perc.html('資金不足');
         } else {
