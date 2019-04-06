@@ -236,7 +236,7 @@ MEDIA_URL = '/attachments/'
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_PORT = 587
 # EMAIL_HOST_USER = 'ishikawasyuusaku@gmail.com'
-# EMAIL_HOST_PASSWORD = '332191-Aa2'
+# EMAIL_HOST_PASSWORD = '332191-Aa'
 # EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = 'kenkenpar55@kenkenpar.com'

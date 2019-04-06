@@ -4,8 +4,6 @@ import os
 import time 
 import python_bitbankcc
 from django.core.management.base import BaseCommand
-from django.utils import timezone
-from django.template.loader import get_template
 
 from ...models import Relation,Order, User, Alert
 from ...coincheck.coincheck import CoinCheck
@@ -46,19 +44,11 @@ class Command(BaseCommand):
                 for alert in alerts_by_pair:
                     try:
                         rate = self._get_market_price(alert.market, pair)
-
+                       
                         if (alert.over_or_under == 'over' and rate >= alert.rate) or \
-                            (alert.over_or_under == 'over' and rate >= alert.rate):
-
-                            if alert.user.use_alert == 'ON':
-                                context = { "user": alert.user, "rate": rate, "pair": pair }
-                                subject = get_template('bitbank/mail_template/rate_notice/subject.txt').render(context)
-                                message = get_template('bitbank/mail_template/rate_notice/message.txt').render(context)
-                                alert.user.email_user(subject, message)
-                                alert.alerted_at = timezone.now()
-                                
-                            alert.is_active = False
-                            alert.save()
+                            (alert.over_or_under == 'under' and rate < alert.rate):
+                            alert.notify_user()
+                            
                     except Exception as e:
                         alert.is_active = False
                         alert.save()
@@ -97,7 +87,7 @@ class Command(BaseCommand):
                 for trail_order in trail_orders_by_pair:
                     rate = self._get_market_price(trail_order.market, pair)
 
-                    logger.info('trail order found. side:' + trail_order.side + ' trail width:' + str(trail_order.trail_width))
+                    logger.info('trail order found. side:' + trail_order.side + ' width:' + str(trail_order.trail_width) + ' ')
                     if trail_order.side == 'sell':
                         if trail_order.trail_price > rate:
                             trail_order.place()

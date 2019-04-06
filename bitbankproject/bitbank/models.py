@@ -21,6 +21,9 @@ import time
 from django.template.loader import get_template
 from .coincheck.coincheck import CoinCheck
 import python_bitbankcc
+from django.utils import timezone
+from django.template.loader import get_template
+from django.conf import settings
 
 class ASCIIFileSystemStorage(FileSystemStorage):
     """
@@ -501,7 +504,7 @@ class Order(models.Model):
             context = { "user": self.user, "order": self, 'readable_datetime': readable_datetime }
             subject = get_template('bitbank/mail_template/fill_notice/subject.txt').render(context)
             message = get_template('bitbank/mail_template/fill_notice/message.txt').render(context)
-            self.user.email_user(subject, message)
+            self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
             logger.info('notice sent to:' + self.user.email_for_notice)
         except Exception as e:
             logger.error('notify user: ' + str(e.args))
@@ -629,6 +632,16 @@ class Alert(models.Model):
         verbose_name = _('有効'),
         null = True,
     )
+    def notify_user(self):
+        if self.user.use_alert == 'ON':
+            context = { "user": self.user, "rate": self.rate, "pair": self.pair }
+            subject = get_template('bitbank/mail_template/rate_notice/subject.txt').render(context)
+            message = get_template('bitbank/mail_template/rate_notice/message.txt').render(context)
+            self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+            self.alerted_at = timezone.now()
+            
+        self.is_active = False
+        self.save()
     
         
 class Attachment(models.Model):
