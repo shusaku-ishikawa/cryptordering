@@ -309,10 +309,8 @@ function update_amount_by_slider(tab_num) {
             // 新規注文数が入力されている場合
             if (!isNaN(if_done_amount)) {
                 if (if_done_side == 'buy') {
-                    alert('if done = buy');
                     free_amount -= (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : -if_done_amount;
                 } else {
-                    alert('if done = sell');
                     free_amount += (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : -if_done_amount;
                 }
             }
