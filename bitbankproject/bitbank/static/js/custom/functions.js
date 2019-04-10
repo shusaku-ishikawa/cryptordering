@@ -557,6 +557,12 @@ function reset_input_all() {
     }
 }
 
+function update_unit_currency(currency, unit) {
+    if (currency != '') {
+        $('div.pair').html(currency);
+        $('div.unit').html(unit);
+    }
+}
 
 function init_order_tab(is_initial = false) {
     var $order_result_message_target = $('#id_order_result_message');
@@ -654,6 +660,9 @@ function init_order_tab(is_initial = false) {
                     readonly: true
                 }));
                 $input_pair.addClass('onlyone');
+                var unit = $input_pair.val().split('_')[0].toUpperCase();
+                var currency = $input_pair.val().split('_')[1].toUpperCase();
+                update_unit_currency(currency, unit);
             }
         });
         $bitbank_button
@@ -715,10 +724,7 @@ function init_order_tab(is_initial = false) {
             // 数量、金額の通貨部分を更新
             var unit = $(this).val().split('_')[0].toUpperCase();
             var currency = $(this).val().split('_')[1].toUpperCase();
-            if (currency != '') {
-                $('div.pair').html(currency);
-                $('div.unit').html(unit);
-            }
+            update_unit_currency(currency, unit);
             
             $slick.slick('slickGoTo', 0);
         });
