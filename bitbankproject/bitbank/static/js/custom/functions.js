@@ -540,6 +540,7 @@ function set_default_price(tab_num, market, pair, $message_target, called_at = n
     });
 }
 function reset_input(i) {
+    $('#id_trail_width_' + i).val(null);
     $('#id_price_' + i).val(null);
     $('#id_price_for_stop_' + i).val(null);
     $('#id_start_amount_' + i).val(null);
