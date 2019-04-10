@@ -722,8 +722,8 @@ function init_order_tab(is_initial = false) {
             reset_input_all();    
             
             // 数量、金額の通貨部分を更新
-            var unit = $(this).val().split('_')[0].toUpperCase();
-            var currency = $(this).val().split('_')[1].toUpperCase();
+            var unit = $input_pair.val().split('_')[0].toUpperCase();
+            var currency = $input_pair.val().split('_')[1].toUpperCase();
             update_unit_currency(currency, unit);
             
             $slick.slick('slickGoTo', 0);
