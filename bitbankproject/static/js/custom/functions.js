@@ -1887,7 +1887,7 @@ function init_alerts_tab(is_initial = false) {
 
         
         $alert_market.val('bitbank').trigger('change');
-        $alert_search_market.val('bitbank').trigger('change');
+        $alert_search_market.val('all').trigger('change');
 
         var ck_alert_pair = $.cookie(COOKIE_ALERT_PAIR);
         
@@ -1896,7 +1896,7 @@ function init_alerts_tab(is_initial = false) {
         } else {
             $alert_pair.val(Object.keys(PAIRS)[0]).trigger('change');
         }
-        $alert_search_pair.val('btc_jpy').trigger('change');
+        $alert_search_pair.val('all').trigger('change');
     }
     init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
 }
