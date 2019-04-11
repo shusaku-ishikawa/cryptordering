@@ -917,6 +917,7 @@ function init_order_tab(is_initial = false) {
                     break;
             }
             $(this).prop('disabled', false);
+            init_free_amount_json($order_result_message_target);
         });  
     }
 }
