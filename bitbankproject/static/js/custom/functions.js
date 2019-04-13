@@ -1702,7 +1702,6 @@ function init_alerts_tab(is_initial = false) {
 
         $alert_market.on('change', function() {
             $alert_pair.empty();
-            $('<option>', { value: 'all', text: '全て' }).appendTo($alert_pair);
             if ($alert_market.val() == 'bitbank') {
                 Object.keys(PAIRS).forEach(key => {
                     $('<option>', {
@@ -1712,7 +1711,6 @@ function init_alerts_tab(is_initial = false) {
                 });
             } else {
                 $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_pair);
-                $('<option>', { value: 'all', text: '全て' }).appendTo($alert_pair);
             }
             init_alert_rate($alert_market.val(), $alert_pair.val(), $notice_rate, $message_target);
         });
