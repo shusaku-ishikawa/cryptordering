@@ -2895,3 +2895,23 @@
 [INFO]	asctime:2019-04-10 23:36:32,238	module:monitor_ticker	message:Stop market order found. side:sell stop price:33465.0 rate:33699.0
 [INFO]	asctime:2019-04-10 23:36:33,439	module:monitor_ticker	message:Stop market order found. side:sell stop price:33465.0 rate:33699.0
 [INFO]	asctime:2019-04-10 23:36:34,670	module:monitor_ticker	message:Stop market order found. side:sell stop price:33465.0 rate:33699.0
+[INFO]	asctime:2019-04-13 11:01:03,391	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-13 11:02:00,466	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-13 11:02:03,550	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-13 11:03:01,598	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-13 11:03:02,734	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-13 11:04:00,726	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-13 11:04:03,615	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-13 11:05:01,430	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-13 11:05:03,043	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-13 11:06:01,056	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-13 11:06:02,795	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-13 11:07:00,717	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-13 11:07:03,626	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-13 11:08:01,453	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-13 11:08:02,979	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-13 11:09:00,923	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-13 11:09:02,816	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-13 11:10:00,442	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-04-13 11:10:03,776	module:monitor_ticker	message:started
+[INFO]	asctime:2019-04-13 11:11:01,410	module:monitor_ticker	message:completed
