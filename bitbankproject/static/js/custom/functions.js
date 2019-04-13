@@ -1718,8 +1718,10 @@ function init_alerts_tab(is_initial = false) {
         });
         $alert_search_market.on('change', function() {
             $alert_search_pair.empty();
-            if ($(this).val() == 'bitbank') {
-                $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
+
+            $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
+            
+            if ($(this).val() != 'coincheck') {
                 Object.keys(PAIRS).forEach(key => {
                     $('<option>', {
                         value: key,
@@ -1729,9 +1731,7 @@ function init_alerts_tab(is_initial = false) {
                 });
                 
             } else {
-                $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
-                $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_search_pair);
-                
+                $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_search_pair);   
             }
             init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
         })
