@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'bitbankproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bitbank_dev',
+        'NAME': 'bitbank',
         'USER': 'root',
         'PASSWORD': '332191-Aa',
         'HOST': '127.0.0.1',
