@@ -951,6 +951,19 @@ function init_order_tab(is_initial = false) {
         });  
     }
 }
+function convert_iso_datetime(original, date_only = false) {
+    var date = new Date(Date.parse(original));
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1):date.getMonth() + 1 ;
+    var day = date.getDate() < 10 ? '0' + date.getDate():date.getDate();
+    var hours = date.getHours() < 10 ? '0' + date.getHours():date.getHours();
+    var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes():date.getMinutes();
+    var seconds = date.getSeconds() < 10 ? '0' + date.getSeconds():date.getSeconds();
+    if (date_only) {
+        return(year + "/" + month + "/" + day);
+    }
+    return(year + "/" + month + "/" + day + " " + hours + ":" + minutes + ":" + seconds);
+}
 function build_order_card_header(order_id, market, pair, special_order, placed_at) {
     var col_3_head = 'col-md-3 col-3 card-table-header';
     var col_3_data = 'col-md-3 col-3 card-table-data';
@@ -994,7 +1007,7 @@ function build_order_card_header(order_id, market, pair, special_order, placed_a
         text: '注文日時'
     })).append($('<div>', {
         class: 'col-md-9 col-6 card-table-data',
-        text: placed_at
+        text: convert_iso_datetime(placed_at)
     }));
 
     return $('<div>', {
@@ -1002,10 +1015,13 @@ function build_order_card_header(order_id, market, pair, special_order, placed_a
     }).append(row_1).append(row_2).append(row_3);
     
 }
+
 function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_type, side, price, price_for_stop, trail_width, trail_price, start_amount, executed_amount,average_price, status, ordered_at) {
     var col_3_head = 'col-md-3 col-3 card-table-header';
     var col_3_data = 'col-md-3 col-3 card-table-data';
-    var col_6 = 'col-md-6';
+    var col_6_head = 'col-md-6 col-6 card-table-header';
+    var col_6_data = 'col-md-6 col-6 card-table-data';
+    
 
     var $row_1 = $('<div>', { 
         class: 'row'
@@ -1087,15 +1103,15 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
     });
 
     var $row_6_col_1 = $('<div>', {
-        class: col_6
+        class: col_6_head
     });
     var $row_6_col_2 = $('<div>', {
-        class: col_6
+        class: col_6_data
     });
 
     if (is_cancellable) {
         $row_6_col_1.append($('<button>', {
-            style: 'font-size:1rem; padding:0.2em!important',
+            style: 'font-size:1rem; padding:0.1em!important',
             pk: pk,
             type: 'button',
             class: 'btn btn-outline-secondary',
