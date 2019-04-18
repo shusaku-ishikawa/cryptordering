@@ -806,10 +806,11 @@ function init_order_tab(is_initial = false) {
             .on('value_change', function() {
                 //reset_input(i);
                 $('#id_start_amount_' + i).trigger('change');
+            
                 if ($(this).val() == 'buy') {
                     $('#sell_button_' + i).removeClass('sell').addClass('btn-base');
                     $('#buy_button_' + i).addClass('buy').removeClass('btn-base');
-                    $('#myRange_' + i).addClass('slider_for_buy').removeClass('slider_for_sell');
+                    $('#myRange_' + i).addClass('slider_for_buy').removeClass('slider_for_sell').trigger('input');
                     $('button[name="perc_button_' + i + '"]').addClass('buy').removeClass('sell');
                     
                     $button_order.addClass('green_button').removeClass('red_button');
@@ -817,7 +818,7 @@ function init_order_tab(is_initial = false) {
                     
                     $('#sell_button_' + i).addClass('sell').removeClass('btn-base');
                     $('#buy_button_' + i).removeClass('buy').addClass('btn-base');
-                    $('#myRange_' + i).addClass('slider_for_sell').removeClass('slider_for_buy');
+                    $('#myRange_' + i).addClass('slider_for_sell').removeClass('slider_for_buy').trigger('input');
                     $button_order.removeClass('green_button').addClass('red_button');
                     $('button[name="perc_button_' + i + '"]').addClass('sell').removeClass('buy');
                 }
