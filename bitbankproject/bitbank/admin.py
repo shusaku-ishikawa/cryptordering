@@ -3,7 +3,10 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from .models import *
-
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.core.mail import send_mail
+from django.conf import settings
 from django.utils.safestring import mark_safe
 
 class MyUserChangeForm(UserChangeForm):
@@ -39,6 +42,26 @@ class MyUserAdmin(UserAdmin):
 
     ordering = ('remaining_days',)
 
+    def mail_users(self, request, queryset):
+        print(request.POST)
+        if 'apply' in request.POST:
+            subj = request.POST.get('subject')
+            msg = request.POST.get('message')
+            send_mail(
+                subj,
+                msg,
+                settings.DEFAULT_FROM_EMAIL,
+                queryset.values_list('email_for_notice', flat = True)
+            )
+            self.message_user(request, "{} ユーザにメールを送信しました。".format(queryset.count()))
+            return HttpResponseRedirect(request.get_full_path())
+       
+        return render(request,'bitbank/mail_users.html',context={'users': queryset})
+
+    mail_users.short_description = '一括メール送信'
+
+    actions = [mail_users]
+    
 class MyRelationAdmin(admin.ModelAdmin):
     list_display = ('pk', 'market', 'user_display', 'pair_display', 'special_order', 'order_1', 'order_2', 'order_3', 'placed_at', 'is_active')
     list_display_links = ('pk',)

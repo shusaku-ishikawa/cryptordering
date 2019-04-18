@@ -283,7 +283,21 @@ function display_price_div(tab_num, order_type) {
             break;
     }
 }
-
+function update_amount_by_price(tab_num) {
+    $target = $('#id_start_amount_' + tab_num);
+    var new_val = parseFloat($('#expect_price_' + tab_num).val());
+    var market = $('#id_market').val();
+    var pair = $('#id_pair').val();
+    var side = $('#id_side_' + tab_num).val();
+    var price;
+    var order_type = $('#id_order_type_' + tab_num).val();
+    if (order_type.match(/limit/)) {
+        price = parseFloat($('#id_price_' + tab_num).val());
+    } else {
+        price = parseFloat(market_price_json[market][pair][side]);
+    }
+    $target.val(new_val / price).trigger('change');
+}
 function update_amount_by_slider(tab_num) {
     var $perc = $('#amount_percentage_' + tab_num);
     var $amount = $('#id_start_amount_' + tab_num);
@@ -327,7 +341,7 @@ function update_amount_by_slider(tab_num) {
             $amount.val(floored).trigger('calculate');
         }
     } else {
-        $amount.val(0).trigger('calculate');
+        $amount.val(null).trigger('calculate');
     }
 }
 
@@ -348,11 +362,16 @@ function update_slider_by_amount(tab_num) {
         var currency = pair.split('_')[0];
     }
 
+    var new_price;
     // limit orderの場合
     if (order_type.match(/limit/)) {
-        var new_price = price;
+        new_price = price;
     } else {
-        var new_price = market_price_json[market][pair][side];
+        if ((market in market_price_json) && (pair in market_price_json[market]) && (side in market_price_json[market][pair])) {
+            new_price = market_price_json[market][pair][side];
+        } else {
+            new_price = (price == null) ? 0 : price;
+        }
     }
 
     if (amount == '' || amount == 0 || amount == '' || amount == 0) {
@@ -369,11 +388,7 @@ function update_slider_by_amount(tab_num) {
         } else {
             var rounded = Math.round(perc * 10) / 10;
             set_slidevalue(tab_num, rounded, false);
-            if (currency == 'jpy') {
-                $input_expect_price.val(Math.round(new_price * amount));
-            } else {
-                $input_expect_price.val(Math.round(new_price * amount * 10000) / 10000);
-            } 
+         
         }
     }
 }
@@ -400,6 +415,7 @@ function calculate_expect_price(tab_num) {
         }
     }
 }
+
 function create_order_json(market, pair, side, order_type, price, price_for_stop, trail_width, start_amount) {
     var order_info = new Object();
     order_info.market = market
@@ -746,20 +762,28 @@ function init_order_tab(is_initial = false) {
             $('#id_start_amount_' + i)
             .on('change', function() {
                 update_slider_by_amount(i);
+                calculate_expect_price(i);
             })
             .on('calculate', function() {
                 calculate_expect_price(i);
             });
 
-            $('#id_start_amount_' + i)
+            $('#id_price_' + i)
             .on('change', function() {
                 update_slider_by_amount(i);
+                calculate_expect_price(i);
+            });
+
+            $('#expect_price_' + i)
+            .on('change', function() {
+                update_amount_by_price(i);
             });
 
             $('#id_order_type_' + i)
             .on('change', function() {
-                reset_input(i);
+               // reset_input(i);
                 var new_order_type = $(this).val();
+
                 if (new_order_type == 'limit') {
                     $('#id_price_placeholder_' + i).html('指値価格');
                 } else if (new_order_type == 'stop_market') {
@@ -768,16 +792,20 @@ function init_order_tab(is_initial = false) {
                     $('#id_stop_price_placeholder_' + i).html('逆指値(発動価格)');
                     $('#id_price_placeholder_' + i).html('指値(約定希望価格)');
                 }
-                if (new_order_type != 'market') {
-                    set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'order_type_change_' + i);
-                }
+                // if (new_order_type != 'market') {
+                //     set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'order_type_change_' + i);
+                // }
                 
                 display_price_div(i, new_order_type);
+                update_slider_by_amount(i);
+                calculate_expect_price(i);
+
             });
 
             $('#id_side_' + i)
             .on('value_change', function() {
-                reset_input(i);
+                //reset_input(i);
+                $('#id_start_amount_' + i).trigger('change');
                 if ($(this).val() == 'buy') {
                     $('#sell_button_' + i).removeClass('sell').addClass('btn-base');
                     $('#buy_button_' + i).addClass('buy').removeClass('btn-base');
@@ -794,7 +822,7 @@ function init_order_tab(is_initial = false) {
                     $('button[name="perc_button_' + i + '"]').addClass('sell').removeClass('buy');
                 }
               
-                set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'side change_' + i);
+                //set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'side change_' + i);
             });
             $('#sell_button_' + i).on('click', function() {
                 // 変更があった場合のみ処理
@@ -833,7 +861,7 @@ function init_order_tab(is_initial = false) {
                     text: ORDER_TYPES[key],
                 }).appendTo($('#id_order_type_' + i));
             });
-
+            set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'order_type_change_' + i);
         }
         
         var ck_market = $.cookie(COOKIE_ORDER_MARKET);
@@ -921,35 +949,50 @@ function init_order_tab(is_initial = false) {
         });  
     }
 }
-function build_order_card_header(market, pair, special_order) {
+function build_order_card_header(order_id, market, pair, special_order, placed_at) {
+    var col_3_head = 'col-md-3 col-3 card-table-header';
+    var col_3_data = 'col-md-3 col-3 card-table-data';
+    
     var row_1 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
-        class: 'col-md-6 col-6 card-table-header',
+        class: col_3_head,
+        text: '注文ID'
+    })).append($('<div>', {
+        class: col_3_data,
+        text: hyphen_if_null(order_id)
+    })).append($('<div>', {
+        class: col_3_head,
         text: '取引所'
     })).append($('<div>', {
-        class: 'col-md-6 col-6 card-table-data',
+        class: col_3_data,
         text: MARKETS[market]
     }));
 
     var row_2 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
-        class: 'col-md-6 col-6 card-table-header',
+        class: col_3_head,
         text: '取引通貨'
     })).append($('<div>', {
-        class: 'col-md-6 col-6 card-table-data',
+        class: col_3_data,
         text: PAIRS[pair]
+    })).append($('<div>', {
+        class: col_3_head,
+        text: '特殊注文'
+    })).append($('<div>', {
+        class: col_3_data,
+        text: SPECIAL_ORDERS[special_order]
     }));
 
     var row_3 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
-        class: 'col-md-6 col-6 card-table-header',
-        text: '特殊注文'
+        class: 'col-md-3 col-6 card-table-header',
+        text: '注文日時'
     })).append($('<div>', {
-        class: 'col-md-6 col-6 card-table-data',
-        text: SPECIAL_ORDERS[special_order]
+        class: 'col-md-9 col-6 card-table-data',
+        text: placed_at
     }));
 
     return $('<div>', {
@@ -958,141 +1001,98 @@ function build_order_card_header(market, pair, special_order) {
     
 }
 function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_type, side, price, price_for_stop, trail_width, trail_price, start_amount, executed_amount,average_price, status, ordered_at) {
-    
+    var col_3_head = 'col-md-3 col-3 card-table-header';
+    var col_3_data = 'col-md-3 col-3 card-table-data';
+    var col_6 = 'col-md-6';
+
     var $row_1 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-header',
-        text: '注文ID'
-    })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-data',
-        text: hyphen_if_null(order_id)
-    })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-header',
+        class: col_3_head,
         text: '売/買'
     })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-data',
+        class: col_3_data,
         text: SELL_BUY[side]
+    })).append($('<div>', {
+        class: col_3_head,
+        text: 'タイプ'
+    })).append($('<div>', {
+        class: col_3_data,
+        text: ORDER_TYPES[order_type]
     }));
 
     var $row_2 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-header',
-        text: 'タイプ'
+        class: col_3_head,
+        text: '指値金額'
     })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-data',
-        text: ORDER_TYPES[order_type]
+        class: col_3_data,
+        text: hyphen_if_null(price)
+    })).append($('<div>', {
+        class: col_3_head,
+        text: '逆指値価格'
+    })).append($('<div>', {
+        class: col_3_data,
+        text: hyphen_if_null(price_for_stop)
     }));
-   
-    if (order_type == 'trail') {
-        $row_2.append($('<div>', {
-            class: 'col-md-3 col-3 card-table-header',
-            text: 'トレール幅'
-        })).append($('<div>', {
-            class: 'col-md-3 col-3 card-table-data',
-            text: hyphen_if_null(trail_width)
-        }));
-    } else {
-        $row_2.append($('<div>', {
-            class: 'col-md-3 col-3 card-table-header',
-            text: '逆指値価格'
-        })).append($('<div>', {
-            class: 'col-md-3 col-3 card-table-data',
-            text: hyphen_if_null(price_for_stop)
-        }));
-    }
 
     var $row_3 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-header',
-        text: '数量'
+        class: col_3_head,
+        text: 'トレール幅'
     })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-data',
-        text: hyphen_if_null(start_amount)
+        class: col_3_data,
+        text: hyphen_if_null(trail_width)
     }));
     
-    if (order_type == 'trail') {
-        $row_3.append($('<div>', {
-            class: 'col-md-3 col-3 card-table-header',
-            text: 'トレール金額'
-        })).append($('<div>', {
-            class: 'col-md-3 col-3 card-table-data',
-            text: hyphen_if_null(trail_price)
-        }));
-    } else {
-        $row_3.append($('<div>', {
-            class: 'col-md-3 col-3 card-table-header',
-            text: '指値価格'
-        })).append($('<div>', {
-            class: 'col-md-3 col-3 card-table-data',
-            text: hyphen_if_null(price)
-        }));
-    }
-
-    var $row_4 = $('<div>', { 
+    var $row_4 = $('<div>', {
         class: 'row'
     }).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-header',
+        class: col_3_head,
+        text: '数量'
+    })).append($('<div>', {
+        class: col_3_data,
+        text: hyphen_if_null(start_amount)
+    })).append($('<div>', {
+        class: col_3_head,
         text: '約定数量'
     })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-data',
+        class: col_3_data,
         text: hyphen_if_null(executed_amount)
-    })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-header',
-        text: '平均価格'
-    })).append($('<div>', {
-        class: 'col-md-3 col-3 card-table-data',
-        text: hyphen_if_null(average_price)
     }));
+    
 
     var $row_5 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
-        class: 'col-md-6 col-6 card-table-header',
-        text: '注文日時'
+        class: col_3_head,
+        text: '平均価格'
     })).append($('<div>', {
-        class: 'col-md-6 col-6 card-table-data',
-        text: return_formatted_datetime(ordered_at)
-    }));
-
-    var $row_6 = $('<div>', { 
-        class: 'row'
-    }).append($('<div>', {
-        class: 'col-md-6 col-6 card-table-header',
+        class: col_3_data,
+        text: hyphen_if_null(average_price)
+    })).append($('<div>', {
+        class: col_3_head,
         text: 'ステータス'
     })).append($('<div>', {
-        class: 'col-md-6 col-6 card-table-data',
+        class: col_3_data,
         text: STATUS[status]
     }));
-    var $row_7 = $('<div>', {
+
+    var $row_6 = $('<div>', {
         class: 'row justify-content-end'
-    })
-    switch (order_seq) {
-        case 'order_1':
-            $row_7.append($('<span>', {
-                class: 'badge badge-info',
-                text: '新規注文'
-            }));
-            break;
-        case 'order_2':
-            $row_7.append($('<span>', {
-                class: 'badge badge-success',
-                text: '決済注文❶'
-            }));
-            
-            break;
-        case 'order_3':
-            $row_7.append($('<span>', {
-                class: 'badge badge-primary',
-                text: '決済注文❷'
-            }));
-            break;
-    }
-    var $row_8 = $('<div>', { class: 'row' });
+    });
+
+    var $row_6_col_1 = $('<div>', {
+        class: col_6
+    });
+    var $row_6_col_2 = $('<div>', {
+        class: col_6
+    });
+
     if (is_cancellable) {
-        $row_8.append($('<button>', {
+        $row_6_col_1.append($('<button>', {
             style: 'font-size:1rem; padding:0.2em!important',
             pk: pk,
             type: 'button',
@@ -1101,11 +1101,37 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
             text: 'CANCEL'
         }));
     } else {
-        $row_8.html('<p style="color:red;font-weight:bold">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
+        $row_6_col_1.html('<p style="color:red;font-weight:bold">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
     }
+
+    $row_6_col_1.appendTo($row_6);
+
+    switch (order_seq) {
+        case 'order_1':
+            $row_6_col_2.append($('<span>', {
+                class: 'badge badge-info',
+                text: '新規注文'
+            }));
+            break;
+        case 'order_2':
+            $row_6_col_2.append($('<span>', {
+                class: 'badge badge-success',
+                text: '決済注文❶'
+            }));
+            
+            break;
+        case 'order_3':
+            $row_6_col_2.append($('<span>', {
+                class: 'badge badge-primary',
+                text: '決済注文❷'
+            }));
+            break;
+    }
+    $row_6_col_2.appendTo($row_6);
+    
     return $('<div>', {
         class: 'order_body'
-    }).append($row_1).append($row_2).append($row_3).append($row_4).append($row_5).append($row_6).append($row_7).append($row_8);
+    }).append($row_1).append($row_2).append($row_3).append($row_4).append($row_5).append($row_6);
 
    
 }
@@ -1272,7 +1298,7 @@ function init_active_orders_content(market, pair, $message_target) {
                         is_empty = false;
                         var $container = $('<div>', { class: 'order_container' })
                         .append(
-                            build_order_card_header(o.market, o.pair, o.special_order)
+                            build_order_card_header(o.pk, o.market, o.pair, o.special_order, o.placed_at)
                         );
 
                         if (o.order_1) {
@@ -1907,7 +1933,7 @@ function init_alerts_tab(is_initial = false) {
 
 
         
-    }
+    }   
     init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
 }
 function init_asset_tab(is_initial = false) {
