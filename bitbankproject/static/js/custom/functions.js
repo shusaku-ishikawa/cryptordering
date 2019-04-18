@@ -1701,6 +1701,8 @@ function init_alerts_tab(is_initial = false) {
     if (is_initial) {
 
         $alert_market.on('change', function() {
+            $.cookie(COOKIE_ALERT_MARKET, $(this).val(), {expire: 7});
+            
             $alert_pair.empty();
             if ($alert_market.val() == 'bitbank') {
                 Object.keys(PAIRS).forEach(key => {
@@ -1885,17 +1887,26 @@ function init_alerts_tab(is_initial = false) {
         });
 
         
-        $alert_market.val('bitbank').trigger('change');
         $alert_search_market.val('all').trigger('change');
+        $alert_search_pair.val('all').trigger('change');
 
         var ck_alert_pair = $.cookie(COOKIE_ALERT_PAIR);
+        var ck_alert_market = $.cookie(COOKIE_ALERT_MARKET);
         
+        if (ck_alert_market != undefined && Object.keys(MARKETS).indexOf(ck_alert_market) >= 0) {
+            $alert_market.val(ck_alert_market).trigger('change');
+        } else {
+            $alert_market.val(Object.keys(MARKETS)[0]).trigger('change');
+        }
+
         if (ck_alert_pair != undefined && Object.keys(PAIRS).indexOf(ck_alert_pair) >= 0) {
             $alert_pair.val(ck_alert_pair).trigger('change');
         } else {
             $alert_pair.val(Object.keys(PAIRS)[0]).trigger('change');
         }
-        $alert_search_pair.val('all').trigger('change');
+
+
+        
     }
     init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
 }

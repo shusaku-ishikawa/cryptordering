@@ -1920,7 +1920,7 @@ function init_alerts_tab(is_initial = false) {
         var ck_alert_market = $.cookie(COOKIE_ALERT_MARKET);
         
         if (ck_alert_market != undefined && Object.keys(MARKETS).indexOf(ck_alert_market) >= 0) {
-            $alert_market.val(ck_alert_pair).trigger('change');
+            $alert_market.val(ck_alert_market).trigger('change');
         } else {
             $alert_market.val(Object.keys(MARKETS)[0]).trigger('change');
         }
