@@ -1358,3 +1358,5 @@
 [INFO]	asctime:2019-04-17 21:14:48,826	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
 [INFO]	asctime:2019-04-18 19:52:34,684	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
 [INFO]	asctime:2019-04-18 20:15:36,934	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:28:24,261	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:28:24,527	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)

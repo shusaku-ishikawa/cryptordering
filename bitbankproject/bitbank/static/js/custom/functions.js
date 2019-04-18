@@ -777,6 +777,7 @@ function init_order_tab(is_initial = false) {
             $('#expect_price_' + i)
             .on('change', function() {
                 update_amount_by_price(i);
+                
             });
 
             $('#id_order_type_' + i)
