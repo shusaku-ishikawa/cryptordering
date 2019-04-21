@@ -336,8 +336,8 @@ function update_amount_by_slider(tab_num) {
         var price = (order_type.match(/limit/)) ? (limitprice != '') ? limitprice : 0 : (order_type.match(/stop/)) ? stopprice : market_price_json[market][pair][side];
         console.log(price);
 
-        //var floored = (side == 'sell') ? Math.floor((parseFloat(free_amount) * newVal / 100) * round_at) / round_at : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * round_at) / round_at : 0;
-        var floored = (side == 'sell') ? parseFloat(free_amount) * newVal / 100 : (price != 0) ? free_amount * newVal / (price * 100) : 0;
+        var floored = (side == 'sell') ? Math.floor((parseFloat(free_amount) * newVal / 100) * round_at) / round_at : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * round_at) / round_at : 0;
+        //var floored = (side == 'sell') ? parseFloat(free_amount) * newVal / 100 : (price != 0) ? free_amount * newVal / (price * 100) : 0;
         
         if (isNaN(floored)) {
             $perc.html('資金不足');
