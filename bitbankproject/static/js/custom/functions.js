@@ -533,7 +533,7 @@ function set_slidevalue(tab_num, new_val, trigger_input_event=true) {
 }
 
 function set_default_price(tab_num, market, pair, $message_target, called_at = null) {
-    //console.log(called_at);
+    console.log('defual');
     call_ticker('GET', market, pair)
     .done(function(res) {
         if (res.error) {
@@ -563,13 +563,12 @@ function reset_input(i) {
     $('#expect_price_' + i).val(null);
     set_slidevalue(i, 0, false);
 }
-function reset_input_all() {
-
+function reset_input_all(market, pair, $message_target) {
     for (let i = 1; i < 4; i++) {
         set_slidevalue(i, 0, false);
         $('#id_side_' + i).val(Object.keys(SELL_BUY)[1]).trigger('value_change');
         $('#id_order_type_' + i).val(Object.keys(ORDER_TYPES)[1]).trigger('change');
-        //set_default_price(i, market, pair, $message_target, 'reset_all');
+        set_default_price(i, market, pair, $message_target, 'reset_all');
     }
 }
 
@@ -648,7 +647,7 @@ function init_order_tab(is_initial = false) {
         .on('value_change', function() {
             $.cookie(COOKIE_ORDER_MARKET, $(this).val(), { expires: 7 });
             
-            reset_input_all();
+            reset_input_all($(this).val(), $input_pair.val(), $ajax_message_target)
             if ($(this).val() == 'bitbank') {
                 $('.show_if_coincheck').hide();
 
@@ -729,13 +728,13 @@ function init_order_tab(is_initial = false) {
             });
 
             $slick.slick('slickGoTo', 0);
-            reset_input_all(); 
+            reset_input_all($input_market.val(), $input_pair.val(), $ajax_message_target); 
         });
 
         $input_pair.on('change', function() {
             $.cookie(COOKIE_ORDER_PAIR, $(this).val(), { expires: 7 });
 
-            reset_input_all();    
+            reset_input_all($input_market.val(), $input_pair.val(), $ajax_message_target);   
             
             // 数量、金額の通貨部分を更新
             var unit = $input_pair.val().split('_')[0].toUpperCase();
