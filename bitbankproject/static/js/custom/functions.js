@@ -336,7 +336,8 @@ function update_amount_by_slider(tab_num) {
         var price = (order_type.match(/limit/)) ? (limitprice != '') ? limitprice : 0 : (order_type.match(/stop/)) ? stopprice : market_price_json[market][pair][side];
         console.log(price);
 
-        var floored = (side == 'sell') ? Math.floor((parseFloat(free_amount) * newVal / 100) * round_at) / round_at : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * round_at) / round_at : 0;
+        //var floored = (side == 'sell') ? Math.floor((parseFloat(free_amount) * newVal / 100) * round_at) / round_at : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * round_at) / round_at : 0;
+        var floored = (side == 'sell') ? parseFloat(free_amount) * newVal / 100 : (price != 0) ? free_amount * newVal / (price * 100) : 0;
         
         if (isNaN(floored)) {
             $perc.html('資金不足');
@@ -349,7 +350,6 @@ function update_amount_by_slider(tab_num) {
 }
 
 function update_slider_by_amount(tab_num) {
-
     var market = $('#id_market').val();
     var pair = $('#id_pair').val();
     var side = $('#id_side_' + tab_num).val();
@@ -518,20 +518,16 @@ function place_order(market, pair, special_order, order_1, order_2, order_3,  $m
     });            
 }
 function set_slidevalue(tab_num, new_val, trigger_input_event=true) {
-    var tar = $('#myRange_' + tab_num);
+    var $tar = $('#myRange_' + tab_num);
+    var $side = $('#id_side_' + tab_num);
+
     if (trigger_input_event) {
-        tar.val(new_val).trigger('input');
+        $tar.val(new_val).trigger('input');
     } else {
-        tar.val(new_val);
+        $tar.val(new_val);
     }
     
-    var ini = (tar.val() - tar.attr('min')) / (tar.attr('max') - tar.attr('min'));
-    tar.css('background-image',
-            '-webkit-gradient(linear, left top, right top, '
-            + 'color-stop(' + ini + ', ' + ($('#id_side_' + tab_num).val() == 'buy' ? 'teal' : 'orangered') + '), '
-            + 'color-stop(' + ini + ', #333333)'
-            + ')'
-    );
+    init_range_input($tar, $side);
     $('#amount_percentage_' + tab_num).html(new_val + '%');
 }
 
@@ -581,7 +577,15 @@ function update_unit_currency(currency, unit) {
         $('div.unit').html(unit);
     }
 }
-
+function init_range_input($me, $side) {
+    var val = ($me.val() - $me.attr('min')) / ($me.attr('max') - $me.attr('min'));
+    $me.css('background-image',
+        '-webkit-gradient(linear, left top, right top, '
+        + 'color-stop(' + val + ', ' + ($side.val() == 'buy' ? 'teal' : 'orangered') + '),'
+        + 'color-stop(' + val + ', #333333)'
+        + ')'
+    );
+}
 function init_order_tab(is_initial = false) {
     var $order_result_message_target = $('#id_order_result_message');
     var $ajax_message_target = $('#id_ajax_message');
@@ -753,12 +757,7 @@ function init_order_tab(is_initial = false) {
             $('#myRange_' + i).on("input", function () {
                 update_amount_by_slider(i);
                 var val = ($(this).val() - $(this).attr('min')) / ($(this).attr('max') - $(this).attr('min'));
-                $(this).css('background-image',
-                    '-webkit-gradient(linear, left top, right top, '
-                    + 'color-stop(' + val + ', ' + ($('#id_side_' + i).val() == 'buy' ? 'teal' : 'orangered') + '),'
-                    + 'color-stop(' + val + ', #333333)'
-                    + ')'
-                );
+                init_range_input($(this), $('#id_side_' + i));
             });
 
             $('#id_start_amount_' + i)
@@ -795,9 +794,6 @@ function init_order_tab(is_initial = false) {
                     $('#id_stop_price_placeholder_' + i).html('逆指値(発動価格)');
                     $('#id_price_placeholder_' + i).html('指値(約定希望価格)');
                 }
-                // if (new_order_type != 'market') {
-                //     set_default_price(i, $input_market.val(), $input_pair.val(), $ajax_message_target, 'order_type_change_' + i);
-                // }
                 
                 display_price_div(i, new_order_type);
                 update_slider_by_amount(i);
@@ -808,11 +804,12 @@ function init_order_tab(is_initial = false) {
             $('#id_side_' + i)
             .on('value_change', function() {
                 $('#id_start_amount_' + i).trigger('change');
-            
+                init_range_input($('#myRange_' + i), $(this));
+
                 if ($(this).val() == 'buy') {
                     $('#sell_button_' + i).removeClass('sell').addClass('btn-base');
                     $('#buy_button_' + i).addClass('buy').removeClass('btn-base');
-                    $('#myRange_' + i).addClass('slider_for_buy').removeClass('slider_for_sell').trigger('input');
+                    $('#myRange_' + i).addClass('slider_for_buy').removeClass('slider_for_sell');
                     $('button[name="perc_button_' + i + '"]').addClass('buy').removeClass('sell');
                     
                     $button_order.addClass('green_button').removeClass('red_button');
@@ -820,7 +817,7 @@ function init_order_tab(is_initial = false) {
                     
                     $('#sell_button_' + i).addClass('sell').removeClass('btn-base');
                     $('#buy_button_' + i).removeClass('buy').addClass('btn-base');
-                    $('#myRange_' + i).addClass('slider_for_sell').removeClass('slider_for_buy').trigger('input');
+                    $('#myRange_' + i).addClass('slider_for_sell').removeClass('slider_for_buy');
                     $button_order.removeClass('green_button').addClass('red_button');
                     $('button[name="perc_button_' + i + '"]').addClass('sell').removeClass('buy');
                 }
