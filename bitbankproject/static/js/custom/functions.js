@@ -310,6 +310,8 @@ function update_amount_by_slider(tab_num) {
     var order_type = $('#id_order_type_' + tab_num).val();
     var currency = (side == 'sell') ? pair.split('_')[0] : pair.split('_')[1];
 
+    var round_at = 100000000;
+
     $perc.html(newVal + '%');
 
 
@@ -333,7 +335,8 @@ function update_amount_by_slider(tab_num) {
         
         var price = (order_type.match(/limit/)) ? (limitprice != '') ? limitprice : 0 : (order_type.match(/stop/)) ? stopprice : market_price_json[market][pair][side];
         console.log(price);
-        var floored = (side == 'sell') ? Math.floor((parseFloat(free_amount) * newVal / 100) * 10000) / 10000 : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * 10000) / 10000 : 0;
+
+        var floored = (side == 'sell') ? Math.floor((parseFloat(free_amount) * newVal / 100) * round_at) / round_at : (price != 0) ? Math.floor((free_amount * newVal / (price * 100)) * round_at) / round_at : 0;
         
         if (isNaN(floored)) {
             $perc.html('資金不足');
@@ -804,7 +807,6 @@ function init_order_tab(is_initial = false) {
 
             $('#id_side_' + i)
             .on('value_change', function() {
-                //reset_input(i);
                 $('#id_start_amount_' + i).trigger('change');
             
                 if ($(this).val() == 'buy') {
