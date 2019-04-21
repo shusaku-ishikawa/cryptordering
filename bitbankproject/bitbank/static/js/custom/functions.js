@@ -964,35 +964,53 @@ function convert_iso_datetime(original, date_only = false) {
     }
     return(year + "/" + month + "/" + day + " " + hours + ":" + minutes + ":" + seconds);
 }
-function build_order_card_header(order_id, market, pair, special_order, placed_at) {
+
+function build_order_card_header(pk, market, pair, special_order, placed_at) {
     var col_3_head = 'col-md-3 col-3 card-table-header';
     var col_3_data = 'col-md-3 col-3 card-table-data';
+    var col_6_head = 'col-md-6 col-6 card-table-header';
+    var col_6_data = 'col-md-6 col-6 card-table-data';
+    
     
     var row_1 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
-        class: col_3_head,
-        text: '注文ID'
+        class: col_6_head,
+        text: '特殊注文ID'
     })).append($('<div>', {
-        class: col_3_data,
-        text: hyphen_if_null(order_id)
+        class: col_6_data,
+        text: ('0000000' + pk).slice(-8)
+    }));
+    
+    var row_2 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: col_6_head,
+        text: '特殊注文日時'
     })).append($('<div>', {
+        class: col_6_data,
+        text: convert_iso_datetime(placed_at)
+    }));
+    
+    var row_3 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
         class: col_3_head,
         text: '取引所'
     })).append($('<div>', {
         class: col_3_data,
         text: MARKETS[market]
-    }));
-
-    var row_2 = $('<div>', { 
-        class: 'row'
-    }).append($('<div>', {
+    })).append($('<div>', {
         class: col_3_head,
         text: '取引通貨'
-    })).append($('<div>', {
+    })).append  ($('<div>', {
         class: col_3_data,
         text: PAIRS[pair]
-    })).append($('<div>', {
+    }));
+
+    var $row_4 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
         class: col_3_head,
         text: '特殊注文'
     })).append($('<div>', {
@@ -1000,19 +1018,9 @@ function build_order_card_header(order_id, market, pair, special_order, placed_a
         text: SPECIAL_ORDERS[special_order]
     }));
 
-    var row_3 = $('<div>', { 
-        class: 'row'
-    }).append($('<div>', {
-        class: 'col-md-3 col-6 card-table-header',
-        text: '注文日時'
-    })).append($('<div>', {
-        class: 'col-md-9 col-6 card-table-data',
-        text: convert_iso_datetime(placed_at)
-    }));
-
     return $('<div>', {
         class: 'order_header'
-    }).append(row_1).append(row_2).append(row_3);
+    }).append(row_1).append(row_2).append(row_3).append($row_4);
     
 }
 
@@ -1022,8 +1030,29 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
     var col_6_head = 'col-md-6 col-6 card-table-header';
     var col_6_data = 'col-md-6 col-6 card-table-data';
     
-
+    
     var $row_1 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: col_6_head,
+        text: '注文ID'
+    })).append($('<div>', {
+        class: col_6_data,
+        text: hyphen_if_null(order_id)
+    }));
+
+    var $row_2 = $('<div>', { 
+        class: 'row'
+    }).append($('<div>', {
+        class: col_6_head,
+        text: '注文日時'
+    })).append($('<div>', {
+        class: col_6_data,
+        text: return_formatted_datetime(ordered_at)
+    }));
+    
+
+    var $row_3 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
         class: col_3_head,
@@ -1039,7 +1068,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         text: ORDER_TYPES[order_type]
     }));
 
-    var $row_2 = $('<div>', { 
+    var $row_4 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
         class: col_3_head,
@@ -1055,7 +1084,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         text: hyphen_if_null(price_for_stop)
     }));
 
-    var $row_3 = $('<div>', { 
+    var $row_5 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
         class: col_3_head,
@@ -1065,7 +1094,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         text: hyphen_if_null(trail_width)
     }));
     
-    var $row_4 = $('<div>', {
+    var $row_6 = $('<div>', {
         class: 'row'
     }).append($('<div>', {
         class: col_3_head,
@@ -1082,7 +1111,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
     }));
     
 
-    var $row_5 = $('<div>', { 
+    var $row_7 = $('<div>', { 
         class: 'row'
     }).append($('<div>', {
         class: col_3_head,
@@ -1098,19 +1127,19 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         text: STATUS[status]
     }));
 
-    var $row_6 = $('<div>', {
+    var $row_8 = $('<div>', {
         class: 'row justify-content-end'
     });
 
-    var $row_6_col_1 = $('<div>', {
+    var $row_8_col_1 = $('<div>', {
         class: col_6_head
     });
-    var $row_6_col_2 = $('<div>', {
+    var $row_8_col_2 = $('<div>', {
         class: col_6_data
     });
 
     if (is_cancellable) {
-        $row_6_col_1.append($('<button>', {
+        $row_8_col_1.append($('<button>', {
             style: 'font-size:1rem; padding:0.1em!important',
             pk: pk,
             type: 'button',
@@ -1119,37 +1148,37 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
             text: 'CANCEL'
         }));
     } else {
-        $row_6_col_1.html('<p style="color:red;font-weight:bold">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
+        $row_8_col_1.html('<p style="color:red;font-weight:bold">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
     }
 
-    $row_6_col_1.appendTo($row_6);
+    $row_8_col_1.appendTo($row_8);
 
     switch (order_seq) {
         case 'order_1':
-            $row_6_col_2.append($('<span>', {
+            $row_8_col_2.append($('<span>', {
                 class: 'badge badge-info',
                 text: '新規注文'
             }));
             break;
         case 'order_2':
-            $row_6_col_2.append($('<span>', {
+            $row_8_col_2.append($('<span>', {
                 class: 'badge badge-success',
                 text: '決済注文❶'
             }));
             
             break;
         case 'order_3':
-            $row_6_col_2.append($('<span>', {
+            $row_8_col_2.append($('<span>', {
                 class: 'badge badge-primary',
                 text: '決済注文❷'
             }));
             break;
     }
-    $row_6_col_2.appendTo($row_6);
+    $row_8_col_2.appendTo($row_8);
     
     return $('<div>', {
         class: 'order_body'
-    }).append($row_1).append($row_2).append($row_3).append($row_4).append($row_5).append($row_6);
+    }).append($row_1).append($row_2).append($row_3).append($row_4).append($row_5).append($row_6).append($row_7).append($row_8);
 
    
 }
