@@ -564,7 +564,7 @@ function reset_input(i) {
 }
 function reset_input_all(market, pair, $message_target) {
     for (let i = 1; i < 4; i++) {
-        set_slidevalue(i, 0, false);
+        reset_input(i);
         $('#id_side_' + i).val(Object.keys(SELL_BUY)[1]).trigger('value_change');
         $('#id_order_type_' + i).val(Object.keys(ORDER_TYPES)[1]).trigger('change');
         set_default_price(i, market, pair, $message_target, 'reset_all');

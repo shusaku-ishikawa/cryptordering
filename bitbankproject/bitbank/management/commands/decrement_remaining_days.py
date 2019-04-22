@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.core.management.base import BaseCommand
 from django.template.loader import get_template
 from datetime import datetime, timedelta
-from ...models import User
+from ...models import *
 from django.conf import settings
 
 
