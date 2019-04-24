@@ -713,7 +713,7 @@ function init_order_tab(is_initial = false) {
                         $input_pair.val(Object.keys(PAIRS)[0]).trigger('change');
                     }
                     
-                    var ck_special_order = $.cookie(COOKIE_SPECIAL_ORDER_BB);
+                    var ck_special_order = $.cookie(COOKIE_SPECIAL_ORDER_CC);
                     if (ck_special_order != undefined && Object.keys(SPECIAL_ORDERS).indexOf(ck_special_order) >= 0) {
                         $input_special_order.val(ck_special_order).trigger('change');
                     } else {
