@@ -653,7 +653,40 @@ function init_order_tab(is_initial = false) {
         $input_market
         .on('value_change', function() {
             $.cookie(COOKIE_ORDER_MARKET, $(this).val(), { expires: 7 });
-            
+            switch ($(this).val()) {
+                case 'bitbank':
+                    var ck_pair = $.cookie(COOKIE_ORDER_PAIR_BB);
+                    if (ck_pair != undefined && Object.keys(PAIRS).indexOf(ck_pair) >= 0) {
+                        $input_pair.val(ck_pair).trigger('change');
+                    } else {
+                        // 無ければ先頭の選択肢をセット
+                        $input_pair.val(Object.keys(PAIRS)[0]).trigger('change');
+                    }
+                    
+                    var ck_special_order = $.cookie(COOKIE_SPECIAL_ORDER_BB);
+                    if (ck_special_order != undefined && Object.keys(SPECIAL_ORDERS).indexOf(ck_special_order) >= 0) {
+                        $input_special_order.val(ck_special_order).trigger('change');
+                    } else {
+                        $input_special_order.val(SPECIAL_ORDERS[Object.keys(SPECIAL_ORDERS)[0]]).trigger('change');
+                    }
+                    break;
+                case 'coincheck':
+                    var ck_pair = $.cookie(COOKIE_ORDER_PAIR_CC);
+                    if (ck_pair != undefined && Object.keys(PAIRS).indexOf(ck_pair) >= 0) {
+                        $input_pair.val(ck_pair).trigger('change');
+                    } else {
+                        // 無ければ先頭の選択肢をセット
+                        $input_pair.val(Object.keys(PAIRS)[0]).trigger('change');
+                    }
+                    
+                    var ck_special_order = $.cookie(COOKIE_SPECIAL_ORDER_BB);
+                    if (ck_special_order != undefined && Object.keys(SPECIAL_ORDERS).indexOf(ck_special_order) >= 0) {
+                        $input_special_order.val(ck_special_order).trigger('change');
+                    } else {
+                        $input_special_order.val(SPECIAL_ORDERS[Object.keys(SPECIAL_ORDERS)[0]]).trigger('change');
+                    }
+                    break;
+            }
             reset_input_all($(this).val(), $input_pair.val(), $ajax_message_target)
             if ($(this).val() == 'bitbank') {
                 $('.show_if_coincheck').hide();
@@ -707,7 +740,16 @@ function init_order_tab(is_initial = false) {
         });
         $input_special_order
         .on('change', function() {
-            $.cookie(COOKIE_SPECIAL_ORDER, $(this).val(), { expires: 7 });
+
+            switch ($input_market.val()) {
+                case 'bitbank':
+                    $.cookie(COOKIE_SPECIAL_ORDER_BB, $(this).val(), { expires: 7 });
+                    break;
+                case 'coincheck':
+                    $.cookie(COOKIE_SPECIAL_ORDER_CC, $(this).val(), { expires: 7 });
+                    break;
+            }
+
                
             $slick
             .slick('slickUnfilter')
@@ -739,7 +781,15 @@ function init_order_tab(is_initial = false) {
         });
 
         $input_pair.on('change', function() {
-            $.cookie(COOKIE_ORDER_PAIR, $(this).val(), { expires: 7 });
+            switch ($input_market.val()) {
+                case 'bitbank':
+                    $.cookie(COOKIE_ORDER_PAIR_BB, $(this).val(), { expires: 7 });
+                    break;
+                case 'coincheck':
+                    $.cookie(COOKIE_ORDER_PAIR_CC, $(this).val(), { expires: 7 });
+                    break;
+            }
+            
 
             reset_input_all($input_market.val(), $input_pair.val(), $ajax_message_target);   
             
@@ -872,22 +922,43 @@ function init_order_tab(is_initial = false) {
             // 無ければ先頭の選択肢をセット
             $input_market.val(Object.keys(MARKETS)[0]).trigger('value_change');
         }
-
-        // クッキーにあればデフォルトセット
-        var ck_pair = $.cookie(COOKIE_ORDER_PAIR);
-        if (ck_pair != undefined && Object.keys(PAIRS).indexOf(ck_pair) >= 0) {
-            $input_pair.val(ck_pair).trigger('change');
-        } else {
-            // 無ければ先頭の選択肢をセット
-            $input_pair.val(Object.keys(PAIRS)[0]).trigger('change');
-        }
+        
+        switch ($input_market.val()) {
+            case 'bitbank':
+                var ck_pair = $.cookie(COOKIE_ORDER_PAIR_BB);
+                if (ck_pair != undefined && Object.keys(PAIRS).indexOf(ck_pair) >= 0) {
+                    $input_pair.val(ck_pair).trigger('change');
+                } else {
+                    // 無ければ先頭の選択肢をセット
+                    $input_pair.val(Object.keys(PAIRS)[0]).trigger('change');
+                }
                 
-        var ck_special_order = $.cookie(COOKIE_SPECIAL_ORDER);
-        if (ck_special_order != undefined && Object.keys(SPECIAL_ORDERS).indexOf(ck_special_order) >= 0) {
-            $input_special_order.val(ck_special_order).trigger('change');
-        } else {
-            $input_special_order.val(SPECIAL_ORDERS[Object.keys(SPECIAL_ORDERS)[0]]).trigger('change');
+                var ck_special_order = $.cookie(COOKIE_SPECIAL_ORDER_BB);
+                if (ck_special_order != undefined && Object.keys(SPECIAL_ORDERS).indexOf(ck_special_order) >= 0) {
+                    $input_special_order.val(ck_special_order).trigger('change');
+                } else {
+                    $input_special_order.val(SPECIAL_ORDERS[Object.keys(SPECIAL_ORDERS)[0]]).trigger('change');
+                }
+                break;
+            case 'coincheck':
+                var ck_pair = $.cookie(COOKIE_ORDER_PAIR_CC);
+                if (ck_pair != undefined && Object.keys(PAIRS).indexOf(ck_pair) >= 0) {
+                    $input_pair.val(ck_pair).trigger('change');
+                } else {
+                    // 無ければ先頭の選択肢をセット
+                    $input_pair.val(Object.keys(PAIRS)[0]).trigger('change');
+                }
+                
+                var ck_special_order = $.cookie(COOKIE_SPECIAL_ORDER_BB);
+                if (ck_special_order != undefined && Object.keys(SPECIAL_ORDERS).indexOf(ck_special_order) >= 0) {
+                    $input_special_order.val(ck_special_order).trigger('change');
+                } else {
+                    $input_special_order.val(SPECIAL_ORDERS[Object.keys(SPECIAL_ORDERS)[0]]).trigger('change');
+                }
+                break;
         }
+        // クッキーにあればデフォルトセット
+        
 
         $button_order.on('click', function(e) {
             $(this).prop('disabled', true);
