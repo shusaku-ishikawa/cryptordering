@@ -691,7 +691,7 @@ function init_order_tab(is_initial = false) {
                     var ck_pair = $.cookie(COOKIE_ORDER_PAIR_BB);
                     if (ck_pair != undefined && Object.keys(PAIRS).indexOf(ck_pair) >= 0) {
                         console.log(ck_pair);
-                        $input_pair.val(ck_pair);//.trigger('change');
+                        $input_pair.val(ck_pair).trigger('change');
                     } else {
                         // 無ければ先頭の選択肢をセット
                         $input_pair.val(Object.keys(PAIRS)[0]).trigger('change');

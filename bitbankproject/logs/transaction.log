@@ -1485,3 +1485,7 @@
 [ERROR]	asctime:2019-04-24 09:47:32,989	module:models	message:update bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
 [ERROR]	asctime:2019-04-24 09:47:59,800	module:models	message:update bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
 [ERROR]	asctime:2019-04-24 09:48:14,300	module:models	message:update bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
+[INFO]	asctime:2019-04-26 20:10:00,573	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-26 20:10:01,142	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-26 20:10:16,921	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-26 20:10:18,215	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
