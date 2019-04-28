@@ -253,7 +253,7 @@ CRONJOBS = [
     ('* * * * *', 'django.core.management.call_command', ['monitor_order_status']),
     ('* * * * *', 'django.core.management.call_command', ['sync_orders']),
     ('* * * * *', 'django.core.management.call_command', ['monitor_ticker']),
-    ('* 9 * * *', 'django.core.management.call_command', ['decrement_remaining_days']),
+    ('0 9 * * *', 'django.core.management.call_command', ['decrement_remaining_days']),
     ('* * 1 * *', 'django.core.management.call_command', ['gabage']),
 ]
 CRONTAB_LOCK_JOBS = False
