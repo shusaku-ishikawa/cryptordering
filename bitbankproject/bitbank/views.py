@@ -77,6 +77,7 @@ class UserCreate(generic.CreateView):
             'user': user,
             'bank': bankinfo.bank,
             'branch': bankinfo.branch,
+            'meigi': bankinfo.meigi,
             'type': bankinfo.type,
             'number': bankinfo.number
         }

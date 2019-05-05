@@ -742,6 +742,11 @@ class BankInfo(models.Model):
         blank = False,
         null = False
     )
+    meigi = models.CharField(
+        verbose_name = '口座名義人',
+        max_length = 50,
+        default = 'xxxxx'
+    )
     type = models.CharField(
         verbose_name = '口座種別',
         max_length = 20,
@@ -756,6 +761,7 @@ class BankInfo(models.Model):
         blank = False
     )
 
+
     @staticmethod
     def get_bank_info():
         qs = BankInfo.objects.all()
@@ -763,6 +769,7 @@ class BankInfo(models.Model):
             instance = BankInfo()
             BankInfo.bank = 'no data'
             BankInfo.branch = 'no data'
+            BankInfo.meigi = 'no data'
             BankInfo.type = '普通'
             BankInfo.number = 'no data'
             return instance

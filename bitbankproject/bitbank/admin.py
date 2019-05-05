@@ -151,7 +151,7 @@ class MyInquiryAdmin(admin.ModelAdmin):
     show_attachment_3.short_description = '添付ファイル３'
 
 class MyBankInfoAdmin(admin.ModelAdmin):
-    list_display = ('bank', 'branch', 'type', 'number')
+    list_display = ('bank', 'branch', 'meigi','type', 'number')
     # def has_add_permission(self, request, obj=None):
     #     return False
 

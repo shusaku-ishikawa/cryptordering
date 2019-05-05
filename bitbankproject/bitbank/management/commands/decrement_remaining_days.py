@@ -33,6 +33,7 @@ class Command(BaseCommand):
                 'customer': customer,
                 'bank': bankinfo.bank,
                 'branch': bankinfo.branch,
+                'meigi': bankinfo.meigi,
                 'type': bankinfo.type,
                 'number': bankinfo.number
             }
