@@ -301,7 +301,7 @@ function update_amount_by_price(tab_num) {
 function update_amount_by_slider(tab_num) {
     var $perc = $('#amount_percentage_' + tab_num);
     var $amount = $('#id_start_amount_' + tab_num);
-    var newVal = parseInt($('#myRange_' + tab_num).val());
+    var newVal = parseFloat($('#myRange_' + tab_num).val()).toFixed(1);
     var market = $('#id_market').val();
     var pair = $('#id_pair').val();
     var side = $('#id_side_' + tab_num).val();
@@ -311,7 +311,6 @@ function update_amount_by_slider(tab_num) {
     var currency = (side == 'sell') ? pair.split('_')[0] : pair.split('_')[1];
 
     var round_at = 100000000;
-
     $perc.html(newVal + '%');
 
 
@@ -389,7 +388,7 @@ function update_slider_by_amount(tab_num) {
         if (perc > 100.0) {
             $percentage.html('資金不足');
         } else {
-            var rounded = Math.round(perc * 10) / 10;
+            var rounded = Math.round(perc * 100) / 100;
             set_slidevalue(tab_num, rounded, false);
          
         }
@@ -1221,7 +1220,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
             text: 'CANCEL'
         }));
     } else {
-        $row_8_col_1.html('<p style="color:red;font-weight:bold">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
+        $row_8_col_1.html('<p style="color:red;font-weight:bold;text-shadow: 1px 1px white;">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
     }
 
     $row_8_col_1.appendTo($row_8);
@@ -1711,7 +1710,7 @@ function init_alerts_content(market, pair, $message_target) {
     var $page_selection = $('#page_selection_alerts');
     var $container = $('#alert_container');
 
-
+    $container.empty();
     call_user('GET')
     .done(function(res) {
         if (res.error) {
@@ -1757,14 +1756,14 @@ function init_alerts_content(market, pair, $message_target) {
             first: '先頭',
             last: '最後',
             onPageClick: function (event, page) {
-                $container.empty();
                 call_alerts('GET', null, market, pair, COUNT_PER_PAGE * (page - 1), COUNT_PER_PAGE)
                 .done(function(res_2) {
+                    $container.empty();
                     var $outer = $('<div>', { class: 'row' });
                     var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
 
                     res_2.data.forEach(alert => {
-                        
+                        console.log(alert);               
                         $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.rate)).append($('<hr>'));
                        
                     });
@@ -2033,16 +2032,16 @@ function init_alerts_tab(is_initial = false) {
         });
 
         
-        $alert_search_market.val('all').trigger('change');
+        $alert_search_market.val('all');
         $alert_search_pair.val('all').trigger('change');
 
         var ck_alert_pair = $.cookie(COOKIE_ALERT_PAIR);
         var ck_alert_market = $.cookie(COOKIE_ALERT_MARKET);
         
         if (ck_alert_market != undefined && Object.keys(MARKETS).indexOf(ck_alert_market) >= 0) {
-            $alert_market.val(ck_alert_market).trigger('change');
+            $alert_market.val(ck_alert_market);
         } else {
-            $alert_market.val(Object.keys(MARKETS)[0]).trigger('change');
+            $alert_market.val(Object.keys(MARKETS)[0]);
         }
 
         if (ck_alert_pair != undefined && Object.keys(PAIRS).indexOf(ck_alert_pair) >= 0) {

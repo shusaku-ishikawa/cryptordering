@@ -32,7 +32,7 @@ class AlertSerializer(serializers.ModelSerializer):
         try:
             instance = Alert(**validated_data)
             last = python_bitbankcc.public().get_ticker(validated_data['pair'])['last'] if validated_data['market'] == 'bitbank' else json.loads(CoinCheck('fake', 'fake').ticker.all())['last']
-            instance.over_or_under = 'over' if validated_data['rate'] <= float(last) else 'under' 
+            instance.over_or_under = 'over' if validated_data['rate'] > float(last) else 'under' 
             instance.user = user
             instance.is_active = True
             instance.save()
