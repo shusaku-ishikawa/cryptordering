@@ -302,6 +302,7 @@ function update_amount_by_slider(tab_num) {
     var $perc = $('#amount_percentage_' + tab_num);
     var $amount = $('#id_start_amount_' + tab_num);
     var newVal = parseFloat($('#myRange_' + tab_num).val()).toFixed(1);
+    newVal = (newVal >= 0.5) ? newVal - 0.5 : newVal;
     var market = $('#id_market').val();
     var pair = $('#id_pair').val();
     var side = $('#id_side_' + tab_num).val();
@@ -312,7 +313,7 @@ function update_amount_by_slider(tab_num) {
 
     var round_at = 100000000;
 
-    $perc.html(newVal + '%');
+    $perc.html(Math.round(newVal) + '%');
 
 
     if (newVal != 0) {
@@ -321,13 +322,15 @@ function update_amount_by_slider(tab_num) {
         if (tab_num == 2 || tab_num == 3) {
             var if_done_order_type = $('#id_order_type_1').val();
             var if_done_amount = parseFloat($('#id_start_amount_1').val());
+
             var if_done_side = $('#id_side_1').val();
+            var if_done_price = (if_done_order_type.includes('limit')) ? parseFloat($('#id_price_1').val()) : market_price_json[market][pair]['buy'];
             // 新規注文数が入力されている場合
             if (!isNaN(if_done_amount)) {
                 if (if_done_side == 'buy') {
-                    free_amount -= (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : -if_done_amount;
+                    free_amount -= (side == 'buy') ? if_done_amount * if_done_price : -if_done_amount;
                 } else {
-                    free_amount += (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : -if_done_amount;
+                    free_amount += (side == 'buy') ? if_done_amount * if_done_price : -if_done_amount;
                 }
             }
             console.log('after ' + free_amount);

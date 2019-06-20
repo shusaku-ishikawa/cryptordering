@@ -302,6 +302,7 @@ function update_amount_by_slider(tab_num) {
     var $perc = $('#amount_percentage_' + tab_num);
     var $amount = $('#id_start_amount_' + tab_num);
     var newVal = parseFloat($('#myRange_' + tab_num).val()).toFixed(1);
+    newVal = (newVal >= 0.5) ? newVal - 0.5 : newVal;
     var market = $('#id_market').val();
     var pair = $('#id_pair').val();
     var side = $('#id_side_' + tab_num).val();
@@ -311,7 +312,8 @@ function update_amount_by_slider(tab_num) {
     var currency = (side == 'sell') ? pair.split('_')[0] : pair.split('_')[1];
 
     var round_at = 100000000;
-    $perc.html(newVal + '%');
+
+    $perc.html(Math.round(newVal) + '%');
 
 
     if (newVal != 0) {
@@ -320,13 +322,15 @@ function update_amount_by_slider(tab_num) {
         if (tab_num == 2 || tab_num == 3) {
             var if_done_order_type = $('#id_order_type_1').val();
             var if_done_amount = parseFloat($('#id_start_amount_1').val());
+
             var if_done_side = $('#id_side_1').val();
+            var if_done_price = (if_done_order_type.includes('limit')) ? parseFloat($('#id_price_1').val()) : market_price_json[market][pair]['buy'];
             // 新規注文数が入力されている場合
             if (!isNaN(if_done_amount)) {
                 if (if_done_side == 'buy') {
-                    free_amount -= (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : -if_done_amount;
+                    free_amount -= (side == 'buy') ? if_done_amount * if_done_price : -if_done_amount;
                 } else {
-                    free_amount += (side == 'buy') ? if_done_amount * market_price_json[market][pair]['buy'] : -if_done_amount;
+                    free_amount += (side == 'buy') ? if_done_amount * if_done_price : -if_done_amount;
                 }
             }
             console.log('after ' + free_amount);
@@ -388,7 +392,7 @@ function update_slider_by_amount(tab_num) {
         if (perc > 100.0) {
             $percentage.html('資金不足');
         } else {
-            var rounded = Math.round(perc * 100) / 100;
+            var rounded = Math.round(perc * 10) / 10;
             set_slidevalue(tab_num, rounded, false);
          
         }
@@ -1220,7 +1224,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
             text: 'CANCEL'
         }));
     } else {
-        $row_8_col_1.html('<p style="color:red;font-weight:bold;text-shadow: 1px 1px white;">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
+        $row_8_col_1.html('<p style="color:red;font-weight:bold">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
     }
 
     $row_8_col_1.appendTo($row_8);
@@ -1763,7 +1767,7 @@ function init_alerts_content(market, pair, $message_target) {
                     var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
 
                     res_2.data.forEach(alert => {
-                        console.log(alert);               
+                        
                         $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.rate)).append($('<hr>'));
                        
                     });
@@ -2032,7 +2036,7 @@ function init_alerts_tab(is_initial = false) {
         });
 
         
-        $alert_search_market.val('all');
+        $alert_search_market.val('all').trigger('change');
         $alert_search_pair.val('all').trigger('change');
 
         var ck_alert_pair = $.cookie(COOKIE_ALERT_PAIR);
