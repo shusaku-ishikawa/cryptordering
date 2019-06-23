@@ -978,10 +978,38 @@ function init_order_tab(is_initial = false) {
             var side_2 = $('#id_side_2').val();
             var side_3 = $('#id_side_3').val();
             
+            var perc_1 = $('#myRange_1').val();
+            var perc_2 = $('#myRange_2').val();
+            var perc_3 = $('#myRange_3').val();
+            
             var order_type_1 = $('#id_order_type_1').val();
             var order_type_2 = $('#id_order_type_2').val();
             var order_type_3 = $('#id_order_type_3').val();
+
+            // bitbank成行注文制限
+            if (market == 'bitbank') {
+                if (order_type_1 != undefined) {
+                    if ( (order_type_1.includes('market') || order_type_1 == 'trail') && perc_1 > 70 ) {
+                        set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。新規注文の数量を変更してください。');
+                        return;
+                    }
+                }
+                if (order_type_2 != undefined) {
+                    if ( (order_type_2.includes('market') || order_type_2 == 'trail') && perc_2 > 70 ) {
+                        set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。決済注文①の数量を変更してください。');
+                        return;
+                    }
+                }
+                if (order_3 != undefined) {
+                    if ( (order_type_3.includes('market') || order_type_3 == 'trail') && perc_3 > 70 ) {
+                        set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。決済注文②の数量を変更してください。');
+                        return;
+                    }
+                }
+                
+            }
             
+
             var price_1 = $('#id_price_1').val() == '' ? null : parseFloat($('#id_price_1').val());
             var price_2 = $('#id_price_2').val() == '' ? null : parseFloat($('#id_price_2').val());
             var price_3 = $('#id_price_3').val() == '' ? null : parseFloat($('#id_price_3').val());
