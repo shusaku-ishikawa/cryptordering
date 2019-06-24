@@ -1329,3 +1329,4 @@
 [INFO]	asctime:2019-06-24 09:23:02,807	module:monitor_order_status	message:started
 [INFO]	asctime:2019-06-24 09:24:00,603	module:monitor_order_status	message:completed
 [INFO]	asctime:2019-06-24 09:24:03,156	module:monitor_order_status	message:started
+[INFO]	asctime:2019-06-24 09:25:00,840	module:monitor_order_status	message:completed

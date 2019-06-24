@@ -1254,7 +1254,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
             text: 'CANCEL'
         }));
     } else {
-        $row_8_col_1.html('<p style="color:orangered;>新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
+        $row_8_col_1.html('<p style="color:orangered;">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
     }
 
     $row_8_col_1.appendTo($row_8);
