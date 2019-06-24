@@ -301,7 +301,7 @@ function update_amount_by_price(tab_num) {
 function update_amount_by_slider(tab_num) {
     var $perc = $('#amount_percentage_' + tab_num);
     var $amount = $('#id_start_amount_' + tab_num);
-    var newVal = parseFloat($('#myRange_' + tab_num).val()).toFixed(1);
+    var newVal = parseInt($('#myRange_' + tab_num).val());
     newVal = (newVal >= 0.5) ? newVal - 0.5 : newVal;
     var market = $('#id_market').val();
     var pair = $('#id_pair').val();
@@ -322,11 +322,10 @@ function update_amount_by_slider(tab_num) {
         if (tab_num == 2 || tab_num == 3) {
             var if_done_order_type = $('#id_order_type_1').val();
             var if_done_amount = parseFloat($('#id_start_amount_1').val());
-
             var if_done_side = $('#id_side_1').val();
-            var if_done_price = (if_done_order_type.includes('limit')) ? parseFloat($('#id_price_1').val()) : market_price_json[market][pair]['buy'];
             // 新規注文数が入力されている場合
             if (!isNaN(if_done_amount)) {
+                var if_done_price = (if_done_order_type.includes('limit')) ? parseFloat($('#id_price_1').val()) : market_price_json[market][pair]['buy'];
                 if (if_done_side == 'buy') {
                     free_amount -= (side == 'buy') ? if_done_amount * if_done_price : -if_done_amount;
                 } else {
@@ -991,18 +990,21 @@ function init_order_tab(is_initial = false) {
                 if (order_type_1 != undefined) {
                     if ( (order_type_1.includes('market') || order_type_1 == 'trail') && perc_1 > 70 ) {
                         set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。新規注文の数量を変更してください。');
+                        $(this).prop('disabled', false);
                         return;
                     }
                 }
                 if (order_type_2 != undefined) {
                     if ( (order_type_2.includes('market') || order_type_2 == 'trail') && perc_2 > 70 ) {
                         set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。決済注文①の数量を変更してください。');
+                        $(this).prop('disabled', false);
                         return;
                     }
                 }
                 if (order_3 != undefined) {
                     if ( (order_type_3.includes('market') || order_type_3 == 'trail') && perc_3 > 70 ) {
                         set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。決済注文②の数量を変更してください。');
+                        $(this).prop('disabled', false);
                         return;
                     }
                 }
@@ -1252,7 +1254,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
             text: 'CANCEL'
         }));
     } else {
-        $row_8_col_1.html('<p style="color:red;font-weight:bold">新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
+        $row_8_col_1.html('<p style="color:orangered;>新規注文をCANCELする場合は、<br>先に決済注文を全てCANCELしてください</p>');
     }
 
     $row_8_col_1.appendTo($row_8);
