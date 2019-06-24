@@ -125,3 +125,8 @@
 [ERROR]	asctime:2019-06-24 08:44:59,734	module:models	message:update bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
 [ERROR]	asctime:2019-06-24 08:58:08,665	module:models	message:update bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
 [ERROR]	asctime:2019-06-24 09:02:17,006	module:models	message:update bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
+[INFO]	asctime:2019-06-24 10:01:01,736	module:views	message:('Expecting value: line 1 column 1 (char 0)',)
+[ERROR]	asctime:2019-06-24 10:01:08,296	module:models	message:place bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
+[ERROR]	asctime:2019-06-24 10:01:11,462	module:models	message:place bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
+[INFO]	asctime:2019-06-24 15:34:59,484	module:views	message:('Expecting value: line 1 column 1 (char 0)',)
+[ERROR]	asctime:2019-06-24 15:41:29,069	module:models	message:update bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
