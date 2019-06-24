@@ -1,0 +1,1481 @@
+[INFO]	asctime:2019-03-22 10:21:03,295	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:21:03,340	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:22:39,999	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:22:40,005	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:23:06,863	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:23:06,881	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:24:34,914	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:24:34,916	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:30:43,021	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:30:43,031	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:32:26,885	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:32:26,899	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:35:12,911	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:35:12,974	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:37:46,368	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:37:46,396	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:38:07,505	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:40:00,635	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:58:25,444	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:58:25,445	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:58:25,449	module:serializer	message:full name = 
+[INFO]	asctime:2019-03-22 10:58:25,452	module:serializer	message:full name = 
+[INFO]	asctime:2019-03-22 10:58:37,540	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:58:37,540	module:serializer	message:full name is::ae
+[INFO]	asctime:2019-03-22 10:58:37,541	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 10:58:50,651	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 10:58:50,654	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:12:09,157	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:12:09,162	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:12:09,167	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:12:09,168	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:13:00,243	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:13:00,272	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:13:00,273	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:13:00,284	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:20:13,202	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:20:13,210	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:20:13,215	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:20:13,230	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:20:13,280	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:20:13,291	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:20:13,329	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:20:13,331	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:23:42,240	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:23:42,243	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:23:42,325	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:23:42,331	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:23:42,515	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:23:42,517	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:25:46,539	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:25:46,549	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:25:46,581	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:25:46,585	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:25:46,639	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:25:46,640	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:25:46,658	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:25:46,662	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:27:18,167	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:27:18,168	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:27:18,169	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:27:18,170	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:27:18,559	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:27:18,561	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:27:18,626	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:27:18,638	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:27:59,366	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:27:59,368	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:27:59,390	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:27:59,391	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:27:59,829	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:27:59,840	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:28:24,822	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:28:24,829	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:28:24,830	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:28:24,831	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:28:25,079	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:28:25,081	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:28:25,118	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:28:25,120	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:29:27,626	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:29:27,632	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:29:27,638	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:29:27,638	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:29:27,700	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:29:27,701	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:29:27,741	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:29:27,744	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:30:18,615	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:30:18,616	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:30:18,657	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:30:18,674	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:30:18,750	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:30:18,761	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:30:18,785	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:30:18,796	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:31:14,518	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:31:14,525	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:31:14,525	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:31:14,529	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:31:14,745	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:31:14,747	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 11:31:14,779	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 11:31:14,781	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 12:58:30,840	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 12:58:30,841	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 12:58:30,868	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 12:58:30,869	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 12:58:31,313	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 12:58:31,317	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 12:58:31,335	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 12:58:31,337	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:00:23,824	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:00:23,830	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:00:23,830	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:00:23,831	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:00:24,198	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:00:24,199	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:00:24,200	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:00:24,205	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:01:51,896	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:01:51,906	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:01:51,907	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:01:51,909	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:01:52,060	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:01:52,070	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:01:52,139	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:01:52,140	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:04:45,348	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:04:45,349	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:04:45,375	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:04:45,377	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:06:44,870	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:06:44,878	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:06:44,898	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:06:44,902	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:06:44,930	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:06:44,943	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:06:44,999	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:06:45,002	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:08:13,286	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:08:13,291	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:08:13,304	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:08:13,310	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:08:13,319	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:08:13,331	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:08:13,405	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:08:13,409	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:10:28,524	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:10:28,534	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:10:28,535	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:10:28,544	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:10:28,578	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:10:28,586	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:10:28,681	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:10:28,691	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:11:42,936	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:11:42,943	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:11:42,967	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:11:42,977	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:11:43,029	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:11:43,032	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:11:43,039	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:11:43,041	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:13:16,984	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:13:16,995	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:13:16,995	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:13:17,005	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:16:16,445	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:16:16,455	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:16:16,463	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:16:16,467	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:16:16,575	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:16:16,578	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:16:16,636	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:16:16,637	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:17:09,386	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:17:09,389	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:17:09,423	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:17:09,427	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:17:09,628	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:17:09,631	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:17:09,639	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:17:09,643	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:17:27,926	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:17:27,928	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:17:27,935	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:17:27,938	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:17:28,076	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:17:28,079	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:17:28,116	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:17:28,118	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:27:33,340	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:27:33,348	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:27:33,357	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:27:33,378	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:27:33,572	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:27:33,592	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:27:33,622	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:27:33,625	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:34:07,510	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:34:07,511	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:34:07,543	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:34:07,544	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:34:07,641	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:34:07,642	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:34:07,706	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:34:07,711	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:35:31,056	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:35:31,062	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:35:31,068	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:35:31,070	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:35:31,515	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:35:31,523	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:35:31,539	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:35:31,553	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:35:51,669	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:35:51,670	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:35:51,671	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:35:51,675	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:35:52,090	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:35:52,093	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:35:52,140	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:35:52,146	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:39:55,548	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:39:55,560	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:39:55,595	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:39:55,603	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:39:55,633	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:39:55,637	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:39:55,752	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:39:55,753	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:40:48,456	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:40:48,484	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:40:48,485	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:40:48,486	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:42:44,390	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:42:44,396	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:42:44,396	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:42:44,419	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:44:28,871	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:44:28,876	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:44:28,895	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:44:28,896	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:44:29,228	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:44:29,229	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:44:29,280	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:44:29,283	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:45:46,030	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:45:46,032	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:45:46,066	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:45:46,066	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:45:46,281	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:45:46,286	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 13:45:46,352	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 13:45:46,358	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:01:51,770	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:01:51,781	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:01:51,803	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:01:51,805	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:01:52,243	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:01:52,248	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:01:52,255	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:01:52,256	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:02:35,288	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:02:35,305	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:02:35,365	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:02:35,370	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:02:35,568	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:02:35,571	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:02:35,592	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:02:35,598	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:02:53,438	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:02:53,442	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:02:53,484	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:02:53,486	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:02:53,931	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:02:53,932	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:02:53,947	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:02:53,954	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:06:16,244	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:06:16,252	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:06:16,252	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:06:16,263	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:06:16,357	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:06:16,360	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:06:16,368	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:06:16,369	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:07:32,098	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:07:32,101	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:07:32,139	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:07:32,142	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:07:32,277	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:07:32,287	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:07:32,295	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:07:32,299	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:11:18,487	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:11:18,492	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:11:18,552	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:11:18,561	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:11:18,774	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:11:18,775	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:11:18,806	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:11:18,807	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:20:34,174	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:20:34,176	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:20:34,213	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:20:34,219	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:20:34,348	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:20:34,350	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:20:34,384	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:20:34,386	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:25:01,563	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:25:01,573	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:25:01,588	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:25:01,596	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:25:01,666	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:25:01,667	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:25:01,736	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:25:01,742	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:27:51,552	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:27:51,563	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:27:51,581	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:27:51,583	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:27:51,631	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:27:51,632	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:27:51,653	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:27:51,654	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:29:48,397	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:29:48,402	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:29:48,406	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:29:48,407	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:29:48,436	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:29:48,451	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:29:48,454	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:29:48,462	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:32:27,592	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:32:27,606	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:32:27,634	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:32:27,638	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:32:27,671	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:32:27,684	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:32:27,691	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:32:27,702	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:33:35,112	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:33:35,125	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:33:35,126	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:33:35,134	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:33:35,573	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:33:35,594	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:33:35,596	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:33:35,600	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:34:25,571	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:34:25,583	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:34:25,661	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:34:25,665	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-22 14:34:26,060	module:serializer	message:update called
+[INFO]	asctime:2019-03-22 14:34:26,061	module:serializer	message:full name = ae
+[INFO]	asctime:2019-03-23 09:13:25,507	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:13:25,508	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:13:25,513	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:13:25,520	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:13:25,642	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:13:25,647	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:13:25,667	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:13:25,668	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:14:09,733	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:14:09,733	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:14:09,748	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:14:09,751	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:14:09,914	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:14:09,915	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:14:09,933	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:14:09,933	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:15:40,977	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:15:40,978	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:15:40,999	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:15:41,004	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:15:41,396	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:15:41,396	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:15:41,430	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:15:41,435	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:16:23,878	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:16:23,886	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:16:23,889	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:16:23,890	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:16:24,008	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:16:24,009	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:16:24,017	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:16:24,018	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:16:47,335	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:16:47,335	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:16:47,362	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:16:47,362	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:16:47,549	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:16:47,550	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:16:47,562	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:16:47,563	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:19:46,063	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:19:46,066	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:19:46,083	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:19:46,086	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:19:46,297	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:19:46,298	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:19:46,320	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:19:46,320	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:20:13,349	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:20:13,355	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:20:13,355	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:20:13,357	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:20:13,560	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:20:13,561	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:20:13,579	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:20:13,579	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:21:17,325	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:21:17,330	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:21:17,344	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:21:17,345	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:21:17,729	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:21:17,733	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:21:17,733	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:21:17,734	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:26:34,118	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:26:34,119	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:26:34,136	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:26:34,138	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:26:34,310	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:26:34,310	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:26:34,335	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:26:34,335	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:37:27,387	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:37:27,388	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:37:27,429	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:37:27,435	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:37:27,748	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:37:27,749	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:37:27,830	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:37:27,841	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:43:44,251	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:43:44,251	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:43:44,267	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:43:44,277	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:43:45,176	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:43:45,176	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:43:45,193	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:43:45,193	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:45:44,031	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:45:44,033	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:45:44,061	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:45:44,062	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:45:44,404	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:45:44,405	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:45:44,463	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:45:44,464	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:57:19,661	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:57:19,663	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:57:19,696	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:57:19,703	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:57:19,858	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:57:19,860	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:57:19,884	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:57:19,884	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:59:31,329	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:59:31,333	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:59:31,347	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:59:31,349	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:59:31,762	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:59:31,767	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 09:59:31,783	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 09:59:31,784	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:00:03,985	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:00:03,987	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:00:03,991	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:00:03,995	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:00:04,272	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:00:04,273	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:00:04,283	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:00:04,283	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:22:43,688	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:22:43,689	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:22:43,728	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:22:43,730	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:22:43,954	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:22:43,955	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:22:43,983	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:22:43,983	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:28:01,815	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:28:01,816	module:serializer	message:full name = 
+[INFO]	asctime:2019-03-23 10:28:01,845	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:28:01,846	module:serializer	message:full name = 
+[INFO]	asctime:2019-03-23 10:28:02,067	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:28:02,068	module:serializer	message:full name = 
+[INFO]	asctime:2019-03-23 10:28:02,087	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:28:02,092	module:serializer	message:full name = 
+[INFO]	asctime:2019-03-23 10:29:06,698	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:29:06,698	module:serializer	message:full name = 
+[INFO]	asctime:2019-03-23 10:31:24,616	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:31:24,616	module:serializer	message:full name is::sh
+[INFO]	asctime:2019-03-23 10:31:24,616	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:34:24,126	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:34:24,127	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:34:24,153	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:34:24,154	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:34:24,544	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:34:24,545	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:34:24,555	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:34:24,556	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:35:41,709	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:35:41,710	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:35:41,734	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:35:41,735	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:35:41,935	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:35:41,936	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:35:41,954	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:35:41,954	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:43:51,649	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:43:51,651	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:43:51,656	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:43:51,662	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:43:52,056	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:43:52,057	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:43:52,061	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:43:52,063	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:53:54,541	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:53:54,542	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:53:54,558	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:53:54,559	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:53:54,661	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:53:54,661	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:53:54,681	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:53:54,683	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:56:15,359	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:56:15,359	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:56:15,377	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:56:15,378	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:56:15,760	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:56:15,760	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:56:15,787	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:56:15,796	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:57:16,458	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:57:16,460	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:57:16,465	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:57:16,467	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:57:16,806	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:57:16,806	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 10:57:16,831	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 10:57:16,831	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:01:44,287	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:01:44,288	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:01:44,311	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:01:44,311	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:01:44,594	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:01:44,595	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:01:44,618	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:01:44,619	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:03:15,145	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:03:15,146	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:03:15,195	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:03:15,202	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:03:15,395	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:03:15,395	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:03:34,620	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:03:34,622	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:03:34,633	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:03:34,633	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:03:34,725	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:03:34,725	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:03:34,745	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:03:34,745	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:04:33,811	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:04:33,817	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:04:33,822	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:04:33,827	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:04:33,952	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:04:33,952	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:04:33,981	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:04:33,981	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:06:05,145	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:06:05,147	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:06:05,163	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:06:05,164	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:06:05,390	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:06:05,391	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:06:05,413	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:06:05,414	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:07:41,377	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:07:41,378	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:07:41,382	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:07:41,382	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:07:41,769	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:07:41,774	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:07:41,774	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:07:41,774	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:10:18,086	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:10:18,090	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:10:18,091	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:10:18,091	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:10:18,577	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:10:18,578	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:10:18,595	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:10:18,596	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:12:51,673	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:12:51,674	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:12:51,678	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:12:51,679	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:12:52,087	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:12:52,087	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:12:52,106	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:12:52,107	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:16:34,375	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:16:34,377	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:16:34,381	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:16:34,382	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:16:34,797	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:16:34,797	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:16:34,818	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:16:34,819	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:20:29,941	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:20:29,941	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:20:29,963	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:20:29,967	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:20:30,484	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:20:30,484	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:20:30,507	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:20:30,512	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:21:19,752	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:21:19,754	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:21:19,784	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:21:19,795	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:21:20,094	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:21:20,095	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:21:20,112	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:21:20,112	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:24:33,660	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:24:33,668	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:24:33,704	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:24:33,705	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:24:34,122	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:24:34,123	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:24:34,144	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:24:34,145	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:25:08,967	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:25:08,967	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:25:08,985	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:25:08,988	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:25:09,174	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:25:09,174	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:25:09,195	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:25:09,195	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:26:33,911	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:26:33,912	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:26:33,931	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:26:33,932	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:26:34,063	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:26:34,063	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:26:34,098	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:26:34,102	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:27:11,775	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:27:11,779	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:27:11,779	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:27:11,781	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:27:12,057	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:27:12,057	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:27:12,074	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:27:12,075	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:29:59,923	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:29:59,924	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:29:59,939	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:29:59,940	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:30:00,173	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:30:00,174	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:30:00,194	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:30:00,194	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:32:04,215	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:32:04,216	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:32:04,231	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:32:04,232	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:32:04,350	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:32:04,351	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:32:04,362	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:32:04,363	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:33:47,265	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:33:47,267	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:33:47,278	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:33:47,278	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:33:47,381	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:33:47,381	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:33:47,402	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:33:47,404	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:34:25,777	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:34:25,780	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:34:25,799	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:34:25,802	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:34:26,199	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:34:26,200	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:34:26,208	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:34:26,214	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:47:48,095	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:47:48,097	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:47:48,128	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:47:48,130	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:47:48,437	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:47:48,437	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 11:47:48,459	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 11:47:48,459	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-23 23:10:00,724	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 23:10:00,768	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 23:10:01,027	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 23:10:01,066	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 23:14:26,154	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 23:14:26,189	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 23:14:26,443	module:serializer	message:update called
+[INFO]	asctime:2019-03-23 23:14:26,460	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:21:40,117	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:21:40,347	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:21:44,066	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:27:26,498	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:27:26,630	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:28:35,915	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:28:36,082	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:29:41,737	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:29:41,737	module:serializer	message:full name is::sh
+[INFO]	asctime:2019-03-24 09:29:41,738	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-24 09:30:55,111	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:30:55,303	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:31:16,433	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:31:16,433	module:serializer	message:full name is::sh
+[INFO]	asctime:2019-03-24 09:31:16,433	module:serializer	message:full name = sh
+[INFO]	asctime:2019-03-24 09:31:20,237	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:35:10,423	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:35:10,429	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:35:10,763	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:35:10,811	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:35:15,668	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:35:15,669	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:35:26,932	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:35:26,940	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:36:33,918	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:36:33,930	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:36:34,165	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:36:34,208	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:42:32,137	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:42:32,138	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:42:32,296	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:42:32,339	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:43:16,817	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:43:16,869	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:43:17,117	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:43:17,162	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:48:35,992	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:48:35,999	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:48:36,228	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:48:36,235	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:49:43,157	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:49:43,178	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:49:43,593	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:49:43,633	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:50:26,155	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:50:26,229	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:50:26,725	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:50:26,794	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:51:58,653	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:51:58,661	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:51:59,024	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:51:59,054	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:55:12,783	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:55:12,806	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:55:13,021	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 09:55:13,106	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:00:12,156	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:00:12,180	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:00:12,445	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:00:12,549	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:11:04,704	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:11:04,727	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:11:04,853	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:11:04,879	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:11:30,662	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:16:48,379	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:16:48,394	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:16:48,544	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:16:48,569	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:28:10,141	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:28:10,170	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:28:10,720	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:28:10,742	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:31:16,136	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:31:16,168	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:31:16,556	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:31:16,574	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:32:44,472	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:32:44,505	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:32:44,606	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:32:44,666	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:40:51,010	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:40:51,037	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:40:51,898	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:40:51,919	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:41:35,264	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:41:35,278	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:41:35,358	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 10:41:35,389	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:00:57,107	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:00:57,127	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:00:57,253	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:00:57,288	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:16:24,382	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:16:24,458	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:16:24,819	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:16:24,836	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:26:08,588	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:26:08,614	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:26:08,914	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:26:08,937	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:26:52,616	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:26:52,633	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:26:53,033	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:26:53,080	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:27:53,855	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:27:53,898	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:27:54,308	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:27:54,335	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:28:27,671	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:28:27,708	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:28:27,838	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:28:27,859	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:30:12,975	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:30:13,000	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:30:13,120	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:30:13,135	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:31:30,759	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:31:30,765	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:31:31,021	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:31:31,046	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:34:31,531	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:34:31,561	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:34:31,722	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 11:34:31,734	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:21:12,252	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:21:12,272	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:21:12,627	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:21:12,671	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:21:54,923	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:21:54,936	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:21:55,273	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:21:55,300	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:23:21,670	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:23:21,694	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:23:21,806	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:23:21,812	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:37:41,103	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:37:41,141	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:37:41,233	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:37:41,241	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:47:36,623	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:47:36,640	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:47:36,779	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 12:47:36,791	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:28:55,669	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:28:55,700	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:28:55,941	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:28:55,981	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:57:31,363	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:57:31,373	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:57:31,485	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:57:31,504	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:58:13,508	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:58:13,577	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:58:13,651	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 14:58:13,690	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:00:53,217	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:00:53,232	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:00:53,312	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:00:53,333	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:03:57,023	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:03:57,091	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:03:57,208	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:03:57,209	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:04:37,991	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:04:38,004	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:04:38,384	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:04:38,384	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:05:09,410	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:05:58,600	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:05:58,602	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:05:58,603	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:05:58,612	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:10,200	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:10,268	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:10,290	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:10,347	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:19,733	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:19,734	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:19,904	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:19,925	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:42,791	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:42,801	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:42,948	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:06:42,951	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:15:57,104	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:15:57,105	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:15:57,252	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:15:57,288	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:16:35,705	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:16:35,728	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:16:35,799	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:16:35,814	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:17:59,464	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:17:59,485	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:17:59,619	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:17:59,629	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:18:51,593	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:18:51,614	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:18:51,705	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:18:51,737	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:21:53,930	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:21:53,969	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:21:54,173	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:21:54,196	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:22:31,233	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:22:31,251	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:22:51,864	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:22:51,871	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:27:54,430	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:27:54,437	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:27:54,630	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:27:54,659	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:30:01,694	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:30:01,704	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:30:02,052	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:30:02,061	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:31:41,111	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:31:41,145	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:31:41,382	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:31:41,401	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:31:59,627	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:31:59,667	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:31:59,834	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:31:59,857	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:32:39,560	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:32:39,577	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:32:39,683	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:32:39,702	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 15:36:42,810	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:03:29,093	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:03:29,124	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:03:29,274	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:03:29,298	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:06:15,913	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:06:28,684	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:06:28,703	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:06:28,918	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:06:28,938	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:08:24,762	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:08:24,785	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:08:24,888	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:08:24,913	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:08:45,039	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:08:45,063	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:08:45,199	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:08:45,213	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:09:34,236	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:09:34,271	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:09:34,490	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:09:34,536	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:11:07,752	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:11:07,782	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:11:07,945	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:11:07,966	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:11:34,633	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:11:34,655	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:11:34,978	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:11:35,021	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:13:36,062	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:13:36,078	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:13:36,287	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:13:36,316	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:15:01,944	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:15:01,959	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:15:02,203	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:15:02,220	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:15:12,327	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:15:17,511	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:15:17,522	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:15:17,633	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:15:17,652	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:28:15,842	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:28:15,881	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:28:16,072	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:29:36,391	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:29:36,396	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:29:36,640	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:29:36,674	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:35:17,288	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:35:17,348	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:35:17,685	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:35:17,734	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:37:40,045	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:37:40,067	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:37:40,234	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:37:40,255	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:38:06,229	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:38:06,348	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:38:06,427	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:38:06,489	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:40:02,315	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:40:02,362	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:40:02,728	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:40:02,754	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:42:27,456	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:42:27,470	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:42:27,635	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:42:27,656	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:43:57,689	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:43:57,717	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:43:57,845	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:43:57,883	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:53:45,122	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:53:45,150	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:53:45,425	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:53:45,451	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:57:48,159	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:57:48,190	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:57:48,355	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:57:48,398	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:58:46,824	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:58:46,895	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:58:47,028	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 19:58:47,067	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 20:02:20,933	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 20:02:20,943	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 20:02:21,151	module:serializer	message:update called
+[INFO]	asctime:2019-03-24 20:02:21,185	module:serializer	message:update called
+[INFO]	asctime:2019-03-25 21:49:59,881	module:views	message:('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-25 21:49:59,934	module:views	message:("'NoneType' object has no attribute 'encode'",)
+[INFO]	asctime:2019-03-25 21:50:00,758	module:views	message:('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-25 21:50:00,793	module:views	message:("'NoneType' object has no attribute 'encode'",)
+[INFO]	asctime:2019-03-25 21:50:01,256	module:views	message:('encoding or errors without a string argument',)
+[INFO]	asctime:2019-03-25 21:50:01,333	module:views	message:("'NoneType' object has no attribute 'encode'",)
+[INFO]	asctime:2019-03-26 11:02:49,116	module:serializer	message:update called
+[INFO]	asctime:2019-03-27 09:44:15,948	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001DC870CD5F8>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))"),)
+[INFO]	asctime:2019-03-27 09:44:16,001	module:views	message:(11001, 'getaddrinfo failed')
+[INFO]	asctime:2019-03-27 09:44:16,521	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001DC87160E80>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))"),)
+[INFO]	asctime:2019-03-27 09:44:16,650	module:views	message:(11001, 'getaddrinfo failed')
+[INFO]	asctime:2019-03-27 09:44:16,855	module:views	message:(11001, 'getaddrinfo failed')
+[INFO]	asctime:2019-03-27 09:44:16,888	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001DC8723E0F0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))"),)
+[INFO]	asctime:2019-03-27 09:44:17,054	module:views	message:(11001, 'getaddrinfo failed')
+[INFO]	asctime:2019-03-27 09:44:17,100	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001DC86F92400>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))"),)
+[INFO]	asctime:2019-03-27 11:17:10,863	module:serializer	message:update called
+[INFO]	asctime:2019-03-27 11:17:13,082	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001C76C0C8668>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))"),)
+[INFO]	asctime:2019-03-27 11:17:13,084	module:views	message:(11001, 'getaddrinfo failed')
+[INFO]	asctime:2019-03-28 14:57:14,552	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x00000150347C25F8>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-03-28 14:57:15,030	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x00000150348B79B0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-03-28 14:57:15,286	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001503484AC18>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-03-28 14:57:40,725	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x00000150348B12B0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-03-28 14:57:41,196	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x00000150348B1AC8>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-03-28 14:57:41,607	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x00000150347B95C0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-03-29 11:24:30,695	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:24:34,836	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:24:35,187	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:24:35,573	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:24:37,084	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:24:48,605	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:25:35,715	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:27:05,304	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:27:44,208	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:28:15,250	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:28:51,376	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:29:16,011	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:29:38,777	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:35:14,778	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:36:08,777	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:36:23,910	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:38:55,258	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:40:41,757	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:48:40,586	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:48:42,005	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:50:57,741	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:51:03,202	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:51:47,557	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:51:52,460	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:59:03,608	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 11:59:19,172	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-03-29 12:04:22,336	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[ERROR]	asctime:2019-03-29 12:24:41,188	module:views	message:single order: ('non_field_errors',)
+[ERROR]	asctime:2019-03-29 12:25:37,674	module:views	message:single order: ('non_field_errors',)
+[ERROR]	asctime:2019-03-29 12:27:02,112	module:views	message:single order: ('non_field_errors',)
+[INFO]	asctime:2019-03-30 10:44:20,875	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 10:51:36,439	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 10:58:35,794	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 10:59:05,216	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 10:59:47,539	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 11:00:22,281	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 12:06:56,080	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 12:07:07,834	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 13:19:57,605	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 13:20:07,343	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 13:21:14,776	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 13:21:27,974	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 15:09:49,641	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 15:19:54,922	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 15:19:56,438	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 16:30:44,349	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 16:56:51,495	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 16:56:53,085	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-03-30 16:56:54,591	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 19:41:54,139	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 19:42:17,167	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 19:43:29,422	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 19:43:30,018	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 19:43:30,299	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 19:44:38,381	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 19:44:43,569	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 19:45:01,477	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 19:45:35,373	module:models	message:update bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 19:45:35,642	module:models	message:update bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 19:45:35,930	module:models	message:update bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 19:46:36,295	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 19:46:40,145	module:models	message:cancel bitbank order: ('エラーコード: 50010 内容: ご指定の注文はキャンセルできません',)
+[ERROR]	asctime:2019-04-01 19:46:45,256	module:models	message:cancel bitbank order: ('エラーコード: 50010 内容: ご指定の注文はキャンセルできません',)
+[INFO]	asctime:2019-04-01 19:47:10,577	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 19:47:10,914	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 19:56:52,837	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 19:59:22,326	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 20:09:57,333	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:10:45,003	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 20:11:08,499	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 20:11:22,176	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 20:11:26,420	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 20:11:35,341	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 20:20:04,207	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 20:20:27,502	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 20:20:55,432	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:23:35,003	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:23:35,703	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:23:36,020	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:27:50,270	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:27:50,829	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:27:51,203	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:49:15,661	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:49:16,303	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:49:16,638	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-01 20:49:50,995	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-01 21:32:10,480	module:models	message:place coincheck order: ("type object 'datetime.datetime' has no attribute 'timedelta'",)
+[ERROR]	asctime:2019-04-01 21:32:10,489	module:views	message:single order: ('`create()` did not return an object instance.',)
+[ERROR]	asctime:2019-04-01 21:33:53,433	module:models	message:place coincheck order: ("type object 'datetime.datetime' has no attribute 'timedelta'",)
+[ERROR]	asctime:2019-04-01 21:33:53,438	module:views	message:single order: ('`create()` did not return an object instance.',)
+[ERROR]	asctime:2019-04-01 21:36:05,879	module:models	message:place coincheck order: ("name 'timedelta' is not defined",)
+[ERROR]	asctime:2019-04-01 21:36:58,551	module:models	message:place coincheck order: ("'hour' is an invalid keyword argument for this function",)
+[ERROR]	asctime:2019-04-01 21:36:58,556	module:views	message:single order: ('`create()` did not return an object instance.',)
+[INFO]	asctime:2019-04-02 20:30:45,109	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-02 20:30:45,409	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-02 20:31:24,005	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-02 20:33:19,446	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:08:45,615	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:28:54,157	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:29:14,349	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:29:52,807	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:31:17,503	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:31:18,156	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:31:18,517	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:32:24,637	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:32:25,265	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:33:36,363	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:33:37,176	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:33:37,460	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:35:29,227	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:36:11,673	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:36:12,622	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:37:17,806	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:39:05,987	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:39:24,285	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:39:25,144	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:39:44,512	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:39:55,435	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:39:55,776	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:39:56,032	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:40:24,307	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:42:16,510	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:42:16,848	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:42:42,043	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:53:47,188	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 19:53:47,926	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:04:18,208	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:04:24,936	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:04:35,663	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:06:18,338	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:06:53,402	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:06:54,127	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:06:54,475	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:07:04,035	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:07:04,726	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:07:05,044	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:07:51,223	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:35:28,660	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:40:35,525	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:40:48,573	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:40:49,348	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:40:49,627	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:41:43,923	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:42:59,559	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:42:59,870	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:44:29,784	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:44:30,444	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:46:46,993	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:46:47,286	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:54:35,771	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:54:36,072	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:55:30,858	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:55:42,269	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:55:55,775	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:55:56,469	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:57:00,103	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:58:44,968	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 20:58:45,356	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:00:10,103	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:00:10,794	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:00:11,076	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:03:11,903	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:11:37,156	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:11:37,497	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:11:56,225	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:11:56,517	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:12:24,787	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:12:25,563	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:12:25,893	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:13:50,033	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:15:35,964	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:15:36,245	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:17:11,236	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:17:12,038	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:17:12,272	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:19:04,870	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-03 21:19:17,366	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:05:36,679	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:08:26,423	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:11:24,378	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:11:25,169	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:11:25,485	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:14:10,525	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:14:10,809	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:15:29,437	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:15:30,271	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:15:30,609	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:16:24,038	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:18:30,065	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:18:30,708	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:18:31,049	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:20:59,516	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:21:00,279	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:21:00,545	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:22:51,900	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-04 21:23:11,401	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-07 20:52:04,503	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-07 20:52:11,155	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-10 23:30:18,915	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-11 07:22:18,695	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-11 07:34:21,989	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-11 07:34:22,743	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-11 07:34:23,079	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-11 09:37:58,745	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000028770EC3F60>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-11 09:37:59,289	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000028770DA80F0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-11 09:37:59,980	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000028770E68B38>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-11 09:38:00,403	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000028770D3C9B0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-11 09:38:00,669	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000028770E24E10>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-11 09:38:02,618	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000028770E24F28>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-11 22:05:30,400	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-11 22:05:59,792	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-11 22:06:00,118	module:models	message:place bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-11 22:06:03,818	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-11 22:06:04,126	module:models	message:place bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-11 22:06:10,494	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-11 22:06:10,826	module:models	message:place bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-11 22:06:23,252	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-11 22:06:32,358	module:models	message:cancel bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-11 22:06:40,151	module:models	message:place bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-12 10:46:49,559	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E380EB8>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:46:50,359	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E3E6B00>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:46:50,616	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E4707F0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:46:50,740	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E489860>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:47:18,272	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E3E6BE0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:47:18,883	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E5A4518>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:47:19,243	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E411E80>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:47:19,423	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E333FD0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:47:50,190	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E5D16A0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:47:50,836	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E444A58>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:47:51,090	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E55A438>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:47:51,278	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E4702B0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:47:51,357	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E3CEFD0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:48:32,130	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E5B9240>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:48:32,736	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E4F3860>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:48:33,541	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001F44E2AAA90>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-12 10:49:54,457	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-12 10:49:55,308	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-12 10:49:55,686	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-12 10:49:56,083	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-12 10:49:57,857	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-12 10:50:00,515	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-12 10:50:00,874	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-12 10:50:54,667	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-12 10:50:55,444	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-12 10:50:55,760	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-12 10:50:56,074	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-13 10:43:57,823	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 11:08:36,092	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 11:08:36,620	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 11:08:36,902	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 11:08:37,144	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 11:09:06,488	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 11:09:07,172	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 11:09:07,412	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 11:09:07,683	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 18:55:46,516	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 18:55:47,160	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 18:55:47,510	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-13 18:55:47,771	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:12:51,486	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:16:45,772	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:30:32,885	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:30:33,591	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:30:33,882	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:31:05,094	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:31:05,871	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:38:04,165	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:38:04,475	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:42:11,334	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:42:12,257	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:42:12,705	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 19:43:21,712	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:04:26,316	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:05:05,318	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:05:05,774	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:12:39,742	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:13:12,913	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:29:05,262	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:29:06,088	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:29:06,478	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:31:32,412	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:31:33,104	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:31:33,373	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:31:38,199	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:31:58,551	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:31:58,829	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:32:11,658	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:32:12,287	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:32:12,650	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:32:19,857	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:34:32,524	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 20:35:38,598	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 21:11:19,205	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 21:11:20,089	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 21:11:20,483	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 21:11:26,004	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 21:12:01,267	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 21:12:47,466	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 21:12:47,786	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 21:14:47,468	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 21:14:48,418	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-17 21:14:48,826	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 19:52:34,684	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:15:36,934	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:28:24,261	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:28:24,527	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-18 20:35:04,788	module:models	message:update bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
+[ERROR]	asctime:2019-04-18 20:36:45,827	module:models	message:update bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
+[ERROR]	asctime:2019-04-18 20:36:46,880	module:models	message:update bitbank order: ('Expecting value: line 1 column 1 (char 0)',)
+[INFO]	asctime:2019-04-18 20:42:17,887	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:42:18,805	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:42:19,123	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:45:05,174	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:45:05,601	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:55:11,936	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:55:12,267	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-18 20:56:24,775	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[ERROR]	asctime:2019-04-18 20:56:25,093	module:models	message:place bitbank order: ('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:09:44,219	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:09:44,844	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:09:45,186	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:17:37,318	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:17:38,247	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:17:38,760	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:18:44,065	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:18:44,895	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:18:56,827	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:18:57,083	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:19:10,621	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:19:10,983	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:20:05,279	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:20:06,097	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:20:06,367	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:20:43,143	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:20:44,017	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:20:44,401	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:22:37,037	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:22:56,981	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:22:57,238	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:25:05,053	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:25:05,839	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-20 20:25:06,150	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 09:17:13,113	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 09:17:14,075	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 09:17:19,546	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 09:17:25,852	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 09:18:27,643	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 09:19:19,039	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 09:19:19,959	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 09:19:20,290	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 09:19:28,955	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 09:23:07,191	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 10:57:39,134	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 10:57:39,789	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 10:57:40,100	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 11:56:12,999	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 11:56:13,388	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 11:56:14,345	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 13:36:15,733	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 13:36:17,055	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 13:38:50,108	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 13:43:28,599	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 13:43:29,747	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 13:43:39,081	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 13:43:40,145	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 13:43:40,753	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 13:44:00,936	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 15:08:05,744	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 15:08:06,702	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 15:08:11,841	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-21 15:08:12,120	module:views	message:('エラーコード: 20001 内容: API認証に失敗しました',)
+[INFO]	asctime:2019-04-22 09:05:55,212	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:05:56,563	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:05:57,019	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:05:57,298	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:06:02,369	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:06:08,307	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:08:36,095	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:08:37,041	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:08:37,453	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:09:57,487	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:09:58,393	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:09:58,805	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:10:10,156	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:10:44,513	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:10:48,804	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:14:01,529	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:14:02,520	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-22 09:14:03,137	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:20:19,764	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:20:20,472	module:views	message:(11001, 'getaddrinfo failed')
+[INFO]	asctime:2019-04-24 09:20:21,144	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:20:21,280	module:views	message:(11001, 'getaddrinfo failed')
+[INFO]	asctime:2019-04-24 09:20:21,479	module:views	message:(11001, 'getaddrinfo failed')
+[INFO]	asctime:2019-04-24 09:20:21,541	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:21:50,698	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000002220B8CA6D8>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-24 09:21:51,277	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000002220A7B7630>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-24 09:21:51,772	module:views	message:(MaxRetryError("HTTPSConnectionPool(host='api.bitbank.cc', port=443): Max retries exceeded with url: /v1/user/assets (Caused by ProxyError('Cannot connect to proxy.', NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000002220B89E6D8>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')))"),)
+[INFO]	asctime:2019-04-24 09:23:38,735	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:23:40,128	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:23:40,741	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:24:48,947	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:24:49,883	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:24:50,192	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:25:54,521	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:25:55,489	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:25:55,792	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:29:15,177	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:29:16,323	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:29:16,662	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:30:53,581	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:30:54,586	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:30:54,871	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:31:04,389	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:31:05,307	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:31:05,975	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:32:20,388	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:32:21,246	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:32:21,607	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:33:15,686	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:33:17,006	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:33:17,499	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:33:56,624	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:33:57,512	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
+[INFO]	asctime:2019-04-24 09:33:57,899	module:views	message:('�G���[�R�[�h: 20001 ���e: API�F�؂Ɏ��s���܂���',)
