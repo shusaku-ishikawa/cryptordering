@@ -69,10 +69,14 @@ SELL_BUY = {
     'buy' : '買'
 }
 
+RATE_UPDATE_FREQ = 11000;
+
+var free_amount_json_last_updated = 0;
 var free_amount_json = {
     'bitbank': {},
     'coincheck': {}
 };
+var market_price_json_last_updated = 0
 var market_price_json = {
     'bitbank': {},
     'coincheck': {'btc_jpy':{}}
@@ -129,14 +133,21 @@ function openTab(evt, tab_id) {
 //資産情報取得用
 
 $(function() {
-    init_order_tab(true);
-    init_active_orders_tab(true);
-    init_order_history_tab(true);
-    init_alerts_tab(true);
-    init_asset_tab(true);
-    init_user_info_tab(true);
-    init_contact_tab(true);
-    $('#order_button').click();
+    var $message = $('#id_ajax_message');
+    init_ticker_and_asset($message)
+    .then(function() {
+        init_order_tab(true);
+        init_active_orders_tab(true);
+        init_order_history_tab(true);
+        init_alerts_tab(true);
+        init_asset_tab(true);
+        init_user_info_tab(true);
+        init_contact_tab(true);
+        $('#order_button').click();
+    });
+    setInterval(async () => {
+        await init_ticker_and_asset($message)}, RATE_UPDATE_FREQ
+    );
 });
 
 

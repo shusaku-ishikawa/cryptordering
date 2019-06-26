@@ -143,16 +143,32 @@ function isNumberKey(evt){
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
 }
 
+async function init_ticker_and_asset($message_target) {
+    console.log('init_ticler and asset_caled');
+    return $.when(init_free_amount_json($message_target), init_ticker_json($message_target));
+}
+
 async function init_free_amount_json($message_target) {
+    // 10秒以内にすでに更新していたら何もしない
+    if (Date.now() - free_amount_json_last_updated < 1000 * 10) {
+        return;
+    }
+    free_amount_json_last_updated = Date.now();
     return $.when(
         call_assets('GET', 'bitbank'),
         call_assets('GET', 'coincheck')
     )
     .done(function(bbassets, ccassets) {
+        console.log(bbassets[0])
+        if (bbassets[0]['error']) {
+            set_error_message($message_target, bbassets[0]['error']);
+        }
         bbassets[0].assets.forEach(asset => {
             free_amount_json['bitbank'][asset.asset] = asset.free_amount;
         });
-        console.log(ccassets);
+        if (ccassets[0]['error']) {
+            set_error_message($message_target, ccassets[0]['error']);
+        }
         Object.keys(ccassets[0]).forEach(asset_name => {
             console.log(asset_name);
             if (asset_name != 'success') {
@@ -167,7 +183,13 @@ async function init_free_amount_json($message_target) {
 }
 
 async function init_ticker_json($message_target) {
-    console.log('init_tickerjsin');
+    // 10秒以内にすでに更新していたら何もしない
+    if (Date.now() - market_price_json_last_updated < 1000 * 10) {
+        return false;
+    }
+    console.log('init_ticker called')
+    market_price_json_last_updated = Date.now();
+    
     return $.when(
         call_ticker('GET', 'bitbank', 'btc_jpy'),
         call_ticker('GET', 'bitbank', 'xrp_jpy'),
@@ -180,7 +202,7 @@ async function init_ticker_json($message_target) {
         call_ticker('GET', 'coincheck', 'btc_jpy'),
     )
     .done(function(btcjpy, xrpjpy, ltcbtc, ethbtc, monajpy, monabtc, bccjpy, bccbtc, ccbtcjpy) {
-        console.log(btcjpy)
+        
         market_price_json['bitbank']['btc_jpy'] = btcjpy[0];  
         market_price_json['bitbank']['xrp_jpy'] = xrpjpy[0];  
         market_price_json['bitbank']['ltc_btc'] = ltcbtc[0];  

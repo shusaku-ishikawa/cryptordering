@@ -278,9 +278,14 @@ function set_slidevalue(tab_num, new_val, trigger_input_event=true) {
     init_range_input($tar, $side);
     $('#amount_percentage_' + tab_num).html(new_val + '%');
 }
-function set_default_price(tab_num, market, pair, side) {
-    console.log('defual');
+function set_default_price($message_target, tab_num, market, pair, side) {
     var new_order_type = $('#id_order_type_' + tab_num).val();
+    // if (!market_price_json[market][pair]) {
+    //     await init_ticker_json($message_target);
+    // }
+    if (!market_price_json[market][pair]) {
+        set_error_message($message_target, market + 'のレートの取得に失敗しました。')
+    }
     var current_rate = market_price_json[market][pair][side];
     if (new_order_type != 'market') {
         $('#id_price_' + tab_num).val(current_rate);
@@ -302,7 +307,7 @@ function reset_input_all(market, pair, $message_target) {
         reset_input(i);
         $('#id_side_' + i).val(default_side).trigger('value_change');
         $('#id_order_type_' + i).val(default_order_type).trigger('change');
-        set_default_price(i, market, pair, default_side);
+        set_default_price($message_target, i, market, pair, default_side);
     }
 }
 function init_range_input($me, $side) {
@@ -315,11 +320,9 @@ function init_range_input($me, $side) {
     );
 }
 
-async function init_order_tab(is_initial = false) {
+function init_order_tab(is_initial = false) {
     var $order_result_message_target = $('#id_order_result_message');
     var $ajax_message_target = $('#id_ajax_message');
-    await init_free_amount_json($ajax_message_target);
-    await init_ticker_json($ajax_message_target);
     for (let i = 1; i < 4; i ++) {
         if ($('#id_side_' + i).val() == 'sell') {
             $('#sell_button_' + i).addClass('sell').removeClass('btn-base');
@@ -641,7 +644,7 @@ async function init_order_tab(is_initial = false) {
                     text: ORDER_TYPES[key],
                 }).appendTo($('#id_order_type_' + i));
             });
-            set_default_price(i, $input_market.val(), $input_pair.val(), $('#id_side_' + i).val());
+            set_default_price($ajax_message_target, i, $input_market.val(), $input_pair.val(), $('#id_side_' + i).val());
         }
         
         var ck_market = $.cookie(COOKIE_ORDER_MARKET);
