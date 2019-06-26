@@ -40,7 +40,51 @@ function build_alert_card(pk, market, pair, rate) {
     return $outer_container.append($inner_container.append($row_1).append($row_2).append($row_3));    
 
 }
-
+function _on_page_click($container, $message_target, market, pair, limit) {
+    return function(event, page) {
+        call_alerts('GET', null, market, pair, limit * (page - 1), limit)
+        .done(function(res) {
+            $container.empty();
+            var $outer = $('<div>', { class: 'row' });
+            var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
+    
+            res.data.forEach(alert => {
+                
+                $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.rate)).append($('<hr>'));
+               
+            });
+    
+            $container.append($outer.append($inner));
+    
+            $("button[name='deactivate_alert_button']").on('click', function() {
+                var pk = $(this).attr('pk');
+                call_alerts('DELETE', pk)
+                .done(function(res_3) {
+                    if (res_3.error) {
+                        set_error_message($message_target, res_3.error);
+                        return;
+                    }
+                    set_success_message('#id_ajax_message', '通知設定を解除しました');
+                    
+                    $('#alerts_button').click();
+                   $message_target.show();
+                })
+                .fail(function(data, textStatus, xhr) {
+                    if (data.status == 401) {
+                        window.location.href = BASE_URL_LOGIN;
+                    }
+                    set_error_message($message_target, xhr);
+                });
+            });
+        })
+        .fail(function(data, textStatus, xhr) {
+            if (data.status == 401) {
+                window.location.href = BASE_URL_LOGIN;
+            }
+            set_error_message($message_target, xhr);
+        });
+    }; 
+}
 function init_alerts_content(market, pair, $message_target) {
     var $notify_if_filled_on_button = $('#notify_if_filled_on_button');
     var $notify_if_filled_off_button = $('#notify_if_filled_off_button');
@@ -94,51 +138,8 @@ function init_alerts_content(market, pair, $message_target) {
             prev: '前',
             first: '先頭',
             last: '最後',
-            onPageClick: function (event, page) {
-                call_alerts('GET', null, market, pair, COUNT_PER_PAGE * (page - 1), COUNT_PER_PAGE)
-                .done(function(res_2) {
-                    $container.empty();
-                    var $outer = $('<div>', { class: 'row' });
-                    var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
-
-                    res_2.data.forEach(alert => {
-                        
-                        $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.rate)).append($('<hr>'));
-                       
-                    });
-
-                    $container.append($outer.append($inner));
-
-                    $("button[name='deactivate_alert_button']").on('click', function() {
-                        var pk = $(this).attr('pk');
-                        call_alerts('DELETE', pk)
-                        .done(function(res_3) {
-                            if (res_3.error) {
-                                set_error_message($message_target, res_3.error);
-                                return;
-                            }
-                            set_success_message('#id_ajax_message', '通知設定を解除しました');
-                            
-                            $('#alerts_button').click();
-                           $message_target.show();
-                        })
-                        .fail(function(data, textStatus, xhr) {
-                            if (data.status == 401) {
-                                window.location.href = BASE_URL_LOGIN;
-                            }
-                            set_error_message($message_target, xhr);
-                        });
-                    });
-                })
-                .fail(function(data, textStatus, xhr) {
-                    if (data.status == 401) {
-                        window.location.href = BASE_URL_LOGIN;
-                    }
-                    set_error_message($message_target, xhr);
-                });
-            }
+            onPageClick: _on_page_click($container, $message_target, market, pair, COUNT_PER_PAGE)
         });
-
     })
     .fail(function(data, textStatus, xhr) {
         if (data.status == 401) {

@@ -143,52 +143,31 @@ function isNumberKey(evt){
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
 }
 
-function init_free_amount_json($message_target) {
-    Object.keys(MARKETS).forEach(market => {
-        if (market == 'bitbank') {
-            call_assets('GET', market)
-            .done(function(res) {
-                if (res.error) {
-                    set_error_message($message_target, res.error);
-                    return;
-                }
-                res.assets.forEach(asset => {
-                    free_amount_json[market][asset.asset] = asset.free_amount;
-                });
-            })
-            .fail(function(data, textStatus, xhr) {
-                if (data.status == 401) {
-                    window.location.href = BASE_URL_LOGIN;
-                }
-                
-                set_error_message($message_target, xhr);
-            });
-        } else {
-            call_assets('GET', market)
-            .done(function(res) {
-                if (res.error) {
-                    console.log(res);
-                    set_error_message($message_target, res.error);
-                    return;
-                }
-                free_amount_json[market]['btc'] = res.btc;
-                free_amount_json[market]['jpy'] = res.jpy;
-            })
-            .fail(function(data, textStatus, xhr) {
-                if (data.status == 401) {
-                    window.location.href = BASE_URL_LOGIN;
-                }
-                
-                set_error_message($message_target, xhr);
-            });
-        }
-        
+async function init_free_amount_json($message_target) {
+    return $.when(
+        call_assets('GET', 'bitbank'),
+        call_assets('GET', 'coincheck')
+    )
+    .done(function(bbassets, ccassets) {
+        bbassets[0].assets.forEach(asset => {
+            free_amount_json['bitbank'][asset.asset] = asset.free_amount;
+        });
+        console.log(ccassets);
+        Object.keys(ccassets[0]).forEach(asset_name => {
+            console.log(asset_name);
+            if (asset_name != 'success') {
+                free_amount_json['coincheck'][asset_name] = ccassets[0][asset_name];
+            }
+            
+        })
+    })
+    .fail(function() {
+        set_error_message($message_target, '資産の取得に失敗しました。')
     });
 }
 
 async function init_ticker_json($message_target) {
     console.log('init_tickerjsin');
-    deffered_list = [];
     return $.when(
         call_ticker('GET', 'bitbank', 'btc_jpy'),
         call_ticker('GET', 'bitbank', 'xrp_jpy'),
@@ -215,40 +194,7 @@ async function init_ticker_json($message_target) {
     .fail(function() {
         set_error_message($message_target, 'レートの取得に失敗しました。')
     });
-    // Object.keys(PAIRS).forEach(pair => {
-    //     call_ticker('GET', 'bitbank', pair, false)
-    //     .done(function (res) {
-    //         if (res.error) {
-    //             set_error_message($message_target , res.error);
-    //             return;
-    //         }
-    //         market_price_json['bitbank'][pair] = res;              
-    //     })
-    //     .fail(function(data, textStatus, xhr) {
-    //         if (data.status == 401) {
-    //             window.location.href = BASE_URL_LOGIN;
-    //         }
-    //         set_error_message($message_target, xhr);
-    //     });
-    // });
-    // call_ticker('GET', 'coincheck', 'btc_jpy', false)
-    // .done(function (res) {
-    //     if (res.error) {
-    //         console.log(res);
-    //         set_error_message($message_target , res.error);
-    //         return;
-    //     }
-    //     //console.log(res);
-    //     market_price_json['coincheck']['btc_jpy']['buy'] = res.ask;
-    //     market_price_json['coincheck']['btc_jpy']['sell'] = res.bid;
-                      
-    // })
-    // .fail(function(data, textStatus, xhr) {
-    //     if (data.status == 401) {
-    //         window.location.href = BASE_URL_LOGIN;
-    //     }
-    //     set_error_message($message_target, xhr);
-    // });
+ 
 }
 
 function return_formatted_datetime(unixtime, date_only=false) {
@@ -311,8 +257,8 @@ function set_error_message(target, message="ログインし直してください
 }
 
 function set_success_message(target, message="正常に処理しました") {
-    $(target).addClass('alert-danger');
-    $(target).removeClass('alert-success');
+    $(target).addClass('alert-success');
+    $(target).removeClass('alert-danger');
     $(target).html('<i class="fa fa-check" aria-hidden="true"></i>' + message);
     $(target).show();
     setTimeout(function() {

@@ -318,7 +318,7 @@ function init_range_input($me, $side) {
 async function init_order_tab(is_initial = false) {
     var $order_result_message_target = $('#id_order_result_message');
     var $ajax_message_target = $('#id_ajax_message');
-    init_free_amount_json($ajax_message_target);
+    await init_free_amount_json($ajax_message_target);
     await init_ticker_json($ajax_message_target);
     for (let i = 1; i < 4; i ++) {
         if ($('#id_side_' + i).val() == 'sell') {
