@@ -179,27 +179,20 @@ function create_order_json(market, pair, side, order_type, price, price_for_stop
     order_info.start_amount = start_amount;
     return JSON.stringify(order_info);
 }
-function _order(market, pair, special_order, order_1, order_2, order_3,  $message_target) {
-    $order_button = $('#id_order_button');
-
-    call_orders('POST', market, pair, null, null, null, null, special_order, order_1, order_2, order_3)
-    .done(function(res) {
-        //console.log(res);
-        if (res.error) {
-            set_error_message($message_target, res.error);
-            return;
+async function _order_async(market, pair, special_order, order_1, order_2, order_3) {
+    let result;
+    try {
+        result = await call_relations('POST', market, pair, null, null, special_order, order_1, order_2, order_3);
+        if (result.error) {
+            set_error_message(result.error);
+            return false;
         }
-        set_success_message($message_target, '注文が完了しました');
-    })
-    .fail(function(data, textStatus, xhr) {
-        if (data.status == 401) {
-            window.location.href = BASE_URL_LOGIN;
-        }
-        set_error_message($message_target, xhr);
-    })
-    .always(() => {
-        $order_button.prop('disabled', false);
-    });
+        return true;
+    } catch (error) {
+        handle_error(error);
+        return false;
+    }
+        
 }
 function get_confirmation(order_name) {
     $.confirm({
@@ -225,45 +218,43 @@ function get_confirmation(order_name) {
         }
     });
 }
-function place_order(market, pair, special_order, order_1, order_2, order_3,  $message_target) {
-    
-    call_ticker('GET', market, pair)
-    .done(function(res) {
-        if (res.error) {
-            set_error_message($message_target, res.error);
-            return;
+async function place_order_async(market, pair, special_order, order_1, order_2, order_3) {
+    let ticker;
+    try {
+        ticker = await call_ticker('GET', market, pair);
+        if (ticker.error) {
+            set_error_message(ticker.error);
+            return false;
         }
             
         if (order_1 != null && order_1.order_type == 'limit') {
-            if ((order_1.side == 'buy' && parseFloat(res.buy) < order_1.price) || (order_1.side  == 'sell' && parseFloat(res.sell) > order_1.price)){
+            if ((order_1.side == 'buy' && parseFloat(ticker.buy) < order_1.price) || (order_1.side  == 'sell' && parseFloat(ticker.sell) > order_1.price)){
                 if (!get_confirmation('新規注文')) {
-                    return;
+                    return false;
                 }
             }
         }
         if (order_1 == null && order_2.order_type == 'limit') {
-            if ((order_2.side == 'buy' && parseFloat(res.buy) < order_2.price) || (order_2.side  == 'sell' && parseFloat(res.sell) > order_2.price)){
+            if ((order_2.side == 'buy' && parseFloat(ticker.buy) < order_2.price) || (order_2.side  == 'sell' && parseFloat(ticker.sell) > order_2.price)){
                 if (!get_confirmation('決済注文1')) {
-                    return;
+                    return false;
                 }
             }
         } 
         if (order_1 == null && order_3.order_type == 'limit') {
-            if ((order_3.side == 'buy' && parseFloat(res.buy) < order_3.price) || (order_3.side  == 'sell' && parseFloat(res.sell) > order_3.price)){
+            if ((order_3.side == 'buy' && parseFloat(ticker.buy) < order_3.price) || (order_3.side  == 'sell' && parseFloat(ticker.sell) > order_3.price)){
                 if (!get_confirmation('決済注文2')) {
-                    return;
+                    return false;
                 }
             }
         } 
-        _order(market, pair, special_order, order_1, order_2, order_3,  $message_target);
-    })
-    .fail(function(data, textStatus, xhr) {
-    
-        if (data.status == 401) {
-            window.location.href = BASE_URL_LOGIN;
+        let is_succeeded = await _order_async(market, pair, special_order, order_1, order_2, order_3);
+        if (is_succeeded) {
+            set_success_message('注文が完了しました')
         }
-        set_error_message($message_target, xhr);
-    });            
+    } catch (error) {
+        handle_error(error);
+    }           
 }
 function set_slidevalue(tab_num, new_val, trigger_input_event=true) {
     var $tar = $('#myRange_' + tab_num);
@@ -278,13 +269,11 @@ function set_slidevalue(tab_num, new_val, trigger_input_event=true) {
     init_range_input($tar, $side);
     $('#amount_percentage_' + tab_num).html(new_val + '%');
 }
-function set_default_price($message_target, tab_num, market, pair, side) {
+function set_default_price(tab_num, market, pair, side) {
     var new_order_type = $('#id_order_type_' + tab_num).val();
-    // if (!market_price_json[market][pair]) {
-    //     await init_ticker_json($message_target);
-    // }
+   
     if (!market_price_json[market][pair]) {
-        set_error_message($message_target, market + 'のレートの取得に失敗しました。')
+        set_error_message(market + 'のレートの取得に失敗しました。')
     }
     var current_rate = market_price_json[market][pair][side];
     if (new_order_type != 'market') {
@@ -300,14 +289,14 @@ function reset_input(i) {
     $('#expect_price_' + i).val(null);
     set_slidevalue(i, 0, false);
 }
-function reset_input_all(market, pair, $message_target) {
+function reset_input_all(market, pair) {
     var default_side = Object.keys(SELL_BUY)[1];
     var default_order_type = Object.keys(ORDER_TYPES)[1];
     for (let i = 1; i < 4; i++) {
         reset_input(i);
         $('#id_side_' + i).val(default_side).trigger('value_change');
         $('#id_order_type_' + i).val(default_order_type).trigger('change');
-        set_default_price($message_target, i, market, pair, default_side);
+        set_default_price(i, market, pair, 'last');
     }
 }
 function init_range_input($me, $side) {
@@ -321,8 +310,6 @@ function init_range_input($me, $side) {
 }
 
 function init_order_tab(is_initial = false) {
-    var $order_result_message_target = $('#id_order_result_message');
-    var $ajax_message_target = $('#id_ajax_message');
     for (let i = 1; i < 4; i ++) {
         if ($('#id_side_' + i).val() == 'sell') {
             $('#sell_button_' + i).addClass('sell').removeClass('btn-base');
@@ -450,7 +437,7 @@ function init_order_tab(is_initial = false) {
                     }
                     break;
             }
-            reset_input_all($(this).val(), $input_pair.val(), $ajax_message_target)
+            reset_input_all($(this).val(), $input_pair.val())
             
         });
         $bitbank_button
@@ -510,7 +497,7 @@ function init_order_tab(is_initial = false) {
             });
 
             $slick.slick('slickGoTo', 0);
-            reset_input_all($input_market.val(), $input_pair.val(), $ajax_message_target); 
+            reset_input_all($input_market.val(), $input_pair.val()); 
         });
 
         $input_pair.on('change', function() {
@@ -524,7 +511,7 @@ function init_order_tab(is_initial = false) {
             }
             
 
-            reset_input_all($input_market.val(), $input_pair.val(), $ajax_message_target);   
+            reset_input_all($input_market.val(), $input_pair.val());   
             
             // 数量、金額の通貨部分を更新
             var unit = $input_pair.val().split('_')[0].toUpperCase();
@@ -644,7 +631,7 @@ function init_order_tab(is_initial = false) {
                     text: ORDER_TYPES[key],
                 }).appendTo($('#id_order_type_' + i));
             });
-            set_default_price($ajax_message_target, i, $input_market.val(), $input_pair.val(), $('#id_side_' + i).val());
+            set_default_price(i, $input_market.val(), $input_pair.val(), $('#id_side_' + i).val());
         }
         
         var ck_market = $.cookie(COOKIE_ORDER_MARKET);
@@ -693,8 +680,9 @@ function init_order_tab(is_initial = false) {
         // クッキーにあればデフォルトセット
         
 
-        $button_order.on('click', function(e) {
+        $button_order.on('click', async function(e) {
             $(this).prop('disabled', true);
+            
             //alert('here');
             var market = $input_market.val();
             var pair = $input_pair.val();
@@ -716,26 +704,25 @@ function init_order_tab(is_initial = false) {
             if (market == 'bitbank') {
                 if (order_type_1 != undefined) {
                     if ( (order_type_1.includes('market') || order_type_1 == 'trail') && perc_1 > 70.0 ) {
-                        set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。新規注文の数量を変更してください。');
+                        set_error_message('bitbankでは70%を超える成行注文はできません。新規注文の数量を変更してください。');
                         $(this).prop('disabled', false);
                         return;
                     }
                 }
                 if (order_type_2 != undefined) {
                     if ( (order_type_2.includes('market') || order_type_2 == 'trail') && perc_2 > 70.0 ) {
-                        set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。決済注文①の数量を変更してください。');
+                        set_error_message('bitbankでは70%を超える成行注文はできません。決済注文①の数量を変更してください。');
                         $(this).prop('disabled', false);
                         return;
                     }
                 }
                 if (order_3 != undefined) {
                     if ( (order_type_3.includes('market') || order_type_3 == 'trail') && perc_3 > 70.0 ) {
-                        set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。決済注文②の数量を変更してください。');
+                        set_error_message('bitbankでは70%を超える成行注文はできません。決済注文②の数量を変更してください。');
                         $(this).prop('disabled', false);
                         return;
                     }
-                }
-                
+                }  
             }
             
 
@@ -760,27 +747,27 @@ function init_order_tab(is_initial = false) {
             switch ($input_special_order.val()) {
                 case 'SINGLE':
                     var order_1 = create_order_json(market, pair, side_1, order_type_1, price_1, price_for_stop_1, trail_width_1, start_amount_1);
-                    place_order(market, pair, special_order, order_1, null, null, $order_result_message_target);
+                    await place_order_async(market, pair, special_order, order_1, null, null);
                     break;
                 case 'IFD':
                     var order_1 = create_order_json(market, pair, side_1, order_type_1, price_1, price_for_stop_1, trail_width_1, start_amount_1);
                     var order_2 = create_order_json(market, pair, side_2, order_type_2, price_2, price_for_stop_2, trail_width_2, start_amount_2);
-                    place_order(market, pair, special_order, order_1, order_2, null, $order_result_message_target);
+                    await place_order_async(market, pair, special_order, order_1, order_2, null);
                     break;
                 case 'OCO':
                     var order_2 = create_order_json(market, pair, side_2, order_type_2, price_2, price_for_stop_2, trail_width_2, start_amount_2);
                     var order_3 = create_order_json(market, pair, side_3, order_type_3, price_3, price_for_stop_3, trail_width_3, start_amount_3);        
-                    place_order(market, pair, special_order, null, order_2, order_3, $order_result_message_target);
+                    await place_order_async(market, pair, special_order, null, order_2, order_3);
                     break;
                 case 'IFDOCO':
                     var order_1 = create_order_json(market, pair, side_1, order_type_1, price_1, price_for_stop_1, trail_width_1, start_amount_1);
                     var order_2 = create_order_json(market, pair, side_2, order_type_2, price_2, price_for_stop_2, trail_width_2, start_amount_2);    
                     var order_3 = create_order_json(market, pair, side_3, order_type_3, price_3, price_for_stop_3, trail_width_3, start_amount_3);        
-                    place_order(market, pair, special_order, order_1, order_2, order_3, $order_result_message_target);
+                    await place_order_async(market, pair, special_order, order_1, order_2, order_3);
                     break;
             }
             $(this).prop('disabled', false);
-            init_free_amount_json($order_result_message_target);
+            init_free_amount_json_async();
         });  
     } else {
         

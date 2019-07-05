@@ -63,8 +63,7 @@ function call_user(method, full_name  = null, bb_api_key = null, bb_api_secret_k
         }
     });
 }
-
-function call_orders(method, market, pair, offset = null, limit = null, type = null, pk = null, special_order = null, order_1 = null, order_2 = null, order_3 = null) {
+function call_orders(method, pk, market, pair, offset = null, limit = null, side = null, order_type = null, limit_price = null, stop_price = null, trail_width = null, amount = null) {
     return $.ajax({
         url: BASE_URL_ORDERS,
         type: (method == 'GET') ? 'GET' : 'POST',
@@ -74,8 +73,27 @@ function call_orders(method, market, pair, offset = null, limit = null, type = n
             offset: offset,
             limit: limit,
             market: market,
-            type: type,
+            pair: pair,
             pk: pk,
+            side: side,
+            order_type: order_type,
+            price: limit_price,
+            price_for_stop: stop_price,
+            trail_width: trail_width,
+            start_amount: amount
+        }
+    });
+}
+function call_relations(method, market, pair, offset = null, limit = null, special_order = null, order_1 = null, order_2 = null, order_3 = null) {
+    return $.ajax({
+        url: BASE_URL_RELATIONS,
+        type: (method == 'GET') ? 'GET' : 'POST',
+        dataType: 'json',
+        data: {
+            method: method,
+            offset: offset,
+            limit: limit,
+            market: market,
             pair: pair,
             special_order: special_order,
             order_1: order_1,
@@ -143,12 +161,11 @@ function isNumberKey(evt){
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
 }
 
-async function init_ticker_and_asset($message_target) {
-    console.log('init_ticler and asset_caled');
-    return $.when(init_free_amount_json($message_target), init_ticker_json($message_target));
+async function init_ticker_and_asset_async() {
+    return $.when(init_free_amount_json_async(), init_ticker_json_async());
 }
 
-async function init_free_amount_json($message_target) {
+async function init_free_amount_json_async() {
     // 10秒以内にすでに更新していたら何もしない
     if (Date.now() - free_amount_json_last_updated < 1000 * 10) {
         return;
@@ -161,13 +178,13 @@ async function init_free_amount_json($message_target) {
     .done(function(bbassets, ccassets) {
         console.log(bbassets[0])
         if (bbassets[0]['error']) {
-            set_error_message($message_target, bbassets[0]['error']);
+            set_error_message(bbassets[0]['error']);
         }
         bbassets[0].assets.forEach(asset => {
             free_amount_json['bitbank'][asset.asset] = asset.free_amount;
         });
         if (ccassets[0]['error']) {
-            set_error_message($message_target, ccassets[0]['error']);
+            set_error_message(ccassets[0]['error']);
         }
         Object.keys(ccassets[0]).forEach(asset_name => {
             console.log(asset_name);
@@ -178,16 +195,16 @@ async function init_free_amount_json($message_target) {
         })
     })
     .fail(function() {
-        set_error_message($message_target, '資産の取得に失敗しました。')
+        set_error_message('資産の取得に失敗しました。')
     });
 }
 
-async function init_ticker_json($message_target) {
+async function init_ticker_json_async() {
     // 10秒以内にすでに更新していたら何もしない
     if (Date.now() - market_price_json_last_updated < 1000 * 10) {
         return false;
     }
-    console.log('init_ticker called')
+    
     market_price_json_last_updated = Date.now();
     
     return $.when(
@@ -211,10 +228,11 @@ async function init_ticker_json($message_target) {
         market_price_json['bitbank']['mona_btc'] = monabtc[0];  
         market_price_json['bitbank']['bcc_jpy'] = bccjpy[0];  
         market_price_json['bitbank']['bcc_btc'] = bccbtc[0];  
-        market_price_json['coincheck']['btc_jpy'] = ccbtcjpy[0];  
+        market_price_json['coincheck']['btc_jpy'] = ccbtcjpy[0]; 
+        
     })
     .fail(function() {
-        set_error_message($message_target, 'レートの取得に失敗しました。')
+        set_error_message('レートの取得に失敗しました。')
     });
  
 }
@@ -267,25 +285,30 @@ function readURL(file, target_img) {
         reader.readAsDataURL(file);
     }
 }
-function set_error_message(target, message="ログインし直してください") {
-
-    $(target).addClass('alert-danger');
-    $(target).removeClass('alert-success');
-    $(target).html(message);
-    $(target).show();
-    setTimeout(function() {
-        $(target).fadeOut();
-    }, 10000);
+function set_error_message(message="ログインし直してください") {
+    var $modal = $('.modal');
+    $modal.find('span#message').html(message);
+    $modal.find('.alert-icon').show();
+    $modal.find('.success-icon').hide();
+    
+    $modal.modal('show');
 }
 
-function set_success_message(target, message="正常に処理しました") {
-    $(target).addClass('alert-success');
-    $(target).removeClass('alert-danger');
-    $(target).html('<i class="fa fa-check" aria-hidden="true"></i>' + message);
-    $(target).show();
-    setTimeout(function() {
-        $(target).fadeOut();
-    }, 2000);
+function set_success_message(message="正常に処理しました") {
+    var $modal = $('.modal');
+    $modal.find('span#message').html(message);
+    $modal.find('.success-icon').show();
+    $modal.find('.alert-icon').hide();
+    
+    $modal.modal('show');
+}
+function handle_error(error) {
+    const { status, statusText, responseText } = error;
+    if (status == 401) {
+        window.location.href = BASE_URL_LOGIN;
+    }
+    console.log(error)
+    set_error_message(statusText);
 }
 
 

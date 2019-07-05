@@ -1,0 +1,85 @@
+<div id="alerts" class="tabcontent">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <label class="control-label">約定通知</label>
+            <div class="btn-group d-flex" role="group">
+                <button id="notify_if_filled_off_button" type="button" class="btn w-100 btn-base">OFF</button>
+                <button id="notify_if_filled_on_button" type="button" class="btn w-100 btn-base">ON</button>      
+            </div>
+        </div>  
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <label class="control-label">アラートメール通知</label>
+            <div class="btn-group d-flex" role="group">
+                <button id="id_use_alert_off_button" type="button" class="btn w-100 btn-base">OFF</button>
+                <button id="id_use_alert_on_button" type="button" class="btn w-100 btn-base">ON</button>      
+            </div>
+        </div>  
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">取引所</div>
+                </div>
+                <select id="id_alerts_market" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <select class="form-control" id="id_alerts_pair" style="padding-right: 1.5em !important;padding-left:0.5em!important;">
+                    </select>
+                </div>
+                <input type="number" id="id_notice_rate" placeholdder="レート" class="form-control" min="0">
+                <div class="input-group-append">
+                    <div class="input-group-text placeholder pair_for_alert">JPY</div>
+                </div>
+                <div class="input-group-append">
+                    <button id="add_alert_button" class="btn green_button" type="button">追加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <label class="control-label">検索設定</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">検索取引所</div>
+                </div>
+                <select id="id_alerts_search_market" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">検索通貨</div>
+                </div>
+                <select id="id_alerts_search_pair" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <div id="alert_container">
+        
+    </div> 
+    <div class="row">
+        <div id="page_selection_alerts" class="col-md-6 offset-md-3 col-12">
+
+        </div>
+    </div>
+</div>
+

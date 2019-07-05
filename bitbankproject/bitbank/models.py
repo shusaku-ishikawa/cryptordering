@@ -24,6 +24,7 @@ import python_bitbankcc
 from django.utils import timezone
 from django.template.loader import get_template
 from django.conf import settings
+from .myexceptions import *
 
 class ASCIIFileSystemStorage(FileSystemStorage):
     """
@@ -182,6 +183,7 @@ class Order(models.Model):
     STATUS_WAIT_OTHER_ORDER_TO_FILL = "WAIT_OTHER_ORDER_TO_FILL"
     STATUS_FAILED_TO_ORDER = 'FAILED_TO_ORDER'
 
+    
     PAIR = {
         'btc_jpy': 'BTC/JPY',
         'xrp_jpy': 'XRP/JPY',
@@ -344,6 +346,17 @@ class Order(models.Model):
         auto_now = True,
     )
     
+    @property
+    def myposition(self):
+        if hasattr(self, 'new_order'):
+            return 'new_order'
+        elif hasattr(self, 'settle_order_1'):
+            return 'settle_order_1'
+        elif hasattr(self, 'settle_order_2'):
+            return 'settle_order_2'
+        else:
+            raise Exception('')
+
     def place(self):
         logger = logging.getLogger('api')
 
@@ -359,6 +372,13 @@ class Order(models.Model):
                     self.side, # 注文サイド
                     'market' if self.order_type.find("limit") == -1 else 'limit' # 注文タイプ
                 )
+            except Exception as e:
+                logger.error('place bitbank order: ' + str(e.args))
+                self.status = Order.STATUS_FAILED_TO_ORDER
+                self.error_message = str(e.args)
+                self.save()
+                raise OrderFailedError(self.error_message)
+            else:
                 self.remaining_amount = ret.get('remaining_amount')
                 self.executed_amount = ret.get('executed_amount')
                 self.average_price = ret.get('average_price')
@@ -367,12 +387,7 @@ class Order(models.Model):
                 self.order_id = ret.get('order_id')
                 self.save()
                 return True
-            except Exception as e:
-                logger.error('place bitbank order: ' + str(e.args))
-                self.status = Order.STATUS_FAILED_TO_ORDER
-                self.error_message = str(e.args)
-                self.save()
-                return False
+           
         elif self.market == 'coincheck':
             try:
                 current_rate = float(json.loads(prv_coincheck.ticker.all())['last'])
@@ -383,6 +398,12 @@ class Order(models.Model):
                     'order_type': self.side if 'limit' in self.order_type else 'market_' + self.side,
                     'pair': self.pair
                 }))
+            except Exception:
+                self.status = Order.STATUS_FAILED_TO_ORDER
+                self.error_message = str(e.args)
+                self.save()
+                raise OrderFailedError(self.error_message)
+            else:
                 if ret.get('success'):
                     self.order_id = ret.get('id')
                     self.remaining_amount = ret.get('amount')
@@ -391,23 +412,23 @@ class Order(models.Model):
                     self.status = self.STATUS_UNFILLED
                     self.save()
                     return True
-                else:
-                    print(ret)
+                elif ret.get('error'):
                     self.status = self.STATUS_FAILED_TO_ORDER
                     self.error_message = ret.get('error')
                     self.save()
-                    return False
-
-            except Exception as e:
-                logger.error('place coincheck order: ' + str(e.args))
-                self.status = Order.STATUS_FAILED_TO_ORDER
-                self.error_message = str(e.args)
-                self.save()
-                return False
-
+                    raise OrderFailedError(self.error_message)
+                else:
+                    raise Exception('想定外のレスポンス:' + str(ret))
 
     def cancel(self):
         logger = logging.getLogger('api')
+        
+        # 未約定、部分約定以外のステータスの倍はステータスのみ変更
+        if self.status not in { self.STATUS_UNFILLED, self.STATUS_PARTIALLY_FILLED }:
+            self.status = self.STATUS_CANCELED_UNFILLED
+            self.save()
+            return True
+        
         prv_bitbank = python_bitbankcc.private(self.user.bb_api_key, self.user.bb_api_secret_key)
         prv_coincheck = CoinCheck(self.user.cc_api_key, self.user.cc_api_secret_key)
         
@@ -417,32 +438,33 @@ class Order(models.Model):
                     self.pair, # ペア
                     self.order_id # 注文ID
                 )
+            except Exception as e:
+                raise OrderCancelFailedError(str(e.args))
+            else:
+                print(ret)
                 self.remaining_amount = ret.get('remaining_amount')
                 self.executed_amount = ret.get('executed_amount')
                 self.average_price = ret.get('average_price')
                 self.status = ret.get('status')
                 self.save()
                 return True
-            except Exception as e:
-                logger.error('cancel bitbank order: ' + str(e.args))
-                return False
+            
 
         elif self.market == 'coincheck':
             try:
                 ret = json.loads(prv_coincheck.order.cancel({
                     'id': self.order_id # 注文ID
-                }))
-                print(ret)
-                if ret.get('success'):
-                    self.status = self.STATUS_CANCELED_UNFILLED
-                    self.save()
-                    return True
-                else:
-                    return False
+                }))   
             except Exception as e:
-                logger.error('cancel coincheck order: ' + str(e.args))
-                return False
-
+                raise OrderCancelFailedError(str(e.args))
+            else:
+                if not ret.get('success') and ret.get('error'):
+                    raise OrderCancelFailedError(ret.get('error'))
+                self.status = self.STATUS_CANCELED_UNFILLED
+                self.save()
+                return True
+                
+            
     def update(self):
         logger  = logging.getLogger('api')
     
@@ -455,6 +477,9 @@ class Order(models.Model):
                     self.pair, 
                     self.order_id
                 )
+            except Exception as e:
+                raise OrderStatusUpdateError(str(e.args))
+            else:
                 self.remaining_amount = ret.get('remaining_amount')
                 self.executed_amount = ret.get('executed_amount')
                 self.average_price = ret.get('average_price')
@@ -462,9 +487,7 @@ class Order(models.Model):
                 self.status = status
                 self.save()
                 return status
-            except Exception as e:
-                logger.error('update bitbank order: ' + str(e.args))
-        
+          
         elif self.market == 'coincheck':
             try:
                 _open = json.loads(prv_coincheck.order.opens({}))
@@ -473,9 +496,17 @@ class Order(models.Model):
                     'starting_after': self.order_id,
                     'ending_before': self.order_id
                 }))
-                print(_close)
-                if not _open.get('success') or not _close.get('success'):
-                    return False
+            except Exception as e:
+                raise OrderStatusUpdateError(str(e.args))
+            else:
+                if not _open.get('success'):
+                    if _open.get('error'):
+                        raise OrderStatusUpdateError(_open.get('error'))
+                    raise OrderStatusUpdateError('想定外の応答: ' + str(_open))
+                if not _close.get('success'):
+                    if _close.get('error'):
+                        raise OrderStatusUpdateError(_close.get('error'))
+                    raise OrderStatusUpdateError('想定外の応答: ' + str(_close))
                 
                 is_open = False
                 for oo in _open.get('orders'):
@@ -495,20 +526,17 @@ class Order(models.Model):
                         self.status = self.STATUS_CANCELED_UNFILLED
                     self.save()
                     return self.STATUS_FULLY_FILLED
-            except Exception as e:
-                logger.error('update coincheck order: ' + str(e.args))
-
     def notify_user(self):
         try:
             readable_datetime = datetime.fromtimestamp(int(int(self.ordered_at) / 1000))
+        except ValueError:
+            return False
+        else:
             context = { "user": self.user, "order": self, 'readable_datetime': readable_datetime }
             subject = get_template('bitbank/mail_template/fill_notice/subject.txt').render(context)
             message = get_template('bitbank/mail_template/fill_notice/message.txt').render(context)
             self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
             logger.info('notice sent to:' + self.user.email_for_notice)
-        except Exception as e:
-            logger.error('notify user: ' + str(e.args))
-
 
 class Relation(models.Model):
     def __str__(self):
@@ -517,7 +545,10 @@ class Relation(models.Model):
     class Meta:
         verbose_name = "発注一覧"
         verbose_name_plural = "2.発注一覧"
-    
+    MARKET = [
+        'bitbank',
+        'coincheck'
+    ]
     PAIR = [
         'btc_jpy',
         'xrp_jpy',
@@ -580,6 +611,10 @@ class Relation(models.Model):
     placed_at = models.DateTimeField(
         verbose_name = '注文日時',
         auto_now_add = True
+    )
+    is_locked = models.BooleanField(
+        verbose_name = 'ロック中',
+        default = False
     )
     is_active = models.BooleanField(
         verbose_name = '有効',

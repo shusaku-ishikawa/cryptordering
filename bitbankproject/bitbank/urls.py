@@ -29,8 +29,10 @@ urlpatterns = [
     path('ticker/', views.ajax_ticker, name="ajax_ticker"),
     path('assets/', views.ajax_assets, name="ajax_assets"),
     
-    path('orders/', views.ajax_orders, name="ajax_orders"),
-    
+    path('relations/', views.ajax_relation, name="ajax_relations"),
+    path('orders/', views.ajax_order, name='ajax_orders'),
+
+
     path('alerts/', views.ajax_alerts, name="ajax_alerts"),
    
 

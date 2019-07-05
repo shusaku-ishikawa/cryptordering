@@ -122,14 +122,52 @@ function build_history_order_card(pk, market, order_id, pair, order_type, side, 
     return $container;
 }
 
-function init_order_history_content(market, pair, $message_target) {
+function _on_history_page_click($div_contents, market, pair, limit) {
+    return async function (event, page) {
+        $div_contents.empty();
+        var $outer = $('<div>', { class: 'row' });
+        var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
+        
+        let history;
+        try {
+            history = await call_orders('GET', null, market, pair, limit * (page - 1), limit);
+
+            if (history.error) {
+                set_error_message(history.error);
+                return false;
+            }
+            var is_empty = true;
+            history.data.forEach(order => {
+                is_empty = false;
+              
+                $inner
+                .append($('<div>',{
+                    class: 'order_container'
+                }).append(build_history_order_card(order.pk, order.market, order.order_id, order.pair, order.order_type, order.side, order.price, order.price_for_stop, order.start_amount, order.executed_amount, order.average_price, order.status, order.ordered_at, order.error_message, order.updated_at)))
+                .append($('<hr>'));
+            });
+            // 1件もない場合
+            if (is_empty) {
+                $inner.append($('<p>', {
+                    text: '取引はありません'
+                }));
+            }
+            $div_contents.append($outer.append($inner));
+            return true;
+        } catch (error) {
+           handle_error(error);
+        }
+    }
+}
+async function init_order_history_content_async(market, pair) {
     var $page_selection = $('#page_selection_order_history');
     var $div_contents =  $('#order_history_content');
 
-    call_orders('GET', market, pair, 0, 1, 'history')
-    .done(function(res_1) {
-        if (res_1.error) {
-            set_error_message($message_target, res_1.error);
+    let history;
+    try {
+        history = await call_orders('GET', null,  market, pair, 0, 1);
+        if (history.error) {
+            set_error_message(history.error);
             return;
         }
         if($page_selection.data("twbs-pagination")){
@@ -138,58 +176,19 @@ function init_order_history_content(market, pair, $message_target) {
             $page_selection.unbind("page");
         } 
         $page_selection.twbsPagination({
-            totalPages: (res_1.total_count == 0) ? 1 : Math.ceil(res_1.total_count / COUNT_PER_PAGE),
+            totalPages: (history.total_count == 0) ? 1 : Math.ceil(history.total_count / COUNT_PER_PAGE),
             next: '次',
             prev: '前',
             first: '先頭',
             last: '最後',
-            onPageClick: function (event, page) {
-                $div_contents.empty();
-                var $outer = $('<div>', { class: 'row' });
-                var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
-            
-                call_orders('GET', market, pair, COUNT_PER_PAGE * (page - 1), COUNT_PER_PAGE, 'history')
-                .done(function(res_2) {
-                    if (res_2.error) {
-                        set_error_message($message_target, res_2.error);
-                        return;
-                    }
-                    var is_empty = true;
-                    res_2.data.forEach(order => {
-                        is_empty = false;
-                      
-                        $inner
-                        .append($('<div>',{
-                            class: 'order_container'
-                        }).append(build_history_order_card(order.pk, order.market, order.order_id, order.pair, order.order_type, order.side, order.price, order.price_for_stop, order.start_amount, order.executed_amount, order.average_price, order.status, order.ordered_at, order.error_message, order.updated_at)))
-                        .append($('<hr>'));
-                    });
-                    // 1件もない場合
-                    if (is_empty) {
-                        $inner.append($('<p>', {
-                            text: '取引はありません'
-                        }));
-                    }
-                    $div_contents.append($outer.append($inner));
-                })
-                .fail(function(data, textStatus, xhr) {
-                    if (data.status == 401) {
-                        window.location.href = BASE_URL_LOGIN;
-                    }
-                    set_error_message($message_target, xhr);
-                });
-            }
+            onPageClick: _on_history_page_click($div_contents, market, pair, COUNT_PER_PAGE)
         });
-    })
-    .fail(function(data, textStatus, xhr) {
-        if (data.status == 401) {
-            window.location.href = BASE_URL_LOGIN;
-        }
-        set_error_message($message_target, xhr);
-    });
+    } catch (error) {
+        console.log(error);
+        handle_error(error);
+    }
 }
 function init_order_history_tab(is_initial = false) {
-    var $message_target = $('#id_ajax_message');
     var $input_search_pair = $('#id_order_history_search_pair');
     var $input_search_market = $('#id_order_history_search_market');
     
@@ -201,7 +200,7 @@ function init_order_history_tab(is_initial = false) {
             text: '全て'
         }))
         .on('change', function() {
-            init_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+            init_order_history_content_async($input_search_market.val(), $input_search_pair.val());
         });
 
         Object.keys(MARKETS).forEach(market => {
@@ -219,7 +218,7 @@ function init_order_history_tab(is_initial = false) {
         }))
         .on('change', function() {
             $.cookie(COOKIE_SEARCH_PAIR_ORDER_HISTORY, $(this).val(), {expire: 7});
-            init_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+            init_order_history_content_async($input_search_market.val(), $input_search_pair.val());
         });
 
         Object.keys(PAIRS).forEach(pair => {
@@ -240,7 +239,7 @@ function init_order_history_tab(is_initial = false) {
     } else {
         $input_search_pair.val('all');
     }
-    init_order_history_content($input_search_market.val(), $input_search_pair.val(), $message_target);
+    init_order_history_content_async($input_search_market.val(), $input_search_pair.val());
 }
 
 

@@ -1,10 +1,9 @@
 async function init_asset_tab(is_initial = false) {
     
-    var $message_target = $('#id_ajax_message');
     var $total_asset_bb = $('#total_in_jpy_bb');
     var total_asset_in_jpy = 0;
-    await init_ticker_json($message_target);
-    await init_free_amount_json($message_target);
+    await init_ticker_json_async();
+    await init_free_amount_json_async();
     var bb_asset = free_amount_json['bitbank'];
     var bb_rate = market_price_json['bitbank'];
     var cc_asset = free_amount_json['coincheck'];

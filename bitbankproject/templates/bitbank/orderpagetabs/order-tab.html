@@ -1,0 +1,464 @@
+<style>
+    #id_order_button:enabled .loader {
+        display: none!important;
+    }
+   .spinner {
+       display: inline-block;
+       top: 2px;
+   }
+   #id_order_button {
+       position: relative;
+   }
+   .overlay {
+       opacity: 0.6;
+       background-color: black;
+       position: absolute;
+       width: 100%;
+        top: 0;
+        left: 0;
+       height: 100%;
+
+   }
+  
+</style>
+
+<div id="order" class="tabcontent">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="btn-group">
+                <button id="id_bitbank" type="button" class="btn-outline-secondary" value="bitbank">bitbank</button>
+                <button id="id_coincheck" type="button" class="btn-outline-secondary" value="coincheck">coincheck</button>
+            </div>
+        </div>
+    </div>
+    <div class="input-group" style="display: none">
+        <select id="id_market" class="form-control"></select>
+    </div>
+    <hr class="show_if_coincheck">
+    <div class="row show_if_coincheck">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">取引種類</div>
+                </div>
+                <select id="id_trade_type" class="form-control onlyone">
+                    <option value="cash">現物</option>
+                </select>
+                   
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">取引通貨</div>
+                </div>
+                <select id="id_pair" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">特殊注文</div>
+                </div>
+                <select id="id_special_order" class="form-control"></select>
+            </div>  
+        </div>
+    </div>
+
+    <hr>
+    <!-- 1ページ目 -->
+        <div id="slider_contents">
+            <div class="tabcontent-child">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <span class="badge badge-info">新規注文</span>
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="btn-group d-flex" role="group">
+                            <button id="buy_button_1" type="button" class="btn w-100 btn-base">買い</button>
+                            <button id="sell_button_1" type="button" class="btn w-100 btn-base">売り</button>
+                        </div>
+                    </div>
+                </div>
+                            
+                <div class="input-group" style="display: none">
+                    <select id="id_side_1" class="form-control"></select>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text placeholder">注文方法</div>
+                            </div>
+                            <select id="id_order_type_1" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+                <!-- <br class="show_if_stop_order_1"> -->
+                <hr class="show_if_trail_1">
+                <div class="row show_if_trail_1">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div id="id_trail_placeholder_1" class="input-group-text placeholder">トレイル幅</div>
+                            </div>
+                            <input id="id_trail_width_1" type="number" class="form-control" min="0" step="1">              
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="show_if_stop_order_1">
+                <div class="row show_if_stop_order_1">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div id="id_stop_price_placeholder_1" class="input-group-text placeholder">逆指値価格</div>
+                            </div>
+                            <input id="id_price_for_stop_1" type="number" class="form-control" min="0" step="1">              
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <br class="show_if_limit_order_1"> -->
+                <hr class="show_if_limit_order_1">
+                <div class="row show_if_limit_order_1">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div id="id_price_placeholder_1" class="input-group-text placeholder">指値価格</div>
+                            </div>
+                            <input id="id_price_1" type="number" class="form-control" min="0" step="1">
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>     
+                        </div>
+                    </div>
+                </div>
+                <hr>            
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                    <div class="input-group-text placeholder">数量</div>
+                            </div>
+                            <input id="id_start_amount_1" type="number" class="form-control" min="0" min="0" step="0.0001">  
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder unit">BTC</div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text placeholder">数量</div>
+                            </div>
+                            <input type="number" id="expect_price_1" class="form-control" min="0" step="0.0001"> 
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <input type="range" min="0" max="100" value="0" class="" id="myRange_1" step="0.001">
+                        <div><span style="float:right;" id="amount_percentage_1">0%</span></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12 text-center" style="display: flex;justify-content: space-between;">
+                        <button value="25" name="perc_button_1" id="id_25_button_1" class="btn buy">25%</button>
+                        <button value="50" name="perc_button_1" id="id_50_button_1" class="btn buy">50%</button>
+                        <button value="75" name="perc_button_1" id_="id_75_button_1" class="btn buy">75%</button>
+                        <button value="100" name="perc_button_1" id="id_100_button_1" class="btn buy">100%</button>
+                    </div>
+                </div>
+            </div>
+            <div class="tabcontent-child">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <span class="badge badge-success">決済注文❶</span>
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="btn-group d-flex" role="group">
+                            <button id="buy_button_2" type="button" class="btn w-100 btn-base">買い</button>
+                            <button id="sell_button_2" type="button" class="btn w-100 btn-base">売り</button>
+                        </div>
+                    </div>
+                </div>
+                            
+                <div class="input-group" style="display: none">
+                    <select id="id_side_2" class="form-control"></select>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text placeholder">注文方法</div>
+                            </div>
+                            <select id="id_order_type_2" class="form-control"></select>
+                            
+                        </div>
+                    </div>
+                </div>
+                <hr class="show_if_trail_2">
+                <div class="row show_if_trail_2">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div id="id_trail_placeholder_2" class="input-group-text placeholder">トレイル幅</div>
+                            </div>
+                            <input id="id_trail_width_2" type="number" class="form-control" min="0" step="1">              
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="show_if_stop_order_2">
+                <div class="row show_if_stop_order_2">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div id="id_stop_price_placeholder_2" class="input-group-text placeholder">逆指値価格</div>
+                            </div>
+                            <input id="id_price_for_stop_2" type="number" class="form-control" min="0" step="1">              
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <hr class="show_if_limit_order_2">
+                <div class="row show_if_limit_order_2">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div id="id_price_placeholder_2" class="input-group-text placeholder">指値価格</div>
+                            </div>
+                            <input id="id_price_2" type="number" class="form-control" min="0" step="1">
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>
+                                
+                        </div>
+                    </div>
+                </div>
+            
+                <hr>            
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                    <div class="input-group-text placeholder">数量</div>
+                            </div>
+                            <input id="id_start_amount_2" type="number" class="form-control" min="0" step="0.0001">  
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder unit">BTC</div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text placeholder">数量</div>
+                            </div>
+                            <input type="number" id="expect_price_2" class="form-control" min="0" step="0.0001">
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <input type="range" min="0" max="100" value="0" class="" id="myRange_2">
+                        <div><span style="float:right;" id="amount_percentage_2">0%</span></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12 text-center" style="display: flex;justify-content: space-between;">
+                        <button value="25" name="perc_button_2" id="id_25_button_2" class="btn buy">25%</button>
+                        <button value="50" name="perc_button_2" id="id_50_button_2" class="btn buy">50%</button>
+                        <button value="75" name="perc_button_2" id_="id_75_button_2" class="btn buy">75%</button>
+                        <button value="100" name="perc_button_2" id="id_100_button_2" class="btn buy">100%</button>
+                    </div>
+                </div>
+            </div>
+            <div class="tabcontent-child">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <span class="badge badge-primary">決済注文❷</span>
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="btn-group d-flex" role="group">
+                            <button id="buy_button_3" type="button" class="btn w-100 btn-base">買い</button>
+                            <button id="sell_button_3" type="button" class="btn w-100 btn-base">売り</button>
+                        </div>
+                    </div>
+                </div>
+                            
+                <div class="input-group" style="display: none">
+                    <select id="id_side_3" class="form-control"></select>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text placeholder">注文方法</div>
+                            </div>
+                            <select id="id_order_type_3" class="form-control"></select>
+                        
+                        </div>
+                    </div>
+                </div>
+                <hr class="show_if_trail_3">
+                <div class="row show_if_trail_3">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div id="id_trail_placeholder_3" class="input-group-text placeholder">トレール幅</div>
+                            </div>
+                            <input id="id_trail_width_3" type="number" class="form-control" min="0" step="1">              
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="show_if_stop_order_3">
+                <div class="row show_if_stop_order_3">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div id="id_stop_price_placeholder_3" class="input-group-text placeholder">逆指値価格</div>
+                            </div>
+                            <input id="id_price_for_stop_3" type="number" class="form-control" min="0" step="1">              
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="show_if_limit_order_3">
+                <div class="row show_if_limit_order_3">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div id="id_price_placeholder_3" class="input-group-text placeholder">指値価格</div>
+                            </div>
+                            <input id="id_price_3" type="number" class="form-control" min="0" step="1">
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+            
+                <hr>            
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                    <div class="input-group-text placeholder">数量</div>
+                            </div>
+                            <input id="id_start_amount_3" type="number" class="form-control" min="0" step="0.0001">  
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder unit">BTC</div>
+                            </div>     
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text placeholder">数量</div>
+                            </div>
+                            <input type="number" id="expect_price_3" class="form-control" min="0" step="0.0001">
+                            <div class="input-group-append">
+                                <div class="input-group-text placeholder pair">JPY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12">
+                        <input type="range" min="0" max="100" value="0" class="" id="myRange_3">
+                        <div><span style="float:right;" id="amount_percentage_3">0%</span></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-12 text-center" style="display: flex;justify-content: space-between;">
+                        <button value="25" name="perc_button_3" id="id_25_button_3" class="btn buy">25%</button>
+                        <button value="50" name="perc_button_3" id="id_50_button_3" class="btn buy">50%</button>
+                        <button value="75" name="perc_button_3" id_="id_75_button_3" class="btn buy">75%</button>
+                        <button value="100" name="perc_button_3" id="id_100_button_3" class="btn buy">100%</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="row">
+        <div id="id_dots_area" class="col-md-6 offset-md-3 col-12">
+            
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div id="id_order_result_message" class="alert">
+            </div>
+        </div>
+    </div> 
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <button id="id_order_button" type="button" class="btn btn-lg btn-block green_button">                        
+                                注文
+                        <div class="loader spinner ld ld-ring ld-spin"></div>
+                        <div class="loader overlay">
+                        </div>
+                       
+                </button>
+            </div>  
+        </div>
+    </div>
+</div>

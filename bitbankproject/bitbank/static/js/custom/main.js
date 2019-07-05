@@ -134,7 +134,7 @@ function openTab(evt, tab_id) {
 
 $(function() {
     var $message = $('#id_ajax_message');
-    init_ticker_and_asset($message)
+    init_ticker_and_asset_async()
     .then(function() {
         init_order_tab(true);
         init_active_orders_tab(true);
@@ -146,7 +146,7 @@ $(function() {
         $('#order_button').click();
     });
     setInterval(async () => {
-        await init_ticker_and_asset($message)}, RATE_UPDATE_FREQ
+        await init_ticker_and_asset_async()}, RATE_UPDATE_FREQ
     );
 });
 

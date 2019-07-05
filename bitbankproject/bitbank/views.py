@@ -34,6 +34,7 @@ from .forms import (LoginForm, MyPasswordChangeForm, MyPasswordResetForm,
 from .models import (Alert, Attachment, Order, Inquiry, Relation,
                      User)
 from .serializer import *
+from .myexceptions import *
 
 class Login(LoginView):
     """ログインページ"""
@@ -200,12 +201,13 @@ def change_use_alert(request):
     if request.method == 'POST':
         try:
             val = request.POST.get('use_alert')
+        except KeyError as e:
+            return JsonResponse({'error': str(e.args)})
+        else:
             user.use_alert = val
             user.save()
             return JsonResponse({'success': True})
-        except Exception as e:
-            return JsonResponse({'error': str(e.args)})
-
+        
 
 def ajax_user(request):
     if request.user.is_anonymous or request.user.is_active == False:
@@ -220,7 +222,6 @@ def ajax_user(request):
         return JsonResponse(serizlized)
 
     elif method == 'POST':
-        print(request.POST)
         serializer = UserSerializer(user, data = request.POST)
         if serializer.is_valid():
             serializer.save()
@@ -284,13 +285,12 @@ def ajax_ticker(request):
         
         try:
             res = python_bitbankcc.public().get_ticker(pair) if market == 'bitbank' else json.loads(CoinCheck('fake', 'fake').ticker.all())
-            print(type(res))
         except Exception as e:
             res = {
                 'error': e.args
             }
-            print(e.args)
-        return JsonResponse(res)
+        finally:
+            return JsonResponse(res)
 
 def ajax_assets(request):
     logger = logging.getLogger('api')
@@ -299,9 +299,13 @@ def ajax_assets(request):
         return JsonResponse({'error' : 'authentication failed'}, status=401)
 
     if request.method == 'GET':
+        
+        user = request.user
         try:
-            user = request.user
             market = request.GET.get('market')
+        except KeyError as e:
+            return JsonResponse({'error': str(e.args)})
+        else:
             if market == 'bitbank':
                 if user.bb_api_key == None or user.bb_api_secret_key == None:
                     res_dict = {
@@ -317,11 +321,7 @@ def ajax_assets(request):
                     }
                 else:
                     res_dict = json.loads(CoinCheck(user.cc_api_key, user.cc_api_secret_key).account.balance({}))
-            return JsonResponse(res_dict)
-        except Exception as e:
-            logger.info(str(e.args))
-            return JsonResponse({'error': str(e.args)})
-        
+            return JsonResponse(res_dict) 
 
 def _get_error_message(errors, str_order):
     _fields = {
@@ -338,7 +338,151 @@ def _get_error_message(errors, str_order):
     error_val = errors[error_key][0]
     return str_order + ' ' + _fields[error_key] + ': ' + error_val
 
-def ajax_orders(request):
+def ajax_order(request):
+    logger = logging.getLogger('api')
+
+    if request.user.is_anonymous or request.user.is_active == False:
+        return JsonResponse({'error' : 'authentication failed'}, status=401)
+
+    user = request.user
+    method = request.method
+    if method == 'GET':     
+        try:
+            offset = int(request.GET.get('offset'))
+            to = int(request.GET.get('limit')) + offset
+        except ValueError:
+            return JsonResponse({'error': '入力値が不正です'})
+        else:
+            search_market = request.GET.get('market')
+            search_pair = request.GET.get('pair')
+            order_history = Order.objects.filter(user=user).filter(status__in=[Order.STATUS_CANCELED_PARTIALLY_FILLED, Order.STATUS_FULLY_FILLED, Order.STATUS_FAILED_TO_ORDER])
+            
+            if search_market != 'all':
+                order_history = order_history.filter(market = search_market)
+            if search_pair != 'all':
+                order_history = order_history.filter(pair = search_pair)
+            
+            data = {
+                'total_count': order_history.count(),
+                'data': OrderSerializer(order_history.order_by('-pk')[offset:to], many=True).data
+            }
+            return JsonResponse(data)
+
+    elif method == 'POST':
+        op = request.POST.get('method')
+        if op == 'DELETE':
+            pk = request.POST.get("pk")
+            try:
+                order = Order.objects.get(pk = pk)
+            except Order.DoesNotExist:
+                return JsonResponse({'error': '対象の注文が存在しません'})
+            else:
+                if order.order_id != None:
+                    try:
+                        order.cancel()
+                    except OrderCancelFailedError as e:
+                        return JsonResponse({'error': 'この注文はキャンセルできません' })
+                else:
+                    # 未発注の場合はステータスをキャンセル済みに変更
+                    print('here')
+                    order.status = 'CANCELED_UNFILLED'
+                    order.save()
+                    
+                try:
+                    relation = Relation.objects.get(order_1 = order)
+                except Relation.DoesNotExist:
+                    pass
+                else:
+                    ''' 新規注文をキャンセルした場合は特殊注文無効化 '''
+                    relation.is_active = False
+                    relation.save()
+                    return JsonResponse({'success': True})
+
+                try:
+                    relation = Relation.objects.get(order_2 = order)
+                except Relation.DoesNotExist:
+                    pass
+                else:
+                    # IFDの場合
+                    if relation.order_3 == None:
+                        relation.order_2 = None
+                        relation.special_order = 'SINGLE'
+                    # OCOの場合
+                    elif relation.order_1 == None:
+                        relation.order_1 = relation.order_3
+                        relation.order_2 = None
+                        relation.order_3 = None
+                        relation.special_order = 'SINGLE'
+                    # IFDOCO
+                    else:
+                        relation.order_2 = relation.order_3
+                        relation.order_3 = None
+                        relation.special_order = 'IFD'
+                    relation.save()
+                    return JsonResponse({'success': True})
+
+                try:
+                    relation = Relation.objects.get(order_3 = order)
+                except:
+                    print('hoge')
+                    return JsonResponse({'error': 'Unknown error'})
+                else:
+                    # OCOの場合
+                    if relation.order_1 == None:
+                        relation.order_1 = relation.order_2
+                        relation.order_2 = None
+                        relation.order_3 = None
+                        relation.special_order = 'SINGLE'
+                    # IFDOCOの場合
+                    else:
+                        relation.order_3 = None
+                        relation.special_order = 'IFD'
+                    relation.save()
+                    return JsonResponse({'success': True})
+               
+        elif op == 'UPDATE':
+            ''' パラメータ '''
+            
+            try:
+                pk = request.POST.get('pk')
+                order = Order.objects.get(pk = pk)
+            except KeyError  as e:
+                return JsonResponse({'error': str(e.args)})
+            except Order.DoesNotExist:
+                return JsonResponse({'error': '対象の注文が存在しません'})
+            else:
+                param = request.POST.copy()
+                param['market'] = order.market
+                param['pair'] = order.pair
+                
+                current_status = order.status
+                # IFDの約定待ちも注文を更新する場合
+                if current_status == Order.STATUS_WAIT_OTHER_ORDER_TO_FILL:
+                    param['status'] = current_status
+                # すでに注文ずみか、監視モードの注文の更新の場合
+                elif current_status in { Order.STATUS_READY_TO_ORDER, Order.STATUS_UNFILLED, Order.STATUS_PARTIALLY_FILLED }:
+                    param['status'] = Order.STATUS_READY_TO_ORDER
+                # 想定外のステータスの場合
+                else:
+                    return JsonResponse({'error': 'この注文は更新できません'})
+
+                serializer = OrderSerializer(data = param, instance = order, context = {'user': user})
+                if serializer.is_valid():
+                    try:
+                        updated_order = serializer.save()
+                    except AlreadyFilledOrCancelledError:
+                        return JsonResponse({'error': '対象の注文は既に約定済みかキャンセル済みです'})
+                    except OrderCancelFailedError:
+                        return JsonResponse({'error': '元の注文のキャンセルに失敗しました' })  
+                    except OrderFailedError as e:
+                        return JsonResponse({'error': str(e.args)})
+                    else:
+                        return JsonResponse({'success': True})
+                else:
+                    return JsonResponse({'error': _get_error_message(serializer.errors, '注文修正')})
+                    
+
+def ajax_relation(request):
     logger = logging.getLogger('api')
 
     if request.user.is_anonymous or request.user.is_active == False:
@@ -347,55 +491,31 @@ def ajax_orders(request):
     user = request.user
     method = request.method
     if method == 'GET': 
-        if request.GET.get('type') == 'active':
-            try:
-                offset = int(request.GET.get('offset'))
-                to = int(request.GET.get('limit')) + offset
-                search_market = request.GET.get('market')
-                search_pair = request.GET.get('pair')
+        try:
+            offset = int(request.GET.get('offset'))
+            to = int(request.GET.get('limit')) + offset
+        except ValueError:
+            return JsonResponse({'error': 'リクエストパラメータが不正です'})
+        else:
+            search_market = request.GET.get('market')
+            search_pair = request.GET.get('pair')
 
-                active_orders = Relation.objects.filter(user = user).filter(is_active = True)
+            active_orders = Relation.objects.filter(user = user).filter(is_active = True)
 
-                if search_market != "all":
-                    active_orders = active_orders.filter(market=search_market)
-                if search_pair != "all":
-                    active_orders = active_orders.filter(pair=search_pair)
+            if search_market != "all":
+                active_orders = active_orders.filter(market=search_market)
+            if search_pair != "all":
+                active_orders = active_orders.filter(pair=search_pair)
 
-                data = {
-                    'total_count': active_orders.count(),
-                    'data': RelationSerializer(active_orders.order_by('-pk')[offset:to], many=True ).data
-                }
-                return JsonResponse(data)
-            except Exception as e:
-                logger.error('get active orders: ' + str(e.args))
-                return JsonResponse({'error': str(e.args)})
+            data = {
+                'total_count': active_orders.count(),
+                'data': RelationSerializer(active_orders.order_by('-pk')[offset:to], many=True ).data
+            }
+            return JsonResponse(data)
            
-        elif request.GET.get('type') == 'history':
-            try:
-                offset = int(request.GET.get('offset'))
-                to = int(request.GET.get('limit')) + offset
-                search_market = request.GET.get('market')
-                search_pair = request.GET.get('pair')
-
-                order_history = Order.objects.filter(user=user).filter(status__in=[Order.STATUS_CANCELED_PARTIALLY_FILLED, Order.STATUS_FULLY_FILLED, Order.STATUS_FAILED_TO_ORDER])
-                
-                if search_market != 'all':
-                    order_history = order_history.filter(market = search_market)
-                if search_pair != 'all':
-                    order_history = order_history.filter(pair = search_pair)
-                
-                data = {
-                    'total_count': order_history.count(),
-                    'data': OrderSerializer(order_history.order_by('-pk')[offset:to], many=True).data
-                }
-                return JsonResponse(data)
-            except Exception as e:
-                return JsonResponse({'error': e.args})
-
     elif method == 'POST':
         op = request.POST.get('method')
         if op == 'POST':
-
             market = request.POST.get('market')
             pair = request.POST.get('pair')
             special_order = request.POST.get('special_order')
@@ -405,187 +525,151 @@ def ajax_orders(request):
             relation.market = market
             relation.pair = pair
             relation.special_order = special_order
+
+            # SINGLE発注の時
             if special_order == 'SINGLE':
-                try:
-                    dic_o1 = json.loads(request.POST.get('order_1'))
-                    dic_o1['status'] = Order.STATUS_READY_TO_ORDER
-                    o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
-                    
-                    if o_1_serializer.is_valid():
+                dic_o1 = json.loads(request.POST.get('order_1'))
+                dic_o1['status'] = Order.STATUS_READY_TO_ORDER
+                o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
+                
+                if o_1_serializer.is_valid():
+                    try:
                         o_1 = o_1_serializer.save()
+                    except OrderFailedError as e:
+                        relation = None
+                        return JsonResponse({'error': str(e.args)})
                     else:
-                        return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
-                    
-                    if o_1.status == Order.STATUS_FAILED_TO_ORDER:
-                        relation = None
-                        return JsonResponse({'error': o_1.error_message})
-
-                    relation.order_1 = o_1
-                except Exception as e:
-                    print(e.args)
-                    logger.error('single order: ' + str(e.args))
-                    return JsonResponse({'error': str(e.args)})
-
+                        relation.order_1 = o_1
+                else:
+                    return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
+            # IFD注文の場合 
             elif special_order == 'IFD':
-                try:
-                    dic_o1 = json.loads(request.POST.get('order_1'))
-                    dic_o1['status'] = Order.STATUS_READY_TO_ORDER
-                    dic_o2 = json.loads(request.POST.get('order_2'))
-                    dic_o2['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
+                dic_o1 = json.loads(request.POST.get('order_1'))
+                dic_o1['status'] = Order.STATUS_READY_TO_ORDER
+                dic_o2 = json.loads(request.POST.get('order_2'))
+                dic_o2['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
 
-                    o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
-                    o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
+                o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
+                o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
                 
-                    if not o_1_serializer.is_valid():
-                        return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
+                if not o_1_serializer.is_valid():
+                    relation = None
+                    return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
 
-                    if not o_2_serializer.is_valid():
-                        return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
-
-
+                if not o_2_serializer.is_valid():
+                    relation = None
+                    return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
+                try:
                     o_1 = o_1_serializer.save()
-                    # 新規が失敗した場合
-                    if o_1.status == Order.STATUS_FAILED_TO_ORDER:
-                        relation = None
-                        return JsonResponse({'error': o_1.error_message})
-                    o_2 = o_2_serializer.save()
-                    relation.order_1 = o_1
-                    relation.order_2 = o_2
-                except Exception as e:
-                    logger.error('ifd order: ' + str(e.args))
-                    return JsonResponse({'error': str(e.args)})
-
+                except OrderFailedError as e:
+                    ''' 新規が失敗した場合 '''
+                    relation = None
+                    return JsonResponse({'error': e.args})
+                else:
+                    ''' 新規が成功した場合 '''
+                    try:
+                        o_2 = o_2_serializer.save()
+                    except OrderFailedError as e:
+                        try:
+                            o_1.cancel()
+                        finally:
+                            relation = None
+                            return JsonResponse({'error': str(e.args)})
+                    else:
+                        relation.order_1 = o_1
+                        relation.order_2 = o_2
+                
             elif special_order == 'OCO':
-                try:
-                    dic_o2 = json.loads(request.POST.get('order_2'))
-                    dic_o2['status'] = Order.STATUS_READY_TO_ORDER
-                    dic_o3 = json.loads(request.POST.get('order_3'))
-                    dic_o3['status'] = Order.STATUS_READY_TO_ORDER
+                dic_o2 = json.loads(request.POST.get('order_2'))
+                dic_o2['status'] = Order.STATUS_READY_TO_ORDER
+                dic_o3 = json.loads(request.POST.get('order_3'))
+                dic_o3['status'] = Order.STATUS_READY_TO_ORDER
 
-                    o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
-                    o_3_serializer = OrderSerializer(data = dic_o3, context = {'user': user})
-                    
-                    if not o_2_serializer.is_valid():
-                        return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
-
-                    if not o_3_serializer.is_valid():
-                        return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
-
-
-                    o_2 = o_2_serializer.save()
-                    o_3 = o_3_serializer.save()
-                    
-                    if o_2.status == Order.STATUS_FAILED_TO_ORDER:
-                        o_3.cancel()
-                        relation = None
-                        return JsonResponse({'error': o_2.error_message})
-                    if o_3.status == Order.STATUS_FAILED_TO_ORDER:
-                        o_2.cancel()
-                        relation = None
-                        return JsonResponse({'error': o_3.error_message})
-
-                    relation.order_2 = o_2
-                    relation.order_3 = o_3
-
-                except Exception as e:
-                    logger.error('oco order: ' + str(e.args))
-                    return JsonResponse({'error': str(e.args)})
+                o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
+                o_3_serializer = OrderSerializer(data = dic_o3, context = {'user': user})
                 
-            elif special_order == 'IFDOCO':
+                if not o_2_serializer.is_valid():
+                    relation = None
+                    return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
+
+                if not o_3_serializer.is_valid():
+                    relation = None
+                    return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
+
                 try:
-                    dic_o1 = json.loads(request.POST.get('order_1'))
-                    dic_o1['status'] = Order.STATUS_READY_TO_ORDER
-                    dic_o2 = json.loads(request.POST.get('order_2'))
-                    dic_o2['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
-                    dic_o3 = json.loads(request.POST.get('order_3'))
-                    dic_o3['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
-
-                    o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
-                    o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
-                    o_3_serializer = OrderSerializer(data = dic_o3, context = {'user': user})
-                    
-                    if not o_1_serializer.is_valid():
-                        return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
-
-                    if not o_2_serializer.is_valid():
-                        return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
-                    if not o_3_serializer.is_valid():
-                        return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
-
-                    o_1 = o_1_serializer.save()
-                    if o_1.status == Order.STATUS_FAILED_TO_ORDER:
-                        relation = None
-                        return JsonResponse({'error': o_1.error_message})
-                    
                     o_2 = o_2_serializer.save()
-                    o_3 = o_3_serializer.save()
-
-                    relation.order_1 = o_1
-                    relation.order_2 = o_2
-                    relation.order_3 = o_3
-                except Exception as e:
-                    logger.error('ifdoco order: ' + str(e.args))
+                except OrderFailedError as e:
+                    relation = None
                     return JsonResponse({'error': str(e.args)})
+                else:
+                    try:
+                        o_3 = o_3_serializer.save()
+                    except OrderFailedError as e:
+                        try:
+                            o_2.cancel()
+                        finally:
+                            relation = None
+                            return JsonResponse({'error': str(e.args)})
+                    else:
+                        relation.order_2 = o_2
+                        relation.order_3 = o_3
+
+            elif special_order == 'IFDOCO':
+                dic_o1 = json.loads(request.POST.get('order_1'))
+                dic_o1['status'] = Order.STATUS_READY_TO_ORDER
+                dic_o2 = json.loads(request.POST.get('order_2'))
+                dic_o2['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
+                dic_o3 = json.loads(request.POST.get('order_3'))
+                dic_o3['status'] = Order.STATUS_WAIT_OTHER_ORDER_TO_FILL
+
+                o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
+                o_2_serializer = OrderSerializer(data = dic_o2, context = {'user': user})
+                o_3_serializer = OrderSerializer(data = dic_o3, context = {'user': user})
+                    
+                if not o_1_serializer.is_valid():
+                    relation = None
+                    return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
+                if not o_2_serializer.is_valid():
+                    relation = None
+                    return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
+                if not o_3_serializer.is_valid():
+                    relation = None
+                    return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
+                try:
+                    o_1 = o_1_serializer.save()
+                except OrderFailedError as e:
+                    relation = None
+                    return JsonResponse({'error': str(e.args)})
+                else:
+                    try:   
+                        o_2 = o_2_serializer.save()
+                    except OrderFailedError as e:
+                        try:
+                            o_1.cancel()
+                        finally:
+                            relation = None
+                            return JsonResponse({'error': str(e.args)})
+                    else:
+                        try:
+                            o_3 = o_3_serializer.save()
+                        except OrderFailedError as e:
+                            try:
+                                o_1.cancel()
+                                o_2.cancel()
+                            finally:
+                                relation = None
+                                return JsonResponse({'error': str(e.args)})
+                        else:
+                            relation.order_1 = o_1
+                            relation.order_2 = o_2
+                            relation.order_3 = o_3
                     
             relation.is_active = True
             relation.save()
 
             return JsonResponse({'success': True})
             
-        elif op == 'DELETE':
-            try:
-                pk = request.POST.get("pk")
-                cancel_succeeded = True
-                order = Order.objects.filter(pk = pk).get()
-                if order.order_id != None:
-                    cancel_succeeded = order.cancel()
-                else:
-                    # 未発注の場合はステータスをキャンセル済みに変更
-                    order.status = 'CANCELED_UNFILLED'
-                    order.save()
-                if cancel_succeeded:
-                    if Relation.objects.filter(order_1 = order).count() > 0:
-                        relation = Relation.objects.get(order_1 = order)
-                        relation.is_active = False
-
-                    elif Relation.objects.filter(order_2 = order).count() > 0:
-                        relation = Relation.objects.get(order_2 = order)
-                        # IFD
-                        if relation.order_3 == None:
-                            relation.order_2 = None
-                            relation.special_order = 'SINGLE'
-                        # OCO
-                        elif relation.order_1 == None:
-                            relation.order_1 = relation.order_3
-                            relation.order_2 = None
-                            relation.order_3 = None
-                            relation.special_order = 'SINGLE'
-                        # IFDOCO
-                        else:
-                            relation.order_2 = relation.order_3
-                            relation.order_3 = None
-                            relation.special_order = 'IFD'
-
-                    elif Relation.objects.filter(order_3 = order).count() > 0:
-                        relation = Relation.objects.get(order_3 = order)
-                        # OCO
-                        if relation.order_1 == None:
-                            relation.order_1 = relation.order_2
-                            relation.order_2 = None
-                            relation.order_3 = None
-                            relation.special_order = 'SINGLE'
-                        # IFDOCO
-                        else:
-                            relation.order_3 = None
-                            relation.special_order = 'IFD'
-                    relation.save()
-                    return JsonResponse({'success': True})
-                else:
-                    return JsonResponse({'error': 'この注文はキャンセルできません'})
-            except Exception as e:
-                logger.error('cancel order: ' + str(e.args))
-                return JsonResponse({'error': str(e.args)})
-
+       
 def ajax_attachment(request):
     logger = logging.getLogger('api')
 

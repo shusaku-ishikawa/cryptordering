@@ -3,7 +3,7 @@ from .models import *
 import logging
 from .coincheck.coincheck import CoinCheck
 import python_bitbankcc
-
+from .myexceptions import *
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -51,26 +51,152 @@ class OrderSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         user = self.context['user']
-       
-        try:
-            instance = Order(**validated_data)
-            instance.user = user
-            if validated_data['order_type'] == Order.TYPE_TRAIL:
+        instance = Order(**validated_data)
+        instance.user = user
+        if validated_data['order_type'] == Order.TYPE_TRAIL:
+            try:
+                ret = python_bitbankcc.public().get_ticker(validated_data['pair']) if validated_data['market'] == 'bitbank' else json.loads(CoinCheck('fake', 'fake').ticker.all())['last']
+            except Exception:
+                raise OrderFailedError('トレール注文時のレートの取得に失敗しました')
+            else:
                 try:
-                    ret = python_bitbankcc.public().get_ticker(validated_data['pair']) if validated_data['market'] == 'bitbank' else json.loads(CoinCheck('fake', 'fake').ticker.all())['last']
-                    instance.trail_price = float(ret['last'])
-                except Exception:
-                    instance.trail_price = 0
+                    last_price = float(ret['last'])
+                except ValueError:
+                    last_price = 0
+                else:
+                    instance.trail_price = last_price
+                
+        instance.save()
 
-            instance.save()
-
-            if instance.order_type in {Order.TYPE_MARKET, Order.TYPE_LIMIT} and instance.status == Order.STATUS_READY_TO_ORDER:       
-                instance.place()
-
+        if instance.order_type in {Order.TYPE_MARKET, Order.TYPE_LIMIT} and instance.status == Order.STATUS_READY_TO_ORDER:       
+            try:
+                order_succeeded = instance.place()
+            except OrderFailedError as e:
+                raise
+            else:
+                return instance
+        else:
             return instance
-        except Exception as e:
-            print('serializer ' + str(e.args))
-    
+
+    def update(self, instance, validated_data):
+        ''' 親のrelationをロック状態とする '''
+        try:
+            parent = instance.new_order
+        except Exception:
+            
+            try:
+                parent = instance.settle_order_1
+            except Exception:
+                try:
+                    parent = instance.settle_order_2
+                except Exception as e:
+                    attr_name = 'order_3'
+            else:
+                
+                attr_name = 'order_2'
+        else:
+            attr_name = 'order_1'
+            
+        parent.is_locked = True
+        parent.save()
+        
+        ''' 既に発注済みの場合は元の注文をキャンセル '''
+        try:
+            instance.cancel()
+        except Exception:
+            parent.is_locked = False
+            parent.save()
+            raise
+        else:
+            try:
+                new_instance = self.create(validated_data)
+            # 新注文失敗時は特殊注文を無効化する
+            except OrderFailedError as e:
+                order_type = parent.order_type
+                
+                if order_type == 'SINGLE':
+                    parent.is_active = False
+                    setattr(parent, attr_name, None)
+                    parent.save()
+                elif order_type == 'IFD':
+                    other_order = parent.order_2 if attr_name == 'order_1' else parent.order_1
+                    # 他方をキャンセル
+                    try:
+                        other_order.cancel()
+                    except Exception:
+                        pass
+                    finally:
+                        parent.order_1 = None
+                        parent.order_2 = None
+                        parent.save()
+                elif order_type == 'OCO':
+                    other_order = parent.order_2 if attr_name == 'order_3' else parent.order_3
+                    # 他方をキャンセル
+                    try:
+                        other_order.cancel()
+                    except Exception:
+                        pass
+                    finally:
+                        parent.order_2= None
+                        parent.order_3 = None
+                        parent.save()
+                elif order_type == 'IFDOCO':
+                    if attr_name == 'order_1':
+                        try:
+                            parent.order_2.cancel()
+                        except Exception:
+                            pass
+                        finally:
+                            parent.order_2 = None
+
+                        try:
+                            parent.order_3.cancel()
+                        except Exception:
+                            pass
+                        finally:
+                            parent.order_3 = None
+                        parent.save()
+                    elif attr_name == 'order_2':
+                        try:
+                            parent.order_1.cancel()
+                        except Exception:
+                            pass
+                        finally:
+                            parent.order_1 = None
+
+                        try:
+                            parent.order_3.cancel()
+                        except Exception:
+                            pass
+                        finally:
+                            parent.order_3 = None
+                        parent.save()
+                    elif attr_name == 'order_3':
+                        try:
+                            parent.order_1.cancel()
+                        except Exception:
+                            pass
+                        finally:
+                            parent.order_1 = None
+
+                        try:
+                            parent.order_2.cancel()
+                        except Exception:
+                            pass
+                        finally:
+                            parent.order_2 = None
+                        parent.save()
+                parent.is_locked = False
+                parent.save()
+                raise   
+            else:
+                # 新しい注文オブジェクトをセット
+                setattr(parent, attr_name, new_instance)
+                parent.is_locked = False
+                parent.save()
+                print(new_instance.status)
+                return new_instance
+        
     def validate(self, data):
         # coincheckの新規注文の場合は0.005以上の取引であること
         if 'order_id' not in data and data['market'] == 'coincheck' and data['start_amount'] < 0.005:

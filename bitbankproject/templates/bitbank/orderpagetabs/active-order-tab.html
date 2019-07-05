@@ -1,0 +1,94 @@
+<style>
+    .card-table-data select {
+        width: 100%;
+        font-size: inherit;
+        padding-right: none!important;
+        background-color:  #333333;
+        color: white;
+        border-radius: 0px!important;
+    }
+
+    .card-table-data input {
+        width: 100%;
+        color: white;
+        background-color : #333333;
+        border-radius : 0;
+        font-size: inherit;
+       
+    }
+    .card-table-data input:read-only {
+        color: gray;
+        border-color: gray;
+        text-decoration: line-through;
+    }
+    
+    button[name="cancel_order_button"] {
+        font-size : 1rem;
+        padding:0.1em!important;
+        position: relative;
+    }
+    button[name="cancel_order_button"]:enabled .loader {
+        display: none!important
+    }
+    button[name="update_order_button"] {
+        font-size : 1rem;
+        padding:0.1em!important;
+        position: relative;
+    }
+    button[name="update_order_button"]:enabled .loader {
+        display: none!important
+    }
+   
+
+   .spinner {
+       display: inline-block;
+       top: 2px;
+   }
+   #id_order_button {
+       position: relative;
+   }
+   .overlay {
+       opacity: 0.6;
+       background-color: black;
+       position: absolute;
+       width: 100%;
+        top: 0;
+        left: 0;
+       height: 100%;
+
+   }
+  
+</style>
+
+</style>
+
+<div id="active_orders" class="tabcontent">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">取引所</div>
+                </div>
+                <select id="id_active_orders_search_market" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">検索通貨</div>
+                </div>
+                <select id="id_active_orders_search_pair" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div id="active_orders_content"></div>
+    <div class="row">
+        <div id="page_selection_active_orders" class="col-md-6 offset-md-3 col-12">
+
+        </div>
+    </div>
+</div>  

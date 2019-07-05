@@ -40,52 +40,43 @@ function build_alert_card(pk, market, pair, rate) {
     return $outer_container.append($inner_container.append($row_1).append($row_2).append($row_3));    
 
 }
-function _on_page_click($container, $message_target, market, pair, limit) {
-    return function(event, page) {
-        call_alerts('GET', null, market, pair, limit * (page - 1), limit)
-        .done(function(res) {
+function _on_page_click_async($container, market, pair, limit) {
+    return async function(event, page) {
+        let alerts;
+        try {
+            alerts = await call_alerts('GET', null, market, pair, limit * (page - 1), limit);
             $container.empty();
             var $outer = $('<div>', { class: 'row' });
             var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
     
-            res.data.forEach(alert => {
-                
+            alerts.data.forEach(alert => {
                 $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.rate)).append($('<hr>'));
-               
             });
     
             $container.append($outer.append($inner));
     
-            $("button[name='deactivate_alert_button']").on('click', function() {
+            $("button[name='deactivate_alert_button']").on('click', async function() {
                 var pk = $(this).attr('pk');
-                call_alerts('DELETE', pk)
-                .done(function(res_3) {
-                    if (res_3.error) {
-                        set_error_message($message_target, res_3.error);
-                        return;
+                let result;
+                try {
+                    result = await call_alerts('DELETE', pk);
+                    if (result.error) {
+                        set_error_message(result.error);
+                        return false;
                     }
-                    set_success_message('#id_ajax_message', '通知設定を解除しました');
-                    
+                    set_success_message('通知設定を解除しました');
                     $('#alerts_button').click();
-                   $message_target.show();
-                })
-                .fail(function(data, textStatus, xhr) {
-                    if (data.status == 401) {
-                        window.location.href = BASE_URL_LOGIN;
-                    }
-                    set_error_message($message_target, xhr);
-                });
+                    return true;
+                } catch (error) {
+                    handle_error(error);
+                }
             });
-        })
-        .fail(function(data, textStatus, xhr) {
-            if (data.status == 401) {
-                window.location.href = BASE_URL_LOGIN;
-            }
-            set_error_message($message_target, xhr);
-        });
+        } catch (error) {
+            handle_error(error);
+        }
     }; 
 }
-function init_alerts_content(market, pair, $message_target) {
+async function init_alerts_content_async(market, pair) {
     var $notify_if_filled_on_button = $('#notify_if_filled_on_button');
     var $notify_if_filled_off_button = $('#notify_if_filled_off_button');
     var $use_alert_on_button = $('#id_use_alert_on_button');
@@ -94,80 +85,135 @@ function init_alerts_content(market, pair, $message_target) {
     var $container = $('#alert_container');
 
     $container.empty();
-    call_user('GET')
-    .done(function(res) {
-        if (res.error) {
-            set_error_message($message_target, res.error);
-            return;
+    let user;
+    try {
+        user = await call_user('GET');
+        if (user.error) {
+            set_error_message(user.error);
+            return false;
         }
-        //console.log(res);
-        if (res.notify_if_filled == 'ON') {
+        if (user.notify_if_filled == 'ON') {
             $notify_if_filled_on_button.click();
         } else {
             $notify_if_filled_off_button.click();
             
         }
-        if (res.use_alert == 'ON') {
+        if (user.use_alert == 'ON') {
             $use_alert_on_button.click();
         } else {
             $use_alert_off_button.click();
         }
-    })
-    .fail(function(data, textStatus, xhr) {
-        if (data.status == 401) {
-            window.location.href = BASE_URL_LOGIN;
-        }
-        set_error_message($message_target, xhr);
-    });
-
+    } catch (error) {
+        handle_error(error);
+        return false;
+    }
     
-    call_alerts('GET', null, market, pair, 0, 1)
-    .done(function(res_1) {
-        if (res_1.error) {
-            set_error_message($message_target, res_1.error);
-            return;
+    let alerts;
+    try {
+        alerts = await call_alerts('GET', null, market, pair, 0, 1);
+        if (alerts.error) {
+            set_error_message(alerts.error);
+            return false;
         }
         if($page_selection.data("twbs-pagination")){
             $page_selection.empty();
             $page_selection.removeData("twbs-pagination");
             $page_selection.unbind("page");
+            $page_selection.twbsPagination({
+                totalPages: (alerts.total_count == 0) ? 1 : Math.ceil(alerts.total_count / COUNT_PER_PAGE),
+                next: '次',
+                prev: '前',
+                first: '先頭',
+                last: '最後',
+                onPageClick: _on_page_click_async($container, market, pair, COUNT_PER_PAGE)
+            });
         }
-        $page_selection.twbsPagination({
-            totalPages: (res_1.total_count == 0) ? 1 : Math.ceil(res_1.total_count / COUNT_PER_PAGE),
-            next: '次',
-            prev: '前',
-            first: '先頭',
-            last: '最後',
-            onPageClick: _on_page_click($container, $message_target, market, pair, COUNT_PER_PAGE)
-        });
-    })
-    .fail(function(data, textStatus, xhr) {
-        if (data.status == 401) {
+        return true;
+    } catch (error) {
+        const { status, statusText } = error.response;
+        if (status == 401) {
             window.location.href = BASE_URL_LOGIN;
         }
-        set_error_message($message_target, xhr);
-    });
+        set_error_message(statusText);
+        return false;
+    };
 }
 
-function init_alert_rate(market, pair, $target, $message_target) {
-    call_ticker('GET', market, pair)
-    .done((data) => {
-        if (data.error) {
-            set_error_message($message_target, data.error);
-            return;
+async function init_alert_rate_async(market, pair, $target) {
+    let result;
+    try {
+        result = await call_ticker('GET', market, pair);
+        if (result.error) {
+            set_error_message(result.error);
+            return false;
         }
-        $target.val(data.last);
-    })
-    .fail((data, textStatus, xhr) => {
-        if (data.status == 401) {
-            window.location.href = BASE_URL_LOGIN;
-        }
-        set_error_message($message_target, xhr);
-    });
+        $target.val(result.last);
+    } catch (error) {
+        handle_error(error);
+        return false;
+    }
 }
 
+async function create_alert_async(market, pair, rate) {
+    let result;
+    try {
+        result = await call_alerts('POST', null, market, pair, null, null, rate);
+        if (result.error) {
+            set_error_message(result.error)
+            return false;
+        }
+        set_success_message('アラートを追加しました');
+        return true;
+    } catch(error) {
+        handle_error(error);
+        return error;
+    }
+}
+
+async function update_use_alert_async($on_button, $off_button, on_or_off) {
+    let result;
+    try {
+        result = await call_use_alert(on_or_off);
+        if (result.error) {
+            set_error_message(result.error);
+            return false;
+        }
+        if (on_or_off == 'ON') {
+            $on_button.addClass('on').removeClass('btn-base');
+            $off_button.removeClass('off').addClass('btn-base');        
+        } else {
+            $off_button.addClass('off').removeClass('btn-base');
+            $on_button.removeClass('on').addClass('btn-base');
+        }
+        return true;
+    } catch (error) {
+        handle_error(error);
+        return false;
+    }
+}
+
+async function update_notify_async($on_button, $off_button, on_or_off) {
+    let result;
+    try {
+        result = await call_notify_if_filled(on_or_off);
+        if (result.error) {
+            set_error_message(result.error);
+            return false;
+        }
+        if (on_or_off == 'ON') {
+            $on_button.addClass('on').removeClass('btn-base');
+            $off_button.removeClass('off').addClass('btn-base');
+        } else {
+            $off_button.addClass('off').removeClass('btn-base');
+            $on_button.removeClass('on').addClass('btn-base');
+        }
+        return true;
+    } catch (error) {
+        handle_error(error);
+    }
+}
+ 
 function init_alerts_tab(is_initial = false) {
-    var $message_target = $('#id_ajax_message');
     var $alert_market = $('#id_alerts_market');
     var $alert_pair = $('#id_alerts_pair');
     var $alert_search_market = $('#id_alerts_search_market');
@@ -199,7 +245,7 @@ function init_alerts_tab(is_initial = false) {
             } else {
                 $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_pair);
             }
-            init_alert_rate($alert_market.val(), $alert_pair.val(), $notice_rate, $message_target);
+            init_alert_rate_async($alert_market.val(), $alert_pair.val(), $notice_rate);
         });
         $alert_search_market.on('change', function() {
             $alert_search_pair.empty();
@@ -218,7 +264,7 @@ function init_alerts_tab(is_initial = false) {
             } else {
                 $('<option>', { value: 'btc_jpy', text: PAIRS['btc_jpy'] }).appendTo($alert_search_pair);   
             }
-            init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
+            init_alerts_content_async($alert_search_market.val(), $alert_search_pair.val());
         })
 
         $alert_pair.on('change', function() {
@@ -226,34 +272,19 @@ function init_alerts_tab(is_initial = false) {
             $.cookie(COOKIE_ALERT_PAIR, $(this).val(), {expire: 7});
             var currency = $(this).val().split('_')[1].toUpperCase();
             $pair_for_alert_class.html(currency);
-            init_alert_rate($alert_market.val(), $alert_pair.val(), $notice_rate, $message_target);
+            init_alert_rate_async($alert_market.val(), $alert_pair.val(), $notice_rate);
         });
 
         $alert_search_pair.on('change', function() {
-            init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
+            init_alerts_content_async($alert_search_market.val(), $alert_search_pair.val());
         });
 
         $notify_if_filled_on_button.on('click', function() {
             if ($(this).hasClass('on')) {
                 // すでにONの場合は何もしない
             } else {
-                call_notify_if_filled('ON')
-                .done(function(res) {
-                    if (res.error) {
-                       
-                        console.log(res);
-                        set_error_message($message_target, res.error);
-                        return;
-                    }
-                    $notify_if_filled_on_button.addClass('on').removeClass('btn-base');
-                    $notify_if_filled_off_button.removeClass('off').addClass('btn-base');
-                })
-                .fail(function(data, textStatus, xhr) {
-                    if (data.status == 401) {
-                        window.location.href = BASE_URL_LOGIN;
-                    }
-                    set_error_message($message_target, xhr);
-                });
+                // updte_notify_on
+                update_notify_async($notify_if_filled_on_button, $notify_if_filled_off_button, 'ON');
             }
         });
         $notify_if_filled_off_button.on('click', function() {
@@ -262,22 +293,7 @@ function init_alerts_tab(is_initial = false) {
                 // すでにOFFの場合は何もしない
                
             } else {
-                call_notify_if_filled('OFF')
-                .done(function(res) {
-                    if (res.error) {
-                        set_error_message($message_target, res.error);
-                        return;
-                    }
-                    
-                    $notify_if_filled_on_button.removeClass('on').addClass('btn-base');
-                    $notify_if_filled_off_button.addClass('off').removeClass('btn-base');
-                })
-                .fail(function(data, textStatus, xhr) {
-                    if (data.status == 401) {
-                        window.location.href = BASE_URL_LOGIN;
-                    }
-                    set_error_message($message_target, xhr);
-                });
+                update_notify_async($notify_if_filled_on_button, $notify_if_filled_off_button, 'OFF');
             }
         });
 
@@ -285,77 +301,35 @@ function init_alerts_tab(is_initial = false) {
             if ($(this).hasClass('on')) {
                 // すでにONの場合は何もしない
             } else {
-                call_use_alert('ON')
-                .done(function(res) {
-                    if (res.error) {
-                        set_error_message($message_target, res.error);
-                        return;
-                    }
-                    $use_alert_on_button.addClass('on').removeClass('btn-base');
-                    $use_alert_off_button.removeClass('off').addClass('btn-base');
-                })
-                .fail(function(data, textStatus, xhr) {
-                    if (data.status == 401) {
-                        window.location.href = BASE_URL_LOGIN;
-                    }
-                    set_error_message($message_target, xhr);
-                });
+                // USE alert on
+                update_use_alert_async($use_alert_on_button, $use_alert_off_button, 'ON');
             }
         });
         $use_alert_off_button.on('click', function() {
             if ($(this).hasClass('off')) {
                 // すでにOFFの場合は何もしない
             } else {
-                call_use_alert('OFF')
-                .done(function(res) {
-                    if (res.error) {
-                        set_error_message($message_target, res.error);
-                        return;
-                    }
-                    $use_alert_on_button.removeClass('on').addClass('btn-base');
-                    $use_alert_off_button.addClass('off').removeClass('btn-base');
-                })
-                .fail(function(data, textStatus, xhr) {
-                    if (data.status == 401) {
-                        window.location.href = BASE_URL_LOGIN;
-                    }
-                    set_error_message($message_target, xhr);
-                });
+                update_use_alert_async($use_alert_on_button, $use_alert_off_button, 'OFF')
             }
         });
 
 
-        $add_button.on('click', function() {
+        $add_button.on('click', async function() {
         
             var rate = $notice_rate.val();
             var market = $alert_market.val();
             var pair = $alert_pair.val();
-            var over_or_under;
-
+    
             if (rate == '' || rate == 0) {
-                set_error_message($message_target,'通知金額を入力して下さい');
+                set_error_message('通知金額を入力して下さい');
                 return;
             }
-
-            call_alerts('POST', null, market, pair, null, null, rate)
-            .done(function(res) {
-                console.log(res);
-                if (res.error) {
-                    console.log(res.error);
-                    set_error_message($message_target, res.error)
-                    return;
-                }
-                set_success_message($message_target, 'アラートを追加しました');
-
+            var is_succeeded = await create_alert_async(market, pair, rate);
+            alert(is_succeeded)
+            if (is_succeeded) {
                 $('#alerts_button').click();
-                $message_target.show();
-            })
-            .fail(function(data, textStatus, xhr) {
-                if (data.status == 401) {
-                    window.location.href = BASE_URL_LOGIN;
-                }
-                set_error_message($message_target, xhr);
-            });
+            }
+           
         });
         $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_market);
         $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
@@ -393,7 +367,7 @@ function init_alerts_tab(is_initial = false) {
 
         
     }   
-    init_alerts_content($alert_search_market.val(), $alert_search_pair.val(), $message_target);
+    init_alerts_content_async($alert_search_market.val(), $alert_search_pair.val());
 }
 
 
