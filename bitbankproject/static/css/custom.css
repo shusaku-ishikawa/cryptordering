@@ -8,6 +8,12 @@
 /*code for mobile here*/
 }
 
+:root {
+    --theme-dark:#222222;
+    --theme-light: #333333;
+}
+
+  
 html {
     overflow-y: scroll;
 }
@@ -21,40 +27,37 @@ table.table thead tr th {
 }
 body {
     color: white;
-    background: #222222;
+    background: var(--theme-dark);
     /* background: white; */
 }
 
-/* label.control-label {
-    font-size: 2vmin;
-} */
 .form-control {
     color: white;
-    background-color : #333333;
+    background-color : var(--theme-light);
     border: none;
     border-radius : 0;
     display: inline;
 }
 input[type="text"][disabled]{
-    background:#333333 !important;
+    background:var(--theme-light) !important;
     cursor:not-allowed; /* 禁止カーソル */
 }
 
 div.input-group-prepend, div.input-group-append {
     color: white;
-    background-color : #333333;
+    background-color : var(--theme-light);
     border: none;
     border-radius: 0;
 }
 
 select.input-group-append {
-    background-color: #333333;
+    background-color: var(--theme-light);
     color: gray;
     border-style: solid;
     border-radius: 0;
 }
 
-select {
+select.form-control {
     direction: rtl;
     /* text-align-last:right; */
     background-image: url('../images/select_arrow.png');
@@ -67,7 +70,7 @@ select {
     padding-right: 3em !important;
 }
 select.form-control option {
-    background: #333333 !important;
+    background: var(--theme-light) !important;
 }
 select#id_pair_for_alert {
     text-align-last: center;
@@ -88,7 +91,7 @@ select#id_market_for_alert {
 
 
 button.btn-base {
-    background: #333333;
+    background: var(--theme-light);
     color: gray;
 }
 
@@ -97,7 +100,7 @@ input[type="number"]{
 }
 
 div.card {
-    background: #222222;
+    background: var(--theme-dark);
     width: 100%;
 } 
 
@@ -106,18 +109,18 @@ div.card.red-border {
 }
 
 div.order_header {
-    background: #333333 !important;
+    background: var(--theme-light) !important;
     margin: 0.1rem;
     padding: 0.3rem 1.5rem   
 }
 div.order_body {
-    background: #333333 !important;
+    background: var(--theme-light) !important;
     margin: 0.19rem 0.1rem 0.1rem 0.1rem;
     padding: 0.3rem 1.5rem   
 
 }
 div.order_history_body {
-    background: #333333 !important;
+    background: var(--theme-light) !important;
     
     margin: 0.1rem;
     padding: 0.3rem 1.5rem   
@@ -141,7 +144,7 @@ div.card-table-data {
 } 
 
 .form-control:focus{
-    background-color :#333333;
+    background-color :var(--theme-light);
     color: white;
 }
 
@@ -152,11 +155,11 @@ select.form-control.onlyone {
 div.input-group-text.placeholder {
     color: gray;
     /* font-size: 2vmin; */
-    background: #333333;
+    background: var(--theme-light);
     border:none;
 }
 div.input-group-text.placeholder.invisible {
-    color: #333333;
+    color: var(--theme-light);
 }
 
 
@@ -174,7 +177,15 @@ button.on {
 button.off {
     background: teal;
 }
-
+button[name="cancel_order_button"],
+button[name="deactivate_alert_button"] {
+    color: orangered;
+    border: none;
+}
+button[name="update_order_button"] {
+    color: teal;
+    border: none
+}   
 
 .green_button {
     background-color: teal;
@@ -189,7 +200,7 @@ button.off {
 /* Style the tab */
 .tab {
     overflow: hidden;
-    background-color: #222222;
+    background-color: var(--theme-dark);
   }
   
   /* Style the buttons that are used to open the tab content */
@@ -206,12 +217,12 @@ button.off {
   }
 
   .tab button.tablinks.active {
-      background:  #333333;
+      background:  var(--theme-light);
   }
 
   /* Change background color of buttons on hover */
   .tab button:hover {
-    background-color: #333333;
+    background-color: var(--theme-light);
   }
   
   /* Create an active/current tablink class */
@@ -228,9 +239,9 @@ button.off {
   
 
   div > ul.pagination > li.page-item > a.page-link{
-    background: #333333 !important;
+    background: var(--theme-light) !important;
     color: white !important;
-    border: 1px solid #222222 !important;
+    border: 1px solid var(--theme-dark) !important;
   }
   div > ul.pagination > li.page-item.active > a.page-link{
     background: #444444 !important;

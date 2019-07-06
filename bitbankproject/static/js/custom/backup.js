@@ -284,6 +284,8 @@ function display_price_div(tab_num, order_type) {
     }
 }
 function update_amount_by_price(tab_num) {
+    console.log('update_amount_by_price');
+    
     $target = $('#id_start_amount_' + tab_num);
     var new_val = parseFloat($('#expect_price_' + tab_num).val());
     var market = $('#id_market').val();
@@ -299,6 +301,7 @@ function update_amount_by_price(tab_num) {
     $target.val(new_val / price).trigger('change');
 }
 function update_amount_by_slider(tab_num) {
+    console.log('update_amount_by_slide');
     var $perc = $('#amount_percentage_' + tab_num);
     var $amount = $('#id_start_amount_' + tab_num);
     var newVal = parseInt($('#myRange_' + tab_num).val());
@@ -988,21 +991,21 @@ function init_order_tab(is_initial = false) {
             // bitbank成行注文制限
             if (market == 'bitbank') {
                 if (order_type_1 != undefined) {
-                    if ( (order_type_1.includes('market') || order_type_1 == 'trail') && perc_1 >= 71 ) {
+                    if ( (order_type_1.includes('market') || order_type_1 == 'trail') && perc_1 > 70.0 ) {
                         set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。新規注文の数量を変更してください。');
                         $(this).prop('disabled', false);
                         return;
                     }
                 }
                 if (order_type_2 != undefined) {
-                    if ( (order_type_2.includes('market') || order_type_2 == 'trail') && perc_2 >= 71 ) {
+                    if ( (order_type_2.includes('market') || order_type_2 == 'trail') && perc_2 > 70.0 ) {
                         set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。決済注文①の数量を変更してください。');
                         $(this).prop('disabled', false);
                         return;
                     }
                 }
                 if (order_3 != undefined) {
-                    if ( (order_type_3.includes('market') || order_type_3 == 'trail') && perc_3 >= 71 ) {
+                    if ( (order_type_3.includes('market') || order_type_3 == 'trail') && perc_3 > 70.0 ) {
                         set_error_message($order_result_message_target, 'bitbankでは70%を超える成行注文はできません。決済注文②の数量を変更してください。');
                         $(this).prop('disabled', false);
                         return;
