@@ -500,7 +500,7 @@ def ajax_relation(request):
             search_market = request.GET.get('market')
             search_pair = request.GET.get('pair')
 
-            active_orders = Relation.objects.filter(user = user).filter(is_active = True)
+            active_orders = Relation.objects.filter(user = user, is_active = True)
 
             if search_market != "all":
                 active_orders = active_orders.filter(market=search_market)
