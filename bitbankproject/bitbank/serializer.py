@@ -112,7 +112,7 @@ class OrderSerializer(serializers.ModelSerializer):
                 new_instance = self.create(validated_data)
             # 新注文失敗時は特殊注文を無効化する
             except OrderFailedError as e:
-                order_type = parent.order_type
+                order_type = parent.special_order
                 
                 if order_type == 'SINGLE':
                     parent.is_active = False
