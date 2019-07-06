@@ -1,0 +1,5 @@
+[INFO]	asctime:2019-07-06 15:10:52,413	module:monitor_order_status	message:started
+[INFO]	asctime:2019-07-06 15:11:49,748	module:monitor_order_status	message:completed
+[INFO]	asctime:2019-07-06 16:21:20,845	module:monitor_order_status	message:started
+[INFO]	asctime:2019-07-06 16:21:58,063	module:monitor_order_status	message:started
+[INFO]	asctime:2019-07-06 16:22:55,384	module:monitor_order_status	message:completed
