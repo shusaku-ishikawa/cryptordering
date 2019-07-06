@@ -80,10 +80,18 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         ''' 親のrelationをロック状態とする '''
-        attr_name = instance.myposition
-        parent = getattr(instance, attr_name)
+        position = instance.myposition
+        if position == 'new_order':
+            attr_name = 'order_1'
+        elif position == 'settle_order_1':
+            attr_name = 'order_2'
+        elif position == 'settle_order_2':
+            attr_name = 'order_3'
+            
+        parent = getattr(instance, position)
         parent.is_locked = True
         parent.save()
+        
         
         ''' 既に発注済みの場合は元の注文をキャンセル '''
         try:
