@@ -48,7 +48,7 @@ function _on_page_click_async($container, market, pair, limit) {
             $container.empty();
             var $outer = $('<div>', { class: 'row' });
             var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
-    
+            console.log(alerts.data)
             alerts.data.forEach(alert => {
                 $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.rate)).append($('<hr>'));
             });
@@ -115,26 +115,24 @@ async function init_alerts_content_async(market, pair) {
             set_error_message(alerts.error);
             return false;
         }
+        console.log(alerts);
         if($page_selection.data("twbs-pagination")){
             $page_selection.empty();
             $page_selection.removeData("twbs-pagination");
             $page_selection.unbind("page");
-            $page_selection.twbsPagination({
-                totalPages: (alerts.total_count == 0) ? 1 : Math.ceil(alerts.total_count / COUNT_PER_PAGE),
-                next: '次',
-                prev: '前',
-                first: '先頭',
-                last: '最後',
-                onPageClick: _on_page_click_async($container, market, pair, COUNT_PER_PAGE)
-            });
         }
+        $page_selection.twbsPagination({
+            totalPages: (alerts.total_count == 0) ? 1 : Math.ceil(alerts.total_count / COUNT_PER_PAGE),
+            next: '次',
+            prev: '前',
+            first: '先頭',
+            last: '最後',
+            onPageClick: _on_page_click_async($container, market, pair, COUNT_PER_PAGE)
+        });
+        
         return true;
     } catch (error) {
-        const { status, statusText } = error.response;
-        if (status == 401) {
-            window.location.href = BASE_URL_LOGIN;
-        }
-        set_error_message(statusText);
+        handle_error(error);
         return false;
     };
 }
@@ -158,6 +156,7 @@ async function create_alert_async(market, pair, rate) {
     let result;
     try {
         result = await call_alerts('POST', null, market, pair, null, null, rate);
+        console.log(result)
         if (result.error) {
             set_error_message(result.error)
             return false;
@@ -325,7 +324,6 @@ function init_alerts_tab(is_initial = false) {
                 return;
             }
             var is_succeeded = await create_alert_async(market, pair, rate);
-            alert(is_succeeded)
             if (is_succeeded) {
                 $('#alerts_button').click();
             }

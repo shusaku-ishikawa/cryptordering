@@ -133,7 +133,7 @@ function openTab(evt, tab_id) {
 //資産情報取得用
 
 $(function() {
-    var $message = $('#id_ajax_message');
+
     init_ticker_and_asset_async()
     .then(function() {
         init_order_tab(true);
@@ -148,6 +148,49 @@ $(function() {
     setInterval(async () => {
         await init_ticker_and_asset_async()}, RATE_UPDATE_FREQ
     );
+    var $number_inputs = $('input[type="number"]');
+    $number_inputs.blur(function(){ if ( !isNumeric($(this).val()) ) { $(this).focus(); } });
 });
 
 
+function isNumeric(value) {
+    if ( value == null )
+    return;
+    if(!value.match( /([0-9]*[.])?[0-9]*/ ) ) {
+        set_error_message("半角数字で入力して下さい。");
+        return false;
+    }
+    return true;
+}
+
+    
+// forceNumeric() plug-in implementation
+jQuery.fn.forceNumeric = function () {
+    return this.each(function () {
+        $(this).keydown(function (e) {
+            var key = e.which || e.keyCode;
+            console.log(key);
+            if (!e.shiftKey && !e.altKey && !e.ctrlKey &&
+            // numbers   
+                key >= 48 && key <= 57 ||
+            // Numeric keypad
+                key >= 96 && key <= 105 ||
+            // comma, period and minus, . on keypad
+               key == 190 || key == 188 || key == 109 || key == 110 ||
+            // Backspace and Tab and Enter
+               key == 8 || key == 9 || key == 13 ||
+            // Home and End
+               key == 35 || key == 36 ||
+            // left and right arrows
+               key == 37 || key == 39 ||
+            // Del and Ins
+               key == 46 || key == 45 ||
+            // v and c
+               key == 67 || key == 86)
+                return true;
+
+            return false;
+        });
+    });
+}
+// １００
