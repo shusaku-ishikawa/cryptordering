@@ -1,3 +1,28 @@
+<style>
+    #add_alert_button {
+        float: right;
+        margin-top: 0.5rem;
+        position: relative;
+    }
+    #add_alert_button:enabled .loader {
+        display: none;
+    }
+    .spinner {
+       display: inline-block;
+       top: 2px;
+   }
+  
+   .overlay {
+       opacity: 0.6;
+       background-color: black;
+       position: absolute;
+       width: 100%;
+        top: 0;
+        left: 0;
+       height: 100%;
+   }
+</style>
+
 <div id="alerts" class="tabcontent">
     <div class="row">
         <div class="col-md-6 offset-md-3 col-12">
@@ -21,6 +46,7 @@
     <hr>
     <div class="row">
         <div class="col-md-6 offset-md-3 col-12">
+            <label class="control-label">内容設定</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <div class="input-group-text placeholder">取引所</div>
@@ -41,14 +67,31 @@
                 <div class="input-group-append">
                     <div class="input-group-text placeholder pair_for_alert">JPY</div>
                 </div>
-                <div class="input-group-append">
-                    <button id="add_alert_button" class="btn green_button" type="button">追加</button>
-                </div>
             </div>
         </div>
     </div>
     <hr>
-
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text placeholder">コメント</div>
+                </div>
+                <input type="text" id="id_alerts_comment" placeholdder="コメント" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <button id="add_alert_button" class="btn green_button" type="button">
+            追加
+            <div class="loader spinner ld ld-ring ld-spin"></div>
+            <div class="loader overlay">
+            </div>
+            </button>        
+        </div>
+    </div>
+    
     <div class="row">
         <div class="col-md-6 offset-md-3 col-12">
             <label class="control-label">検索設定</label>

@@ -4,9 +4,6 @@
 class AlreadyFilledOrCancelledError(Exception):
     pass
 
-''' 注文失敗時 '''
-class OrderFailedError(Exception):
-    pass
 
 ''' 注文キャンセル時 '''
 class OrderCancelFailedError(Exception):

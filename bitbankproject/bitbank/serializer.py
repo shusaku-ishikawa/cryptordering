@@ -23,7 +23,7 @@ class AlertSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Alert
-        fields = ('pk', 'market', 'pair', 'rate', 'over_or_under')
+        fields = ('pk', 'market', 'pair', 'rate', 'over_or_under', 'comment')
         read_only_fields = ('pk', 'over_or_under')
 
     def create(self, validated_data):
@@ -56,8 +56,10 @@ class OrderSerializer(serializers.ModelSerializer):
         if validated_data['order_type'] == Order.TYPE_TRAIL:
             try:
                 ret = python_bitbankcc.public().get_ticker(validated_data['pair']) if validated_data['market'] == 'bitbank' else json.loads(CoinCheck('fake', 'fake').ticker.all())['last']
-            except Exception:
-                raise OrderFailedError('トレール注文時のレートの取得に失敗しました')
+            except Exception as e:
+                instance.status = Order.STATUS_FAILED_TO_ORDER
+                instance.error_message = str(e.args)
+
             else:
                 try:
                     last_price = float(ret['last'])
@@ -69,14 +71,8 @@ class OrderSerializer(serializers.ModelSerializer):
         instance.save()
 
         if instance.order_type in {Order.TYPE_MARKET, Order.TYPE_LIMIT} and instance.status == Order.STATUS_READY_TO_ORDER:       
-            try:
-                order_succeeded = instance.place()
-            except OrderFailedError as e:
-                raise
-            else:
-                return instance
-        else:
-            return instance
+            order_succeeded = instance.place()
+        return instance
 
     def update(self, instance, validated_data):
         ''' 親のrelationをロック状態とする '''
@@ -88,109 +84,29 @@ class OrderSerializer(serializers.ModelSerializer):
         elif position == 'settle_order_2':
             attr_name = 'order_3'
             
+        # 該当の注文をロックする
         parent = getattr(instance, position)
         parent.is_locked = True
         parent.save()
-        
-        
+    
         ''' 既に発注済みの場合は元の注文をキャンセル '''
         try:
             instance.cancel()
-        except Exception:
+        except OrderCancelFailedError:
             # 元キャンセル失敗の場合はそのまま
             parent.is_locked = False
             parent.save()
             raise
         else:
-            try:
-                new_instance = self.create(validated_data)
-            # 新注文失敗時は特殊注文を無効化する
-            except OrderFailedError as e:
-                order_type = parent.special_order
-                
-                if order_type == 'SINGLE':
-                    parent.is_active = False
-                    setattr(parent, attr_name, None)
-                    parent.save()
-                elif order_type == 'IFD':
-                    other_order = parent.order_2 if attr_name == 'order_1' else parent.order_1
-                    # 他方をキャンセル
-                    try:
-                        other_order.cancel()
-                    except Exception:
-                        pass
-                    finally:
-                        parent.order_1 = None
-                        parent.order_2 = None
-                        parent.save()
-                elif order_type == 'OCO':
-                    other_order = parent.order_2 if attr_name == 'order_3' else parent.order_3
-                    # 他方をキャンセル
-                    try:
-                        other_order.cancel()
-                    except Exception:
-                        pass
-                    finally:
-                        parent.order_2= None
-                        parent.order_3 = None
-                        parent.save()
-                elif order_type == 'IFDOCO':
-                    if attr_name == 'order_1':
-                        try:
-                            parent.order_2.cancel()
-                        except Exception:
-                            pass
-                        finally:
-                            parent.order_2 = None
-
-                        try:
-                            parent.order_3.cancel()
-                        except Exception:
-                            pass
-                        finally:
-                            parent.order_3 = None
-                        parent.save()
-                    elif attr_name == 'order_2':
-                        try:
-                            parent.order_1.cancel()
-                        except Exception:
-                            pass
-                        finally:
-                            parent.order_1 = None
-
-                        try:
-                            parent.order_3.cancel()
-                        except Exception:
-                            pass
-                        finally:
-                            parent.order_3 = None
-                        parent.save()
-                    elif attr_name == 'order_3':
-                        try:
-                            parent.order_1.cancel()
-                        except Exception:
-                            pass
-                        finally:
-                            parent.order_1 = None
-
-                        try:
-                            parent.order_2.cancel()
-                        except Exception:
-                            pass
-                        finally:
-                            parent.order_2 = None
-                        parent.save()
-                parent.is_locked = False
-                parent.save()
-                raise   
-            else:
-                # 新しい注文オブジェクトをセット
-                setattr(parent, attr_name, new_instance)
-                parent.is_locked = False
-                parent.save()
-                print(new_instance.status)
-                return new_instance
+            instance.delete()
+            new_instance = self.create(validated_data)
+            # 新しい注文オブジェクトをセット
+            setattr(parent, attr_name, new_instance)
+            parent.is_locked = False
+            parent.save()
+            return new_instances
         
+
     def validate(self, data):
         # coincheckの新規注文の場合は0.005以上の取引であること
         if 'order_id' not in data and data['market'] == 'coincheck' and data['start_amount'] < 0.005:

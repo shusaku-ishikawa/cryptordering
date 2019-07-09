@@ -42,16 +42,16 @@ class Command(BaseCommand):
                             # 約定済みであった場合
                             if o_1.status == Order.STATUS_FULLY_FILLED: 
                                 # single注文であった場合
-                                if o_2 == None and o_3 == None:
+                                if relation.special_order == Relation.ORDER_SINGLE:
                                     # 特殊注文完了
                                     relation.order_1 = None
                                     relation.is_active = False
                                     relation.save()
 
                                 # IFDであった場合はSINGLE注文へ変更
-                                elif o_2 != None and o_2.status in {Order.STATUS_WAIT_OTHER_ORDER_TO_FILL} and o_3 == None:
+                                elif relation.special_order == Relation.ORDER_IFD:
                                     # single注文へ変更
-                                    relation.special_order = 'SINGLE'
+                                    relation.special_order = Relation.ORDER_SINGLE
                                     relation.order_1 = o_2
                                     relation.order_2 = None
                                     relation.save()
@@ -62,11 +62,10 @@ class Command(BaseCommand):
                                         o_2.save()
                                     # 即時注文系はそのまま注文
                                     else:
-                                        try:
-                                            o_2.place()
-                                        except OrderFailedError as e:
+                                        o_2.place()
+                                        if o_2.status == Order.STATUS_FAILED_TO_ORDER:
                                             # 注文失敗時
-                                            logger.error( 'pk:{pk}の注文に失敗しました：{error}'.format(pk = o_2.pk, error = str(e.args)) )
+                                            logger.error( 'pk:{pk}の注文に失敗しました：{error}'.format(pk = o_2.pk, error = o_2.error_message ))
                                             relation.order_1 = None
                                             relation.is_active = False
                                             relation.save()
@@ -75,8 +74,8 @@ class Command(BaseCommand):
                                             pass
 
                                 # IFDOCOであった場合はOCOへ変更
-                                elif o_3 != None and o_3.status in {Order.STATUS_WAIT_OTHER_ORDER_TO_FILL}:
-                                    relation.special_order = 'OCO'
+                                elif relation.special_order == Relation.ORDER_IFDOCO:
+                                    relation.special_order = Relation.ORDER_OCO
                                     relation.order_1 = None
                                     relation.save()
                                     
@@ -86,41 +85,47 @@ class Command(BaseCommand):
                                         o_2.save()
                                     # 即時注文の場合
                                     else:
-                                        try:
-                                            o_2.place()
-                                        except OrderFailedError as e:
-                                            # 注文失敗時、OCOの他方もキャンセルする
-                                            logger.error( 'pk:{pk}の注文に失敗しました：{error}'.format(pk = o_2.pk, error = str(e.args)) )
-                                            try:
-                                                o_3.cancel()
-                                            except OrderCancelFailedError as e:
-                                                logger.error( '注文番号:{order_id}のに失敗しました：{error}'.format(order_id = o_3.order_id, error = str(e.args)) )
-                                            finally:
-                                                # 特殊注文を無効化
-                                                relation.order_2 = None
-                                                relation.order_3 = None
-                                                relation.is_active = False
-                                                relation.save()
+                                        o_2.place()
+                                        if o_2.status == Order.STATUS_FAILED_TO_ORDER:
+                                            # 注文失敗時、他方のシングル注文に変更する
+                                            logger.error( 'pk:{pk}の注文に失敗しました：{error}'.format(pk = o_2.pk, error = o_2.error_message) )
+                                            # order_3が即時注文でない場合は監視モードへ
+                                            if 'stop' in o_3.order_type or 'trail' in o_3.order_type:
+                                                o_3.status = Order.STATUS_READY_TO_ORDER
+                                                o_3.save()
+                                            else:
+                                                # 即時注文の場合h
+                                                o_3.place()
+                                                if o_3.status == Order.STATUS_FAILED_TO_ORDER:
+                                                    # order_2も3も失敗した場合は無効化
+                                                    relation.is_active = False
+                                                    relation.order_2 = None
+                                                    relation.order_3 = None
+                                                    relation.save()
+                                                else:
+                                                    # order_3が成功した場合はo_3のシングル
+                                                    relation.special_order = Relation.ORDER_SINGLE
+                                                    relation.order_1 = o_3
+                                                    relation.order_2 = None
+                                                    relation.order_3 = None
+                                                    relation.save()
                                         else:
-                                            # 注文3がストップ注文もしくはトレール注文の場合は監視モードへ
+                                            # 注文2が成功した場合
                                             if 'stop' in o_3.order_type or 'trail' in o_3.order_type:
                                                 o_3.status = Order.STATUS_READY_TO_ORDER
                                                 o_3.save()
                                             # 即時注文の場合
                                             else:
-                                                try:
-                                                    o_3.place()
-                                                except OrderFailedError as e:
-                                                    try:
-                                                        o_2.cancel()
-                                                    except OrderCancelFailedError as e:
-                                                        logger.error( '注文:{pk}のキャンセルに失敗しました.{error}'.format(pk = o_2.pk, error = str(e.args)) )
-                                                    finally:
-                                                        relation.order_2 = None
-                                                        relation.order_3 = None
-                                                        relation.is_active = False
-                                                        relation.save()
+                                                o_3.place()
+                                                if o_3.status == Order.STATUS_FAILED_TO_ORDER:
+                                                    # 注文3に失敗した場合は注文2のシングル注文
+                                                    relation.special_order = Relation.ORDER_SINGLE
+                                                    relation.order_1 = o_2
+                                                    relation.order_2 = None
+                                                    relation.order_3 = None
+                                                    relation.save()
                                                 else:
+                                                    # 注文3に成功した場合はそのまま
                                                     pass
 
                                 
@@ -129,36 +134,26 @@ class Command(BaseCommand):
                                         o_1.notify_user()
 
                             # 本家でキャンセルされていた場合は特殊注文を無効化
-                            elif o_1.status in {Order.STATUS_CANCELED_PARTIALLY_FILLED, Order.STATUS_CANCELED_UNFILLED, Order.STATUS_FAILED_TO_ORDER}:
+                            elif o_1.status in {Order.STATUS_CANCELED_PARTIALLY_FILLED, Order.STATUS_CANCELED_UNFILLED }:
+                                # IFD系の場合は後続をキャンセルし、無効化
+                                if relation.special_order in { Relation.ORDER_IFD, Relation.ORDER_IFDOCO }:
+                                    try:
+                                        relation.order_2.cancel()
+                                    except OrderCancelFailedError:
+                                        pass
+                                # IFDOCOの場合は注文3もキャンセル
+                                if relation.special_order == Relation.ORDER_IFDOCO:
+                                    try:
+                                        relation.order_3.cancel()
+                                    except OrderCancelFailedError:
+                                        pass
                                 relation.order_1 = None
-                                if o_2 != None and o_2.status in {Order.STATUS_WAIT_OTHER_ORDER_TO_FILL}:
-                                    o_2.status = Order.STATUS_CANCELED_UNFILLED
-                                    o_2.save()
-                                    relation.order_2 = None
-                                if o_3 != None and o_3.status in {Order.STATUS_WAIT_OTHER_ORDER_TO_FILL}:
-                                    o_3.status = Order.STATUS_CANCELED_UNFILLED
-                                    o_3.save()
-                                    relation.order_3 = None
-                                relation.save()
-                    # 注文失敗の場合
-                    elif o_1.status in { Order.STATUS_FAILED_TO_ORDER }:
-                        relation.order_1 = None
-                        relation.is_active = False
-                        if o_2 != None:
-                            try:
-                                o_2.cancel()
-                            except OrderCancelFailedError:
-                                pass
-                            finally:
                                 relation.order_2 = None
-                        if o_3 != None:
-                            try:
-                                o_3.cancel()
-                            except OrderCancelFailedError:
-                                pass
-                            finally:
                                 relation.order_3 = None
-                        relation.save()
+                                relation.is_active = False
+                                relation.save()
+            
+                    # それ以外の場合は何もしない
                     else:
                         pass 
 
@@ -173,14 +168,12 @@ class Command(BaseCommand):
                         else:
                             # 注文2が約定済みであった場合注文３をキャンセル
                             if o_2.status  == Order.STATUS_FULLY_FILLED:
-                            
-                                if o_3 != None:
+                                # OCOの場合     
+                                if relation.special_order == Relation.ORDER_OCO:
                                     try:
                                         o_3.cancel()
                                     except OrderCancelFailedError as e:
                                         logger.error( '注文:{order_id}のキャンセルに失敗しました。{error}'.format(order_id = o_3.order_id, error = str(e.args)) )
-                                    else:
-                                        pass
                                     finally:
                                         # 特殊注文を無効化
                                         relation.order_2 = None
@@ -192,26 +185,14 @@ class Command(BaseCommand):
                                     # 約定通知メール
                                     o_2.notify_user()
                             # 本家でキャンセルされていた場合、注文３のSINGLEへ変更
-                            elif o_2.status in {Order.STATUS_CANCELED_PARTIALLY_FILLED, Order.STATUS_CANCELED_UNFILLED}:
+                            elif o_2.status in { Order.STATUS_CANCELED_PARTIALLY_FILLED, Order.STATUS_CANCELED_UNFILLED }:
+                                
                                 relation.order_1 = o_3
                                 relation.order_2 = None
                                 relation.order_3 = None
                                 relation.special_order = 'SINGLE'
                                 relation.save()
-                    # 注文失敗していた時
-                    elif o_2.status in { Order.STATUS_FAILED_TO_ORDER }:
-                        relation.order_2 = None
-                        relation.is_active = False
-                        if o_3 != None:
-                            try:
-                                o_3.cancel()
-                            except OrderCancelFailedError:
-                                pass
-                            finally:
-                                relation.order_3 = None
-                        relation.save()
-                    else:
-                        pass
+                   
                 # 注文3を更新
                 if o_3 != None:
                     # 発注済、未約定の時
@@ -223,14 +204,12 @@ class Command(BaseCommand):
                         else:
                             # 更新後約定図であった場合
                             if o_3.status  == Order.STATUS_FULLY_FILLED:
-                                # order_2のキャンセル
-                                if o_2 != None:
+                                # OCOの場合は注文2をキャンセル
+                                if relation.special_order == Relation.ORDER_OCO:
                                     try:
                                         o_2.cancel()
                                     except OrderCancelFailedError as e:
                                         logger.error( '注文:{order_id}のキャンセルに失敗しました。{error}'.format(order_id = o_2.order_id, error = str(e.args)) )
-                                    else:
-                                        pass
                                     finally:
                                         # 特殊注文を無効化
                                         relation.order_2 = None
@@ -248,18 +227,4 @@ class Command(BaseCommand):
                                 relation.order_3 = None
                                 relation.special_order = 'SINGLE'
                                 relation.save()
-                    # 注文に失敗していた時
-                    elif o_3.status in { Order.STATUS_FAILED_TO_ORDER }:
-                        relation.order_3 = None
-                        relation.is_active = False
-                        if o_2 != None:
-                            try:
-                                o_2.cancel()
-                            except OrderCancelFailedError:
-                                pass
-                            finally:
-                                relation.order_2 = None
-                        relation.save()
-                    else:
-                        pass
         logger.info('completed')

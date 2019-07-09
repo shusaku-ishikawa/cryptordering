@@ -460,7 +460,7 @@ function init_order_tab(is_initial = false) {
         });
         $input_special_order
         .on('change', function() {
-
+            var $this = $(this);
             switch ($input_market.val()) {
                 case 'bitbank':
                     $.cookie(COOKIE_SPECIAL_ORDER_BB, $(this).val(), { expires: 7 });
@@ -474,7 +474,7 @@ function init_order_tab(is_initial = false) {
             $slick
             .slick('slickUnfilter')
             .slick('slickFilter', function(index){
-                switch ($('#id_special_order').val()) {
+                switch ($this.val()) {
                     case 'SINGLE':
                         if (index == 0){
                             return $(this).eq(index);  
@@ -497,6 +497,18 @@ function init_order_tab(is_initial = false) {
             });
 
             $slick.slick('slickGoTo', 0);
+            for (var i = 1; i < 4; i++) {
+                var $order_type_select = $('#id_order_type_' + i);
+                if ( ($this.val() == 'OCO' || $this.val() == 'IFDOCO') && i >= 2) {
+                    $order_type_select.find('option').each(function() {
+                        if ($(this).val() == 'market') {
+                            $(this).prop('disabled', true);
+                        }
+                    });
+                } else {
+                    $order_type_select.find('option').prop('disabled', false);
+                }
+            }
             reset_input_all($input_market.val(), $input_pair.val()); 
         });
 
@@ -626,6 +638,7 @@ function init_order_tab(is_initial = false) {
             });
     
             Object.keys(ORDER_TYPES).forEach(key => {
+                // 決済注文では成り行き非活性
                 $('<option>', {
                     value: key,
                     text: ORDER_TYPES[key],

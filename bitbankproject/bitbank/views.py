@@ -267,7 +267,6 @@ def ajax_alerts(request):
                 traceback.print_exc()
                 return JsonResponse({'error': e.args})
         elif op == 'POST':
-            #print(request.POST)
             serializer = AlertSerializer(data = request.POST, context={'user': user})
             if serializer.is_valid():
                 serializer.save()
@@ -456,11 +455,11 @@ def ajax_order(request):
                 param['pair'] = order.pair
                 
                 current_status = order.status
-                # IFDの約定待ちも注文を更新する場合
+                # IFDの約定待ちの注文を更新する場合
                 if current_status == Order.STATUS_WAIT_OTHER_ORDER_TO_FILL:
                     param['status'] = current_status
-                # すでに注文ずみか、監視モードの注文の更新の場合
-                elif current_status in { Order.STATUS_READY_TO_ORDER, Order.STATUS_UNFILLED, Order.STATUS_PARTIALLY_FILLED }:
+                # すでに注文ずみか、監視モードの注文か注文失敗となっている場合
+                elif current_status in { Order.STATUS_READY_TO_ORDER, Order.STATUS_UNFILLED, Order.STATUS_PARTIALLY_FILLED, Order.STATUS_FAILED_TO_ORDER }:
                     param['status'] = Order.STATUS_READY_TO_ORDER
                 # 想定外のステータスの場合
                 else:
@@ -474,9 +473,9 @@ def ajax_order(request):
                         return JsonResponse({'error': '対象の注文は既に約定済みかキャンセル済みです'})
                     except OrderCancelFailedError:
                         return JsonResponse({'error': '元の注文のキャンセルに失敗しました' })  
-                    except OrderFailedError as e:
-                        return JsonResponse({'error': str(e.args)})
                     else:
+                        if updated_order.status == Order.STATUS_FAILED_TO_ORDER:
+                            return JsonResponse({'error': updated_order.error_message})
                         return JsonResponse({'success': True})
                 else:
                     return JsonResponse({'error': _get_error_message(serializer.errors, '注文修正')})
@@ -527,23 +526,21 @@ def ajax_relation(request):
             relation.special_order = special_order
 
             # SINGLE発注の時
-            if special_order == 'SINGLE':
+            if special_order == Relation.ORDER_SINGLE:
                 dic_o1 = json.loads(request.POST.get('order_1'))
                 dic_o1['status'] = Order.STATUS_READY_TO_ORDER
                 o_1_serializer = OrderSerializer(data = dic_o1, context = {'user': user})
                 
                 if o_1_serializer.is_valid():
-                    try:
-                        o_1 = o_1_serializer.save()
-                    except OrderFailedError as e:
+                    o_1 = o_1_serializer.save()
+                    if o_1.status == Order.STATUS_FAILED_TO_ORDER:
                         relation = None
-                        return JsonResponse({'error': str(e.args)})
-                    else:
-                        relation.order_1 = o_1
+                        return JsonResponse({'error': o_1.error_message})
+                    relation.order_1 = o_1
                 else:
                     return JsonResponse({'error': _get_error_message(o_1_serializer.errors, '新規注文')})
             # IFD注文の場合 
-            elif special_order == 'IFD':
+            elif special_order == Relation.ORDER_IFD:
                 dic_o1 = json.loads(request.POST.get('order_1'))
                 dic_o1['status'] = Order.STATUS_READY_TO_ORDER
                 dic_o2 = json.loads(request.POST.get('order_2'))
@@ -559,27 +556,18 @@ def ajax_relation(request):
                 if not o_2_serializer.is_valid():
                     relation = None
                     return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
-                try:
-                    o_1 = o_1_serializer.save()
-                except OrderFailedError as e:
-                    ''' 新規が失敗した場合 '''
-                    relation = None
-                    return JsonResponse({'error': e.args})
-                else:
-                    ''' 新規が成功した場合 '''
-                    try:
-                        o_2 = o_2_serializer.save()
-                    except OrderFailedError as e:
-                        try:
-                            o_1.cancel()
-                        finally:
-                            relation = None
-                            return JsonResponse({'error': str(e.args)})
-                    else:
-                        relation.order_1 = o_1
-                        relation.order_2 = o_2
                 
-            elif special_order == 'OCO':
+                o_1 = o_1_serializer.save()
+                # 注文1失敗時
+                if o_1.status == Order.STATUS_FAILED_TO_ORDER:
+                    relation = None
+                    return JsonResponse({'error': o_1.error_message})
+                ''' 新規が成功した場合 '''
+                o_2 = o_2_serializer.save()
+                relation.order_1 = o_1
+                relation.order_2 = o_2
+                
+            elif special_order == Relation.ORDER_OCO:
                 dic_o2 = json.loads(request.POST.get('order_2'))
                 dic_o2['status'] = Order.STATUS_READY_TO_ORDER
                 dic_o3 = json.loads(request.POST.get('order_3'))
@@ -593,28 +581,27 @@ def ajax_relation(request):
                     return JsonResponse({'error': _get_error_message(o_2_serializer.errors, '決済注文①')})
 
                 if not o_3_serializer.is_valid():
+                    try:
+                        o_2.cancel()
+                    except:
+                        pass
                     relation = None
                     return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
 
-                try:
-                    o_2 = o_2_serializer.save()
-                except OrderFailedError as e:
+                o_2 = o_2_serializer.save()
+                # 注文2が失敗した場合は全体を無効化
+                if o_2.status == Order.STATUS_FAILED_TO_ORDER:
                     relation = None
-                    return JsonResponse({'error': str(e.args)})
-                else:
-                    try:
-                        o_3 = o_3_serializer.save()
-                    except OrderFailedError as e:
-                        try:
-                            o_2.cancel()
-                        finally:
-                            relation = None
-                            return JsonResponse({'error': str(e.args)})
-                    else:
-                        relation.order_2 = o_2
-                        relation.order_3 = o_3
-
-            elif special_order == 'IFDOCO':
+                    return JsonResponse({'error': o_2.error_message})
+                o_3 = o_3_serializer.save()
+                if o_3.status == Order.STATUS_FAILED_TO_ORDER:
+                    relation = None
+                    return JsonResponse({'error': o_3.error_message})
+                    
+                relation.order_2 = o_2
+                relation.order_3 = o_3
+    
+            elif special_order == Relation.ORDER_IFDOCO:
                 dic_o1 = json.loads(request.POST.get('order_1'))
                 dic_o1['status'] = Order.STATUS_READY_TO_ORDER
                 dic_o2 = json.loads(request.POST.get('order_2'))
@@ -635,35 +622,36 @@ def ajax_relation(request):
                 if not o_3_serializer.is_valid():
                     relation = None
                     return JsonResponse({'error': _get_error_message(o_3_serializer.errors, '決済注文②')})
-                try:
-                    o_1 = o_1_serializer.save()
-                except OrderFailedError as e:
+                o_1 = o_1_serializer.save()
+                if o_1.status == Order.STATUS_FAILED_TO_ORDER:
                     relation = None
-                    return JsonResponse({'error': str(e.args)})
-                else:
-                    try:   
-                        o_2 = o_2_serializer.save()
-                    except OrderFailedError as e:
+                    return JsonResponse({'error': o_1.error_message})
+                
+                o_2 = o_2_serializer.save()
+                if o_2.status == Order.STATUS_FAILED_TO_ORDER:
+                    try:
+                        o_1.cancel()
+                    except:
+                        pass
+                    relation = None
+                    return JsonResponse({'error': o_2.error_message})
+                o_3 = o_3_serializer.save()
+                if o_3.status == Order.STATUS_FAILED_TO_ORDER:
+                    try:
+                        o_1.cancel()
+                    finally:
                         try:
-                            o_1.cancel()
-                        finally:
-                            relation = None
-                            return JsonResponse({'error': str(e.args)})
-                    else:
-                        try:
-                            o_3 = o_3_serializer.save()
-                        except OrderFailedError as e:
-                            try:
-                                o_1.cancel()
-                                o_2.cancel()
-                            finally:
-                                relation = None
-                                return JsonResponse({'error': str(e.args)})
-                        else:
-                            relation.order_1 = o_1
-                            relation.order_2 = o_2
-                            relation.order_3 = o_3
+                            o_2.cancel()
+                        except:
+                            pass
+
+                    relation = None
+                    return JsonResponse({'error': o_3.error_message})
                     
+                relation.order_1 = o_1
+                relation.order_2 = o_2
+                relation.order_3 = o_3
+                
             relation.is_active = True
             relation.save()
 
@@ -679,20 +667,15 @@ def ajax_attachment(request):
     method = request.method
 
     if method == 'POST':
-        try:
-            if request.POST.get('method') == 'DELETE':
-                pk = request.POST.get('pk')
-                Attachment.objects.filter(pk=pk).delete()
-                return JsonResponse({'success': True})
-            else:
-                a = Attachment()
-                a.file = request.FILES['attachment']
-                a.save()
-                return JsonResponse({'success': True, 'pk': a.pk, 'url': a.file.url})
-        except Exception as e:
-            logger.error('post attchment: ' + str(e.args))
-            return JsonResponse({'error': str(e.args)})
-       
+        if request.POST.get('method') == 'DELETE':
+            pk = request.POST.get('pk')
+            Attachment.objects.filter(pk=pk).delete()
+            return JsonResponse({'success': True})
+        else:
+            a = Attachment()
+            a.file = request.FILES['attachment']
+            a.save()
+            return JsonResponse({'success': True, 'pk': a.pk, 'url': a.file.url})
 def ajax_inquiry(request):
     logger = logging.getLogger('api')
 
@@ -700,69 +683,75 @@ def ajax_inquiry(request):
         return JsonResponse({'error' : 'authentication failed'}, status=401)
         
     if request.method == 'POST':       
-        try:
-            new_inquiry = Inquiry()
-            new_inquiry.user = request.user
-            new_inquiry.subject = request.POST.get('subject')
-            new_inquiry.body = request.POST.get('body')
-            new_inquiry.email_for_reply = request.POST.get('email_for_reply')
-            att_1_pk = request.POST.get('att_pk_1')
-            att_2_pk = request.POST.get('att_pk_2')
-            att_3_pk = request.POST.get('att_pk_3')
-            
-            if att_1_pk != None and att_1_pk != '':
-                new_inquiry.attachment_1 = Attachment.objects.get(pk = att_1_pk)
-            if att_2_pk != None and att_2_pk != '':
-                new_inquiry.attachment_2 = Attachment.objects.get(pk = att_2_pk)
-            if att_3_pk != None and att_3_pk != '':
-                new_inquiry.attachment_3 = Attachment.objects.get(pk = att_3_pk)
-            
-            new_inquiry.save()
+        new_inquiry = Inquiry()
+        new_inquiry.user = request.user
+        new_inquiry.subject = request.POST.get('subject')
+        new_inquiry.body = request.POST.get('body')
+        new_inquiry.email_for_reply = request.POST.get('email_for_reply')
+        att_1_pk = request.POST.get('att_pk_1')
+        att_2_pk = request.POST.get('att_pk_2')
+        att_3_pk = request.POST.get('att_pk_3')
         
-            context = {
-                'new_inquiry': new_inquiry,
-            }
+        if att_1_pk != None and att_1_pk != '':
+            try:
+                new_inquiry.attachment_1 = Attachment.objects.get(pk = att_1_pk)
+            except Attachment.DoesNotExist as e:
+                return JsonResponse({'error': str(e.args)})
+        if att_2_pk != None and att_2_pk != '':
+            try:
+                new_inquiry.attachment_2 = Attachment.objects.get(pk = att_2_pk)
+            except Attachment.DoesNotExist as e:
+                return JsonResponse({'error': str(e.args)})
+        if att_3_pk != None and att_3_pk != '':
+            try:
+                new_inquiry.attachment_3 = Attachment.objects.get(pk = att_3_pk)
+            except Attachment.DoesNotExist as e:
+                return JsonResponse({'error': str(e.args)})
+        
+        new_inquiry.save()
+    
+        context = {
+            'new_inquiry': new_inquiry,
+        }
 
-            subject_template_for_admin = get_template('bitbank/mail_template/inquiry/subject.txt')
-            subject_for_admin = subject_template_for_admin.render(context)
-            message_template_for_admin = get_template('bitbank/mail_template/inquiry/message.txt')
-            message_for_admin = message_template_for_admin.render(context)
+        subject_template_for_admin = get_template('bitbank/mail_template/inquiry/subject.txt')
+        subject_for_admin = subject_template_for_admin.render(context)
+        message_template_for_admin = get_template('bitbank/mail_template/inquiry/message.txt')
+        message_for_admin = message_template_for_admin.render(context)
 
-            subject_template_for_customer = get_template('bitbank/mail_template/inquiry/subject_for_customer.txt')
-            subject_for_customer = subject_template_for_customer.render(context)
-            message_template_for_customer = get_template('bitbank/mail_template/inquiry/message_for_customer.txt')
-            message_for_customer = message_template_for_customer.render(context)
+        subject_template_for_customer = get_template('bitbank/mail_template/inquiry/subject_for_customer.txt')
+        subject_for_customer = subject_template_for_customer.render(context)
+        message_template_for_customer = get_template('bitbank/mail_template/inquiry/message_for_customer.txt')
+        message_for_customer = message_template_for_customer.render(context)
 
-            kwargs_for_admin = dict(
-                to = [settings.DEFAULT_FROM_EMAIL],
-                from_email = settings.DEFAULT_FROM_EMAIL,
-                subject = subject_for_admin,
-                body = message_for_admin,
-            )
-            kwargs_for_customer = dict(
-                to = [request.POST.get('email_for_reply')],
-                from_email = settings.DEFAULT_FROM_EMAIL,
-                subject = subject_for_customer,
-                body = message_for_customer,
-            )
-            msg_for_admin = EmailMultiAlternatives(**kwargs_for_admin)
-            msg_for_customer = EmailMultiAlternatives(**kwargs_for_customer)
+        kwargs_for_admin = dict(
+            to = [settings.DEFAULT_FROM_EMAIL],
+            from_email = settings.DEFAULT_FROM_EMAIL,
+            subject = subject_for_admin,
+            body = message_for_admin,
+        )
+        kwargs_for_customer = dict(
+            to = [request.POST.get('email_for_reply')],
+            from_email = settings.DEFAULT_FROM_EMAIL,
+            subject = subject_for_customer,
+            body = message_for_customer,
+        )
+        msg_for_admin = EmailMultiAlternatives(**kwargs_for_admin)
+        msg_for_customer = EmailMultiAlternatives(**kwargs_for_customer)
+        
+        if (new_inquiry.attachment_1 != None):
+            msg_for_admin.attach_file(new_inquiry.attachment_1.file.path)
+            msg_for_customer.attach_file(new_inquiry.attachment_1.file.path)
             
-            if (new_inquiry.attachment_1 != None):
-                msg_for_admin.attach_file(new_inquiry.attachment_1.file.path)
-                msg_for_customer.attach_file(new_inquiry.attachment_1.file.path)
-                
-            if (new_inquiry.attachment_2 != None):
-                msg_for_admin.attach_file(new_inquiry.attachment_2.file.path)
-                msg_for_customer.attach_file(new_inquiry.attachment_2.file.path)
-                
-            if (new_inquiry.attachment_3 != None):
-                msg_for_admin.attach_file(new_inquiry.attachment_3.file.path)
-                msg_for_customer.attach_file(new_inquiry.attachment_3.file.path)
+        if (new_inquiry.attachment_2 != None):
+            msg_for_admin.attach_file(new_inquiry.attachment_2.file.path)
+            msg_for_customer.attach_file(new_inquiry.attachment_2.file.path)
+            
+        if (new_inquiry.attachment_3 != None):
+            msg_for_admin.attach_file(new_inquiry.attachment_3.file.path)
+            msg_for_customer.attach_file(new_inquiry.attachment_3.file.path)
 
-            msg_for_admin.send()
-            msg_for_customer.send()
-            return JsonResponse({'success': '問い合わせが完了しました'})
-        except Exception as e:
-            logger.error('post inquiry: ' + str(e.args))
-            return JsonResponse({'error': str(e.args)})
+        msg_for_admin.send()
+        msg_for_customer.send()
+        return JsonResponse({'success': '問い合わせが完了しました'})
+        

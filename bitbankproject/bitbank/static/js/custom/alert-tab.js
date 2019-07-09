@@ -1,4 +1,4 @@
-function build_alert_card(pk, market, pair, rate) {
+function build_alert_card(pk, market, pair, rate, comment) {
     var $outer_container = $('<div>', { class: 'order_container' });
     var $inner_container = $('<div>', { class: 'order_history_body' });
     var $row_1 = $('<div>', {
@@ -26,8 +26,18 @@ function build_alert_card(pk, market, pair, rate) {
         class: 'col-md-6 col-6 card-table-data',
         text: rate
     }));
-
     var $row_3 = $('<div>', {
+        class: 'row'
+    }).append($('<div>', {
+        class: 'col-md-4 col-4 card-table-header',
+        text: 'コメント'
+    })).append($('<div>', {
+        class: 'col-md-8 col-8 card-table-data',
+        text: comment
+    }));
+    
+
+    var $row_4 = $('<div>', {
         class: 'row'
     }).append($('<button>', {
         pk: pk,
@@ -37,7 +47,7 @@ function build_alert_card(pk, market, pair, rate) {
         text: 'CANCEL',
         name: 'deactivate_alert_button'
     }));
-    return $outer_container.append($inner_container.append($row_1).append($row_2).append($row_3));    
+    return $outer_container.append($inner_container.append($row_1).append($row_2).append($row_3).append($row_4));    
 
 }
 function _on_page_click_async($container, market, pair, limit) {
@@ -48,9 +58,8 @@ function _on_page_click_async($container, market, pair, limit) {
             $container.empty();
             var $outer = $('<div>', { class: 'row' });
             var $inner = $('<div>', { class: 'col-md-6 offset-md-3 col-12' });
-            console.log(alerts.data)
             alerts.data.forEach(alert => {
-                $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.rate)).append($('<hr>'));
+                $inner.append(build_alert_card(alert.pk, alert.market, alert.pair, alert.rate, alert.comment)).append($('<hr>'));
             });
     
             $container.append($outer.append($inner));
@@ -115,7 +124,6 @@ async function init_alerts_content_async(market, pair) {
             set_error_message(alerts.error);
             return false;
         }
-        console.log(alerts);
         if($page_selection.data("twbs-pagination")){
             $page_selection.empty();
             $page_selection.removeData("twbs-pagination");
@@ -152,11 +160,10 @@ async function init_alert_rate_async(market, pair, $target) {
     }
 }
 
-async function create_alert_async(market, pair, rate) {
+async function create_alert_async(market, pair, rate, comment) {
     let result;
     try {
-        result = await call_alerts('POST', null, market, pair, null, null, rate);
-        console.log(result)
+        result = await call_alerts('POST', null, market, pair, null, null, rate, comment);
         if (result.error) {
             set_error_message(result.error)
             return false;
@@ -215,6 +222,7 @@ async function update_notify_async($on_button, $off_button, on_or_off) {
 function init_alerts_tab(is_initial = false) {
     var $alert_market = $('#id_alerts_market');
     var $alert_pair = $('#id_alerts_pair');
+    var $alert_comment = $('#id_alerts_comment');
     var $alert_search_market = $('#id_alerts_search_market');
     var $alert_search_pair = $('#id_alerts_search_pair');
 
@@ -314,21 +322,28 @@ function init_alerts_tab(is_initial = false) {
 
 
         $add_button.on('click', async function() {
-        
+            $(this).prop('disabled', true);
             var rate = $notice_rate.val();
             var market = $alert_market.val();
             var pair = $alert_pair.val();
-    
+            var comment = $alert_comment.val();
+
             if (rate == '' || rate == 0) {
                 set_error_message('通知金額を入力して下さい');
                 return;
             }
-            var is_succeeded = await create_alert_async(market, pair, rate);
-            if (is_succeeded) {
-                $('#alerts_button').click();
+            let result;
+            result = await create_alert_async(market, pair, rate, comment);
+            $(this).prop('disabled', false );
+            if (result.error) {
+                handle_error(result.error)
+                return;
             }
-           
+            set_success_message('アラートを追加しました');
+            $alert_comment.val('');
+            $('#alerts_button').click();
         });
+        
         $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_market);
         $('<option>', { value: 'all', text: '全て' }).appendTo($alert_search_pair);
         

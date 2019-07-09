@@ -18,7 +18,15 @@ def deactivate_order_relation(relation):
 
 def cancel_oco_other_order(order):
     # 本注文がOCO注文であった場合、注文前に他方をキャンセルする
-    position = order.myposition
+    try:
+        position = order.myposition
+    except:
+        try:
+            order.cancel()
+        except:
+            pass
+        finally:
+            return False
     # 自身が注文2である場合はまず注文3をキャンセル
     if position == 'settle_order_1':
         parent = getattr(order, position)
@@ -66,6 +74,7 @@ def cancel_oco_other_order(order):
                 parent.order_3 = None
                 parent.special_order = 'SINGLE'
                 parent.save()
+                return False
         else:
             # 他方のキャンセルに成功した場合はSINGLEへ
             parent.order_1 = order
@@ -73,6 +82,10 @@ def cancel_oco_other_order(order):
             parent.order_3 = None
             parent.special_order = 'SINGLE'
             parent.save()
+            return True
+    # OCO以外の場合はfalse
+    else:
+        return False
       
 class Command(BaseCommand):
     help = '逆指値、ストップリミット注文を出します'
@@ -123,15 +136,21 @@ class Command(BaseCommand):
                                 (stop_market_order.side == 'buy' and (rate >= stop_market_order.price_for_stop)):
                                 
                                 # 親を取得
-                                parent = getattr(stop_market_order, stop_market_order.myposition)
+                                try:
+                                    parent = getattr(stop_market_order, stop_market_order.myposition)
+                                except:
+                                    # 親がいない場合
+                                    try:
+                                        stop_market_order.cancel()
+                                    except:
+                                        pass
                                 # OCOの場合は他方キャンセル
                                 is_succeeded = cancel_oco_other_order(stop_market_order)
                                 if is_succeeded: # 他方のキャンセルに成功した場合
-                                    try:
-                                        stop_market_order.place()
-                                    except OrderFailedError as e:
+                                    stop_market_order.place()
+                                    if stop_market_order.status == Order.STATUS_FAILED_TO_ORDER:
                                         deactivate_order_relation(parent)
-                                        logger.error( '逆指値注文:{pk}の注文が失敗しました。{error}'.format(pk = stop_market_order.pk, error = str(e.args)) )
+                                        logger.error( '逆指値注文:{pk}の注文が失敗しました。{error}'.format(pk = stop_market_order.pk, error = stop_market_order.error_message) )
                                     else:
                                         logger.info( '逆指値注文:{order_id}を注文しました'.format(order_id = stop_market_order.order_id) )
 
@@ -144,16 +163,20 @@ class Command(BaseCommand):
                                 (stop_limit_order.side == 'buy' and (rate >= stop_limit_order.price_for_stop)):
                                 
                                 # 親を取得
-                                parent = getattr(stop_limit_order, stop_limit_order.myposition)
-
+                                try:
+                                    parent = getattr(stop_limit_order, stop_limit_order.myposition)
+                                except:
+                                    try:
+                                        stop_limit_order.cancel()
+                                    except:
+                                        pass
                                 # OCOの場合は他方キャンセル
                                 is_succeeded = cancel_oco_other_order(stop_limit_order)
                                 if is_succeeded:
-                                    try:
-                                        stop_limit_order.place()
-                                    except OrderFailedError as e:
+                                    stop_limit_order.place()
+                                    if stop_limit_order.status == Order.STATUS_FAILED_TO_ORDER:
                                         deactivate_order_relation(parent)
-                                        logger.error( 'ストップリミット注文:{pk}の注文が失敗しました。{error}'.format(pk = stop_market_order.pk, error = str(e.args)) )
+                                        logger.error( 'ストップリミット注文:{pk}の注文が失敗しました。{error}'.format(pk = stop_market_order.pk, error = stop_limit_order.error_message) )
                                     else:
                                         logger.info( 'ストップリミット注文:{order_id}を注文しました'.format(order_id = stop_market_order.order_id) )
                             
@@ -161,20 +184,25 @@ class Command(BaseCommand):
                         # トレール注文取得
                         trail_orders_by_pair = Order.objects.filter(market = market, pair = pair, order_type = Order.TYPE_TRAIL, order_id__isnull = True, status__in = [Order.STATUS_READY_TO_ORDER])
                         for trail_order in trail_orders_by_pair:
-                            parent = getattr(trail_order, trail_order.myposition)
-
+                            
+                            try:
+                                parent = getattr(trail_order, trail_order.myposition)
+                            except:
+                                try:
+                                    trail_order.cancel()
+                                except:
+                                    pass
                             if trail_order.side == 'sell':
                                 if trail_order.trail_price > rate:
                                     # OCOの場合は他方キャンセル
                                     is_succeeded = cancel_oco_other_order(trail_order)
                                     if is_succeeded:
-                                        try:
-                                            trail_order.place()
-                                        except OrderFailedError as e:
+                                        trail_order.place()
+                                        if trail_order.status == Order.STATUS_FAILED_TO_ORDER:
                                             deactivate_order_relation(parent)
-                                            logger.error( 'トレール注文:{pk}の注文が失敗しました。{error}'.format(pk = stop_market_order.pk, error = str(e.args)) )
+                                            logger.error( 'トレール注文:{pk}の注文が失敗しました。{error}'.format(pk = stop_market_order.pk, error = trail_order.error_message ) )
                                         else:
-                                            logger.info( 'トレール注文:{order_id}を注文しました'.format(order_id = stop_market_order.order_id) )
+                                            logger.info( 'トレール注文:{order_id}を注文しました'.format(order_id = trail_order.order_id) )
                                 
                                 elif rate > trail_order.trail_price + trail_order.trail_width:
                                     trail_order.trail_price = rate - trail_order.trail_width
@@ -183,13 +211,12 @@ class Command(BaseCommand):
                                     # OCOの場合は他方キャンセル
                                     is_succeeded = cancel_oco_other_order(trail_order)
                                     if is_succeeded:
-                                        try:
-                                            trail_order.place()
-                                        except OrderFailedError as e:
+                                        trail_order.place()
+                                        if trail_order.status == Order.STATUS_FAILED_TO_ORDER:
                                             deactivate_order_relation(parent)
-                                            logger.error( 'トレール注文:{pk}の注文が失敗しました。{error}'.format(pk = stop_market_order.pk, error = str(e.args)) )
+                                            logger.error( 'トレール注文:{pk}の注文が失敗しました。{error}'.format(pk = trail_order.pk, error = trail_order.error_message) )
                                         else:
-                                            logger.info( 'トレール注文:{order_id}を注文しました'.format(order_id = stop_market_order.order_id) )
+                                            logger.info( 'トレール注文:{order_id}を注文しました'.format(order_id = trail_order.order_id) )
                             
                                 elif rate <= trail_order.trail_price - trail_order.trail_width:
                                     trail_order.trail_price = rate + trail_order.trail_width

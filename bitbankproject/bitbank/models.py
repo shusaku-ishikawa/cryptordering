@@ -377,7 +377,7 @@ class Order(models.Model):
                 self.status = Order.STATUS_FAILED_TO_ORDER
                 self.error_message = str(e.args)
                 self.save()
-                raise OrderFailedError(self.error_message)
+                return False
             else:
                 self.remaining_amount = ret.get('remaining_amount')
                 self.executed_amount = ret.get('executed_amount')
@@ -422,7 +422,7 @@ class Order(models.Model):
 
     def cancel(self):
         logger = logging.getLogger('api')
-        
+        print(self.status)
         # 未約定、部分約定以外のステータスの倍はステータスのみ変更
         if self.status not in { self.STATUS_UNFILLED, self.STATUS_PARTIALLY_FILLED }:
             self.status = self.STATUS_CANCELED_UNFILLED
@@ -545,6 +545,12 @@ class Relation(models.Model):
     class Meta:
         verbose_name = "発注一覧"
         verbose_name_plural = "2.発注一覧"
+
+    ORDER_SINGLE = 'SINGLE'
+    ORDER_IFD = 'IFD'
+    ORDER_OCO = 'OCO'
+    ORDER_IFDOCO = 'IFDOCO'
+
     MARKET = [
         'bitbank',
         'coincheck'
@@ -662,6 +668,11 @@ class Alert(models.Model):
         auto_now = False,
         null = True
     )
+    comment = models.CharField(
+        verbose_name = 'コメント',
+        max_length = 255,
+        default = ""
+    )
 
     is_active = models.BooleanField(
         verbose_name = _('有効'),
@@ -669,7 +680,7 @@ class Alert(models.Model):
     )
     def notify_user(self):
         if self.user.use_alert == 'ON':
-            context = { "user": self.user, "rate": self.rate, "pair": self.pair }
+            context = { "user": self.user, "rate": self.rate, "pair": self.pair, "comment": self.comment }
             subject = get_template('bitbank/mail_template/rate_notice/subject.txt').render(context)
             message = get_template('bitbank/mail_template/rate_notice/message.txt').render(context)
             self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)

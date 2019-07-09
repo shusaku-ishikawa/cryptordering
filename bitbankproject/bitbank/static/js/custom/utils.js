@@ -131,7 +131,7 @@ function call_relations(method, market, pair, offset = null, limit = null, speci
     });
 }
 
-function call_alerts(method, pk, market, pair, offset, limit, rate) {
+function call_alerts(method, pk, market, pair, offset, limit, rate, comment) {
     return $.ajax({
         url: BASE_URL_ALERTS,
         type: (method == 'GET') ? 'GET' : 'POST',
@@ -144,6 +144,7 @@ function call_alerts(method, pk, market, pair, offset, limit, rate) {
             offset: offset,
             limit: limit,
             rate: rate,
+            comment: comment
         }
     });
 }

@@ -1,0 +1,8 @@
+[INFO]	asctime:2019-07-08 21:57:10,856	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-08 21:59:48,087	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-08 22:00:44,748	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-08 22:10:57,563	module:monitor_ticker	message:started
+[ERROR]	asctime:2019-07-08 22:11:01,396	module:monitor_ticker	message:逆指値注文:186の注文が失敗しました。('エラーコード: 60002 内容: 成行買い注文の数量上限を上回っています',)
+[INFO]	asctime:2019-07-08 22:29:40,711	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-08 22:31:16,199	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-08 22:32:14,237	module:monitor_ticker	message:completed
