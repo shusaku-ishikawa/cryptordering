@@ -148,15 +148,33 @@ $(function() {
     setInterval(async () => {
         await init_ticker_and_asset_async()}, RATE_UPDATE_FREQ
     );
-    var $number_inputs = $('input[type="number"]');
-    $number_inputs.on('input', function() {
-        var $this = $(this);
-        var str = $this.val();
-        while(str.match(/[^A-Z^a-z\d\-]/))
-        {
-            str = str.replace(/[^A-Z^a-z\d\-]/,"");
+
+    function convertZenToHan(val){
+        var han = val.replace(/[Ａ-Ｚａ-ｚ０-９]/g,function(s){return String.fromCharCode(s.charCodeAt(0)-0xFEE0)});
+        return han
+        if(val.match(/[Ａ-Ｚａ-ｚ０-９]/g)){
+            $(ele).val(han);
         }
-        $this.val(str);
-    });
+    }
+    var $number_inputs = $('input[type2="number"]');
+    $number_inputs
+    .on('input', function() {
+        let value = $(this).val();
+        console.log(value);
+        value = value
+            .replace(/。/g, ".")
+            .replace(/[０-９]/g, function(s) {
+                return String.fromCharCode(s.charCodeAt(0) - 65248);
+            })
+            .replace(/[^0-9\.]/g, '');
+      	$(this).val(value);
+    })
+    .on('change', function() {
+        let value = $(this).val();
+        if (value != "" && isNaN(value)) {
+            set_error_message('数値を入力してください');
+            $(this).val('').focus();
+        }
+    }); 
 });
 

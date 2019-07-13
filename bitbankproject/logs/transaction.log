@@ -1,7 +1,0 @@
-[ERROR]	asctime:2019-07-06 14:54:17,734	module:models	message:place bitbank order: ('エラーコード: 60005 内容: 指定した価格が上限を上回っています',)
-[ERROR]	asctime:2019-07-06 14:56:19,993	module:models	message:place bitbank order: ('エラーコード: 60001 内容: 保有数量が不足しています',)
-[ERROR]	asctime:2019-07-06 15:09:58,320	module:models	message:place bitbank order: ('エラーコード: 60001 内容: 保有数量が不足しています',)
-[ERROR]	asctime:2019-07-06 16:21:53,061	module:models	message:place bitbank order: ('エラーコード: 60001 内容: 保有数量が不足しています',)
-[ERROR]	asctime:2019-07-08 21:20:12,702	module:models	message:place bitbank order: ('エラーコード: 60001 内容: 保有数量が不足しています',)
-[ERROR]	asctime:2019-07-08 21:54:35,676	module:models	message:place bitbank order: ('エラーコード: 60001 内容: 保有数量が不足しています',)
-[ERROR]	asctime:2019-07-08 22:11:01,386	module:models	message:place bitbank order: ('エラーコード: 60002 内容: 成行買い注文の数量上限を上回っています',)
