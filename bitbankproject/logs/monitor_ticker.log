@@ -6,3 +6,347 @@
 [INFO]	asctime:2019-07-08 22:29:40,711	module:monitor_ticker	message:started
 [INFO]	asctime:2019-07-08 22:31:16,199	module:monitor_ticker	message:started
 [INFO]	asctime:2019-07-08 22:32:14,237	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-13 15:03:27,053	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-13 15:04:30,645	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-13 21:25:11,750	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-13 21:26:15,743	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-13 21:29:09,677	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-13 21:29:10,683	module:monitor_ticker	message:bitbank btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:11,259	module:monitor_ticker	message:bitbank btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:11,259	module:monitor_ticker	message:bitbank xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:11,881	module:monitor_ticker	message:bitbank xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:11,881	module:monitor_ticker	message:bitbank ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:12,448	module:monitor_ticker	message:bitbank ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:12,448	module:monitor_ticker	message:bitbank eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:12,991	module:monitor_ticker	message:bitbank eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:12,991	module:monitor_ticker	message:bitbank mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:13,507	module:monitor_ticker	message:bitbank mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:13,507	module:monitor_ticker	message:bitbank mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:13,991	module:monitor_ticker	message:bitbank mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:13,991	module:monitor_ticker	message:bitbank bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:14,503	module:monitor_ticker	message:bitbank bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:14,503	module:monitor_ticker	message:bitbank bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:15,020	module:monitor_ticker	message:bitbank bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:15,020	module:monitor_ticker	message:coincheck btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:15,293	module:monitor_ticker	message:coincheck btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:15,294	module:monitor_ticker	message:coincheck xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:15,554	module:monitor_ticker	message:coincheck xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:15,554	module:monitor_ticker	message:coincheck ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:15,851	module:monitor_ticker	message:coincheck ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:15,851	module:monitor_ticker	message:coincheck eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:16,171	module:monitor_ticker	message:coincheck eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:16,171	module:monitor_ticker	message:coincheck mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:16,396	module:monitor_ticker	message:coincheck mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:16,396	module:monitor_ticker	message:coincheck mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:16,675	module:monitor_ticker	message:coincheck mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:16,675	module:monitor_ticker	message:coincheck bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:16,912	module:monitor_ticker	message:coincheck bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:16,912	module:monitor_ticker	message:coincheck bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:17,220	module:monitor_ticker	message:coincheck bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:18,220	module:monitor_ticker	message:bitbank btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:18,747	module:monitor_ticker	message:bitbank btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:18,747	module:monitor_ticker	message:bitbank xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:19,342	module:monitor_ticker	message:bitbank xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:19,343	module:monitor_ticker	message:bitbank ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:19,930	module:monitor_ticker	message:bitbank ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:19,930	module:monitor_ticker	message:bitbank eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:20,470	module:monitor_ticker	message:bitbank eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:20,470	module:monitor_ticker	message:bitbank mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:21,663	module:monitor_ticker	message:bitbank mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:21,663	module:monitor_ticker	message:bitbank mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:22,139	module:monitor_ticker	message:bitbank mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:22,139	module:monitor_ticker	message:bitbank bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:22,640	module:monitor_ticker	message:bitbank bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:22,641	module:monitor_ticker	message:bitbank bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:23,078	module:monitor_ticker	message:bitbank bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:23,078	module:monitor_ticker	message:coincheck btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:23,341	module:monitor_ticker	message:coincheck btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:23,341	module:monitor_ticker	message:coincheck xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:23,619	module:monitor_ticker	message:coincheck xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:23,619	module:monitor_ticker	message:coincheck ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:23,890	module:monitor_ticker	message:coincheck ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:23,890	module:monitor_ticker	message:coincheck eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:24,116	module:monitor_ticker	message:coincheck eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:24,116	module:monitor_ticker	message:coincheck mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:24,370	module:monitor_ticker	message:coincheck mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:24,370	module:monitor_ticker	message:coincheck mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:24,680	module:monitor_ticker	message:coincheck mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:24,680	module:monitor_ticker	message:coincheck bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:24,913	module:monitor_ticker	message:coincheck bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:24,914	module:monitor_ticker	message:coincheck bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:25,155	module:monitor_ticker	message:coincheck bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:26,156	module:monitor_ticker	message:bitbank btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:26,806	module:monitor_ticker	message:bitbank btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:26,806	module:monitor_ticker	message:bitbank xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:27,333	module:monitor_ticker	message:bitbank xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:27,333	module:monitor_ticker	message:bitbank ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:27,828	module:monitor_ticker	message:bitbank ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:27,829	module:monitor_ticker	message:bitbank eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:28,385	module:monitor_ticker	message:bitbank eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:28,386	module:monitor_ticker	message:bitbank mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:28,904	module:monitor_ticker	message:bitbank mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:28,905	module:monitor_ticker	message:bitbank mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:29,400	module:monitor_ticker	message:bitbank mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:29,401	module:monitor_ticker	message:bitbank bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:29,994	module:monitor_ticker	message:bitbank bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:29,995	module:monitor_ticker	message:bitbank bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:30,579	module:monitor_ticker	message:bitbank bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:30,580	module:monitor_ticker	message:coincheck btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:30,899	module:monitor_ticker	message:coincheck btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:30,899	module:monitor_ticker	message:coincheck xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:31,133	module:monitor_ticker	message:coincheck xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:31,133	module:monitor_ticker	message:coincheck ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:31,460	module:monitor_ticker	message:coincheck ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:31,460	module:monitor_ticker	message:coincheck eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:31,744	module:monitor_ticker	message:coincheck eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:31,744	module:monitor_ticker	message:coincheck mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:31,999	module:monitor_ticker	message:coincheck mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:32,000	module:monitor_ticker	message:coincheck mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:32,260	module:monitor_ticker	message:coincheck mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:32,261	module:monitor_ticker	message:coincheck bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:32,531	module:monitor_ticker	message:coincheck bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:32,531	module:monitor_ticker	message:coincheck bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:32,789	module:monitor_ticker	message:coincheck bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:33,790	module:monitor_ticker	message:bitbank btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:34,361	module:monitor_ticker	message:bitbank btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:34,361	module:monitor_ticker	message:bitbank xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:34,890	module:monitor_ticker	message:bitbank xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:34,891	module:monitor_ticker	message:bitbank ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:35,393	module:monitor_ticker	message:bitbank ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:35,393	module:monitor_ticker	message:bitbank eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:35,937	module:monitor_ticker	message:bitbank eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:35,937	module:monitor_ticker	message:bitbank mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:36,446	module:monitor_ticker	message:bitbank mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:36,446	module:monitor_ticker	message:bitbank mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:37,034	module:monitor_ticker	message:bitbank mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:37,034	module:monitor_ticker	message:bitbank bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:37,542	module:monitor_ticker	message:bitbank bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:37,542	module:monitor_ticker	message:bitbank bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:38,002	module:monitor_ticker	message:bitbank bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:38,003	module:monitor_ticker	message:coincheck btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:38,247	module:monitor_ticker	message:coincheck btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:38,247	module:monitor_ticker	message:coincheck xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:38,510	module:monitor_ticker	message:coincheck xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:38,510	module:monitor_ticker	message:coincheck ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:38,775	module:monitor_ticker	message:coincheck ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:38,776	module:monitor_ticker	message:coincheck eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:39,061	module:monitor_ticker	message:coincheck eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:39,064	module:monitor_ticker	message:coincheck mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:39,347	module:monitor_ticker	message:coincheck mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:39,347	module:monitor_ticker	message:coincheck mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:39,591	module:monitor_ticker	message:coincheck mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:39,591	module:monitor_ticker	message:coincheck bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:39,833	module:monitor_ticker	message:coincheck bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:39,834	module:monitor_ticker	message:coincheck bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:40,079	module:monitor_ticker	message:coincheck bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:41,081	module:monitor_ticker	message:bitbank btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:41,737	module:monitor_ticker	message:bitbank btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:41,737	module:monitor_ticker	message:bitbank xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:42,295	module:monitor_ticker	message:bitbank xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:42,295	module:monitor_ticker	message:bitbank ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:42,804	module:monitor_ticker	message:bitbank ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:42,804	module:monitor_ticker	message:bitbank eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:43,309	module:monitor_ticker	message:bitbank eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:43,309	module:monitor_ticker	message:bitbank mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:43,849	module:monitor_ticker	message:bitbank mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:43,849	module:monitor_ticker	message:bitbank mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:44,366	module:monitor_ticker	message:bitbank mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:44,366	module:monitor_ticker	message:bitbank bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:44,902	module:monitor_ticker	message:bitbank bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:44,903	module:monitor_ticker	message:bitbank bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:45,495	module:monitor_ticker	message:bitbank bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:45,496	module:monitor_ticker	message:coincheck btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:45,773	module:monitor_ticker	message:coincheck btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:45,773	module:monitor_ticker	message:coincheck xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:46,054	module:monitor_ticker	message:coincheck xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:46,054	module:monitor_ticker	message:coincheck ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:46,301	module:monitor_ticker	message:coincheck ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:46,301	module:monitor_ticker	message:coincheck eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:46,542	module:monitor_ticker	message:coincheck eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:46,542	module:monitor_ticker	message:coincheck mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:46,839	module:monitor_ticker	message:coincheck mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:46,840	module:monitor_ticker	message:coincheck mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:47,332	module:monitor_ticker	message:coincheck mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:47,332	module:monitor_ticker	message:coincheck bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:47,649	module:monitor_ticker	message:coincheck bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:47,649	module:monitor_ticker	message:coincheck bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:47,941	module:monitor_ticker	message:coincheck bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:48,942	module:monitor_ticker	message:bitbank btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:49,441	module:monitor_ticker	message:bitbank btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:49,441	module:monitor_ticker	message:bitbank xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:50,021	module:monitor_ticker	message:bitbank xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:50,021	module:monitor_ticker	message:bitbank ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:50,530	module:monitor_ticker	message:bitbank ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:50,531	module:monitor_ticker	message:bitbank eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:51,684	module:monitor_ticker	message:bitbank eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:51,684	module:monitor_ticker	message:bitbank mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:52,198	module:monitor_ticker	message:bitbank mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:52,199	module:monitor_ticker	message:bitbank mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:52,705	module:monitor_ticker	message:bitbank mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:52,705	module:monitor_ticker	message:bitbank bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:53,190	module:monitor_ticker	message:bitbank bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:53,190	module:monitor_ticker	message:bitbank bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:53,677	module:monitor_ticker	message:bitbank bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:53,677	module:monitor_ticker	message:coincheck btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:53,924	module:monitor_ticker	message:coincheck btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:53,925	module:monitor_ticker	message:coincheck xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:54,174	module:monitor_ticker	message:coincheck xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:54,174	module:monitor_ticker	message:coincheck ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:54,414	module:monitor_ticker	message:coincheck ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:54,414	module:monitor_ticker	message:coincheck eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:54,675	module:monitor_ticker	message:coincheck eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:54,675	module:monitor_ticker	message:coincheck mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:54,923	module:monitor_ticker	message:coincheck mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:54,923	module:monitor_ticker	message:coincheck mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:55,177	module:monitor_ticker	message:coincheck mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:55,177	module:monitor_ticker	message:coincheck bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:55,456	module:monitor_ticker	message:coincheck bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:55,456	module:monitor_ticker	message:coincheck bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:55,695	module:monitor_ticker	message:coincheck bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:56,697	module:monitor_ticker	message:bitbank btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:57,831	module:monitor_ticker	message:bitbank btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:57,831	module:monitor_ticker	message:bitbank xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:58,369	module:monitor_ticker	message:bitbank xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:58,369	module:monitor_ticker	message:bitbank ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:58,884	module:monitor_ticker	message:bitbank ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:58,884	module:monitor_ticker	message:bitbank eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:29:59,362	module:monitor_ticker	message:bitbank eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:29:59,363	module:monitor_ticker	message:bitbank mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:29:59,846	module:monitor_ticker	message:bitbank mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:29:59,847	module:monitor_ticker	message:bitbank mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:00,363	module:monitor_ticker	message:bitbank mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:00,363	module:monitor_ticker	message:bitbank bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:01,135	module:monitor_ticker	message:bitbank bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:01,135	module:monitor_ticker	message:bitbank bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:01,599	module:monitor_ticker	message:bitbank bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:01,600	module:monitor_ticker	message:coincheck btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:01,816	module:monitor_ticker	message:coincheck btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:01,816	module:monitor_ticker	message:coincheck xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:02,082	module:monitor_ticker	message:coincheck xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:02,082	module:monitor_ticker	message:coincheck ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:02,353	module:monitor_ticker	message:coincheck ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:02,353	module:monitor_ticker	message:coincheck eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:02,609	module:monitor_ticker	message:coincheck eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:02,609	module:monitor_ticker	message:coincheck mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:02,870	module:monitor_ticker	message:coincheck mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:02,871	module:monitor_ticker	message:coincheck mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:03,129	module:monitor_ticker	message:coincheck mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:03,129	module:monitor_ticker	message:coincheck bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:03,393	module:monitor_ticker	message:coincheck bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:03,393	module:monitor_ticker	message:coincheck bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:03,627	module:monitor_ticker	message:coincheck bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:04,628	module:monitor_ticker	message:bitbank btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:05,165	module:monitor_ticker	message:bitbank btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:05,166	module:monitor_ticker	message:bitbank xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:05,730	module:monitor_ticker	message:bitbank xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:05,730	module:monitor_ticker	message:bitbank ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:06,233	module:monitor_ticker	message:bitbank ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:06,234	module:monitor_ticker	message:bitbank eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:06,742	module:monitor_ticker	message:bitbank eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:06,743	module:monitor_ticker	message:bitbank mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:07,201	module:monitor_ticker	message:bitbank mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:07,201	module:monitor_ticker	message:bitbank mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:07,705	module:monitor_ticker	message:bitbank mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:07,705	module:monitor_ticker	message:bitbank bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:08,201	module:monitor_ticker	message:bitbank bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:08,201	module:monitor_ticker	message:bitbank bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:08,703	module:monitor_ticker	message:bitbank bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:08,703	module:monitor_ticker	message:coincheck btc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:08,975	module:monitor_ticker	message:coincheck btc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:08,976	module:monitor_ticker	message:coincheck xrp_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:09,233	module:monitor_ticker	message:coincheck xrp_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:09,235	module:monitor_ticker	message:coincheck ltc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:09,469	module:monitor_ticker	message:coincheck ltc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:09,469	module:monitor_ticker	message:coincheck eth_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:09,741	module:monitor_ticker	message:coincheck eth_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:09,741	module:monitor_ticker	message:coincheck mona_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:09,990	module:monitor_ticker	message:coincheck mona_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:09,990	module:monitor_ticker	message:coincheck mona_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:10,254	module:monitor_ticker	message:coincheck mona_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:10,255	module:monitor_ticker	message:coincheck bcc_jpyの処理 開始
+[INFO]	asctime:2019-07-13 21:30:10,491	module:monitor_ticker	message:coincheck bcc_jpyの処理 終了
+[INFO]	asctime:2019-07-13 21:30:10,491	module:monitor_ticker	message:coincheck bcc_btcの処理 開始
+[INFO]	asctime:2019-07-13 21:30:10,757	module:monitor_ticker	message:coincheck bcc_btcの処理 終了
+[INFO]	asctime:2019-07-13 21:30:11,762	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-13 21:38:08,053	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-13 21:38:10,546	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294500.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:10,546	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294600.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:10,552	module:monitor_ticker	message:ストップリミットbuy: None検知。ストップ金額=1232031.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:20,455	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294500.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:20,456	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294600.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:20,459	module:monitor_ticker	message:ストップリミットbuy: None検知。ストップ金額=1232031.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:28,684	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294500.0 現在買レート=1235991.0 現在売レート=1235991.0
+[INFO]	asctime:2019-07-13 21:38:28,684	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294600.0 現在買レート=1235991.0 現在売レート=1235991.0
+[INFO]	asctime:2019-07-13 21:38:28,687	module:monitor_ticker	message:ストップリミットbuy: None検知。ストップ金額=1232031.0 現在買レート=1235991.0 現在売レート=1235991.0
+[INFO]	asctime:2019-07-13 21:38:36,825	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294500.0 現在買レート=1235991.0 現在売レート=1235991.0
+[INFO]	asctime:2019-07-13 21:38:36,826	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294600.0 現在買レート=1235991.0 現在売レート=1235991.0
+[INFO]	asctime:2019-07-13 21:38:36,829	module:monitor_ticker	message:ストップリミットbuy: None検知。ストップ金額=1232031.0 現在買レート=1235991.0 現在売レート=1235991.0
+[INFO]	asctime:2019-07-13 21:38:45,130	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294500.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:45,130	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294600.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:45,135	module:monitor_ticker	message:ストップリミットbuy: None検知。ストップ金額=1232031.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:54,551	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294500.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:54,552	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294600.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:38:54,555	module:monitor_ticker	message:ストップリミットbuy: None検知。ストップ金額=1232031.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:39:02,721	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294500.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:39:02,722	module:monitor_ticker	message:逆指値buy: None検知。ストップ金額=1294600.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:39:02,727	module:monitor_ticker	message:ストップリミットbuy: None検知。ストップ金額=1232031.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:39:10,790	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-13 21:40:01,676	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-13 21:40:03,270	module:monitor_ticker	message:逆指値buy: ストップ金額=1294500.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:03,270	module:monitor_ticker	message:逆指値buy: ストップ金額=1294600.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:03,274	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1232031.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:15,438	module:monitor_ticker	message:逆指値buy: ストップ金額=1294500.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:15,438	module:monitor_ticker	message:逆指値buy: ストップ金額=1294600.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:15,441	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1232031.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:26,217	module:monitor_ticker	message:逆指値buy: ストップ金額=1294500.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:26,218	module:monitor_ticker	message:逆指値buy: ストップ金額=1294600.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:26,226	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1232031.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:36,218	module:monitor_ticker	message:逆指値buy: ストップ金額=1294500.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:36,219	module:monitor_ticker	message:逆指値buy: ストップ金額=1294600.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:36,222	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1232031.0 現在買レート=1235992.0 現在売レート=1235992.0
+[INFO]	asctime:2019-07-13 21:40:45,808	module:monitor_ticker	message:逆指値buy: ストップ金額=1294500.0 現在買レート=1235305.0 現在売レート=1235305.0
+[INFO]	asctime:2019-07-13 21:40:45,808	module:monitor_ticker	message:逆指値buy: ストップ金額=1294600.0 現在買レート=1235305.0 現在売レート=1235305.0
+[INFO]	asctime:2019-07-13 21:40:45,812	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1232031.0 現在買レート=1235305.0 現在売レート=1235305.0
+[INFO]	asctime:2019-07-13 21:40:55,061	module:monitor_ticker	message:逆指値buy: ストップ金額=1294500.0 現在買レート=1235305.0 現在売レート=1235305.0
+[INFO]	asctime:2019-07-13 21:40:55,062	module:monitor_ticker	message:逆指値buy: ストップ金額=1294600.0 現在買レート=1235305.0 現在売レート=1235305.0
+[INFO]	asctime:2019-07-13 21:40:55,066	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1232031.0 現在買レート=1235305.0 現在売レート=1235305.0
+[INFO]	asctime:2019-07-13 21:41:05,685	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-13 21:43:14,576	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-13 21:43:16,144	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234473.0 現在売レート=1234473.0
+[INFO]	asctime:2019-07-13 21:43:23,641	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234472.0 現在売レート=1234472.0
+[INFO]	asctime:2019-07-13 21:43:31,188	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234472.0 現在売レート=1234472.0
+[INFO]	asctime:2019-07-13 21:43:38,516	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234473.0 現在売レート=1234473.0
+[INFO]	asctime:2019-07-13 21:43:46,116	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234473.0 現在売レート=1234473.0
+[INFO]	asctime:2019-07-13 21:43:53,518	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234460.0 現在売レート=1234460.0
+[INFO]	asctime:2019-07-13 21:44:00,904	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1233900.0 現在売レート=1233900.0
+[INFO]	asctime:2019-07-13 21:44:08,180	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234443.0 現在売レート=1234443.0
+[INFO]	asctime:2019-07-13 21:44:14,985	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-13 21:44:43,339	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-13 21:44:44,888	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234120.0 現在売レート=1234120.0
+[INFO]	asctime:2019-07-13 21:44:52,098	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234120.0 現在売レート=1234120.0
+[INFO]	asctime:2019-07-13 21:44:59,386	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234120.0 現在売レート=1234120.0
+[INFO]	asctime:2019-07-13 21:45:06,607	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234190.0 現在売レート=1234190.0
+[INFO]	asctime:2019-07-13 21:45:14,442	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234190.0 現在売レート=1234190.0
+[INFO]	asctime:2019-07-13 21:45:17,459	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-13 21:45:19,034	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234190.0 現在売レート=1234190.0
+[INFO]	asctime:2019-07-13 21:45:26,976	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234190.0 現在売レート=1234190.0
+[INFO]	asctime:2019-07-13 21:45:35,652	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234249.0 現在売レート=1234249.0
+[INFO]	asctime:2019-07-13 21:45:43,136	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234249.0 現在売レート=1234249.0
+[INFO]	asctime:2019-07-13 21:45:45,758	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-13 21:45:47,300	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234249.0 現在売レート=1234249.0
+[INFO]	asctime:2019-07-13 21:45:54,895	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234250.0 現在売レート=1234250.0
+[INFO]	asctime:2019-07-13 21:46:02,474	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234250.0 現在売レート=1234250.0
+[INFO]	asctime:2019-07-13 21:46:09,849	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234250.0 現在売レート=1234250.0
+[INFO]	asctime:2019-07-13 21:46:17,135	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234250.0 現在売レート=1234250.0
+[INFO]	asctime:2019-07-13 21:46:24,348	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234250.0 現在売レート=1234250.0
+[INFO]	asctime:2019-07-13 21:46:31,656	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234251.0 現在売レート=1234251.0
+[INFO]	asctime:2019-07-13 21:46:38,915	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1234251.0 現在売レート=1234251.0
+[INFO]	asctime:2019-07-13 21:46:45,754	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-13 21:51:22,193	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-13 21:51:23,848	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1232833.0 現在売レート=1232833.0
+[INFO]	asctime:2019-07-13 21:51:31,214	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1232833.0 現在売レート=1232833.0
+[INFO]	asctime:2019-07-13 21:51:39,122	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1232668.0 現在売レート=1232668.0
+[INFO]	asctime:2019-07-13 21:51:46,627	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1232668.0 現在売レート=1232668.0
+[INFO]	asctime:2019-07-13 21:51:54,219	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1234031.0 現在買レート=1232661.0 現在売レート=1232661.0
+[INFO]	asctime:2019-07-13 21:52:02,950	module:monitor_ticker	message:ストップリミットbuy: ストップ金額=1232031.0 現在買レート=1232397.0 現在売レート=1232397.0
+[INFO]	asctime:2019-07-13 21:52:37,440	module:monitor_ticker	message:started

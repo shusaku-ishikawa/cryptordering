@@ -30,62 +30,69 @@ def cancel_oco_other_order(order):
     # 自身が注文2である場合はまず注文3をキャンセル
     if position == 'settle_order_1':
         parent = getattr(order, position)
-        try:
-            parent.order_3.cancel()
-        except OrderCancelFailedError:
+        # OCOの場合
+        if parent.special_order == Relation.ORDER_OCO:
             try:
-                order.cancel()
+                parent.order_3.cancel()
             except OrderCancelFailedError:
-                deactivate_order_relation(parent)
-                return False
+                try:
+                    order.cancel()
+                except OrderCancelFailedError:
+                    deactivate_order_relation(parent)
+                    return False
+                else:
+                    # 自身のキャンセルに成功したらSINGLEへ
+                    parent.order_1 = parent.order_3
+                    parent.order_2 = None
+                    parent.order_3 = None
+                    parent.special_order = 'SINGLE'
+                    parent.save()
+                    return False
             else:
-                # 自身のキャンセルに成功したらSINGLEへ
-                parent.order_1 = parent.order_3
+                # 他方のキャンセルに成功した場合はSINGLEへ
+                parent.order_1 = order
                 parent.order_2 = None
                 parent.order_3 = None
                 parent.special_order = 'SINGLE'
                 parent.save()
-                return False
+                return True
         else:
-            # 他方のキャンセルに成功した場合はSINGLEへ
-            parent.order_1 = order
-            parent.order_2 = None
-            parent.order_3 = None
-            parent.special_order = 'SINGLE'
-            parent.save()
-            return True
-            
+            logger.error('注文の構成が不正です:{}'.format(parent.pk))
         
     # 自身が注文3である場合は注文2をキャンセル
     elif position == 'settle_order_2':
         parent = getattr(order, position)
-        try:
-            parent.order_2.cancel()
-        except OrderCancelFailedError:
+        if parent.special_order == Relation.ORDER_OCO:
             try:
-                order.cancel()
+                parent.order_2.cancel()
             except OrderCancelFailedError:
-                deactivate_order_relation(parent)
-                return False
+                try:
+                    order.cancel()
+                except OrderCancelFailedError:
+                    deactivate_order_relation(parent)
+                    return False
+                else:
+                    # 自身のキャンセルに成功したらSINGLEへ
+                    parent.order_1 = parent.order_2
+                    parent.order_2 = None
+                    parent.order_3 = None
+                    parent.special_order = 'SINGLE'
+                    parent.save()
+                    return False
             else:
-                # 自身のキャンセルに成功したらSINGLEへ
-                parent.order_1 = parent.order_2
+                # 他方のキャンセルに成功した場合はSINGLEへ
+                parent.order_1 = order
                 parent.order_2 = None
                 parent.order_3 = None
                 parent.special_order = 'SINGLE'
                 parent.save()
-                return False
+                return True
         else:
-            # 他方のキャンセルに成功した場合はSINGLEへ
-            parent.order_1 = order
-            parent.order_2 = None
-            parent.order_3 = None
-            parent.special_order = 'SINGLE'
-            parent.save()
-            return True
-    # OCO以外の場合はfalse
+            logger.error('注文の構成が不正です:{}'.format(parent.pk))
+
+    # OCO以外の場合はTrue
     else:
-        return False
+        return True
       
 class Command(BaseCommand):
     help = '逆指値、ストップリミット注文を出します'
@@ -119,7 +126,8 @@ class Command(BaseCommand):
                 for pair in Relation.PAIR:
                     try:
                         rate = self._get_market_price(market, pair)
-                    except ValueError:
+                    except ValueError as e:
+                        logger.error('エラー:{}'.format(e.args))
                         pass
                     else:
                         # 有効なアラートを取得
@@ -132,12 +140,17 @@ class Command(BaseCommand):
                         # 逆指値の注文取得
                         stop_market_orders_by_pair = Order.objects.filter(market = market, pair = pair, order_type = Order.TYPE_STOP_MARKET, order_id__isnull = True, status__in = [Order.STATUS_READY_TO_ORDER])
                         for stop_market_order in stop_market_orders_by_pair:
+                            logger.info('逆指値{side}: ストップ金額={stop_price} 現在買レート={buy_rate} 現在売レート={sell_rate}'.format(side=stop_market_order.side, stop_price=stop_market_order.price_for_stop, buy_rate=rate, sell_rate=rate))
+                            
                             if (stop_market_order.side == 'sell' and (rate <= stop_market_order.price_for_stop)) or \
                                 (stop_market_order.side == 'buy' and (rate >= stop_market_order.price_for_stop)):
                                 
                                 # 親を取得
                                 try:
                                     parent = getattr(stop_market_order, stop_market_order.myposition)
+                                    # ロックされている場合は無視
+                                    if parent.is_locked:
+                                        continue
                                 except:
                                     # 親がいない場合
                                     try:
@@ -158,13 +171,16 @@ class Command(BaseCommand):
                         # ストップリミットの注文取得
                         stop_limit_orders_by_pair = Order.objects.filter(market = market, pair = pair, order_type = Order.TYPE_STOP_LIMIT, order_id__isnull = True, status__in = [Order.STATUS_READY_TO_ORDER])
                         for stop_limit_order in stop_limit_orders_by_pair:
-                            
+                            logger.info('ストップリミット{side}: ストップ金額={stop_price} 現在買レート={buy_rate} 現在売レート={sell_rate}'.format(side=stop_limit_order.side, stop_price=stop_limit_order.price_for_stop, buy_rate=rate, sell_rate=rate))
+
                             if (stop_limit_order.side == 'sell' and (rate <= stop_limit_order.price_for_stop)) or \
                                 (stop_limit_order.side == 'buy' and (rate >= stop_limit_order.price_for_stop)):
-                                
                                 # 親を取得
                                 try:
                                     parent = getattr(stop_limit_order, stop_limit_order.myposition)
+                                    # ロックされている場合は無視
+                                    if parent.is_locked:
+                                        continue
                                 except:
                                     try:
                                         stop_limit_order.cancel()
@@ -176,17 +192,21 @@ class Command(BaseCommand):
                                     stop_limit_order.place()
                                     if stop_limit_order.status == Order.STATUS_FAILED_TO_ORDER:
                                         deactivate_order_relation(parent)
-                                        logger.error( 'ストップリミット注文:{pk}の注文が失敗しました。{error}'.format(pk = stop_market_order.pk, error = stop_limit_order.error_message) )
+                                        logger.error( 'ストップリミット注文:{pk}の注文が失敗しました。{error}'.format(pk = stop_limit_order.pk, error = stop_limit_order.error_message) )
                                     else:
-                                        logger.info( 'ストップリミット注文:{order_id}を注文しました'.format(order_id = stop_market_order.order_id) )
+                                        logger.info( 'ストップリミット注文:{order_id}を注文しました'.format(order_id = stop_limit_order.order_id) )
                             
                     
                         # トレール注文取得
                         trail_orders_by_pair = Order.objects.filter(market = market, pair = pair, order_type = Order.TYPE_TRAIL, order_id__isnull = True, status__in = [Order.STATUS_READY_TO_ORDER])
                         for trail_order in trail_orders_by_pair:
+                            logger.info('トレール{side}: トレール金額={trail_price} 現在買レート={buy_rate} 現在売レート={sell_rate}'.format(side=trail_order.side , stop_price=trail_order.trail_price, buy_rate=rate, sell_rate=rate))
                             
                             try:
                                 parent = getattr(trail_order, trail_order.myposition)
+                                # ロックされている場合は無視
+                                if parent.is_locked:
+                                    continue
                             except:
                                 try:
                                     trail_order.cancel()

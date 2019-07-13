@@ -19,3 +19,6 @@
 [INFO]	asctime:2019-07-08 22:24:33,787	module:monitor_order_status	message:started
 [ERROR]	asctime:2019-07-08 22:24:54,359	module:monitor_order_status	message:注文:600059863のキャンセルに失敗しました。("('エラーコード: 50027 内容: 不明なエラーです。サポートにお問い合わせ下さい',)",)
 [INFO]	asctime:2019-07-08 22:25:31,620	module:monitor_order_status	message:completed
+[INFO]	asctime:2019-07-13 21:41:22,268	module:monitor_order_status	message:started
+[INFO]	asctime:2019-07-13 21:52:48,853	module:monitor_order_status	message:started
+[INFO]	asctime:2019-07-13 21:53:46,604	module:monitor_order_status	message:completed

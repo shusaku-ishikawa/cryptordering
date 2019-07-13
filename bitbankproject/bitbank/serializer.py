@@ -104,7 +104,7 @@ class OrderSerializer(serializers.ModelSerializer):
             setattr(parent, attr_name, new_instance)
             parent.is_locked = False
             parent.save()
-            return new_instances
+            return new_instance
         
 
     def validate(self, data):
