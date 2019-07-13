@@ -137,14 +137,14 @@ LOGGING = {
             'filename': os.path.join(BASE_DIR, 'logs/transaction.log'),
             'formatter': 'all',
             'maxBytes': 1024 * 1024,
-            'backupCount': 10,
+            'backupCount': 2,
         },
         'file_monitor_order_status': { 
             'level': 'DEBUG',  # DEBUG以上のログを取り扱うという意味
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/monitor_order_status.log'),
             'formatter': 'all',
-            'maxBytes': 100024 * 1024,
+            'maxBytes': 10024 * 1024,
             'backupCount': 1,
         },
         'file_monitor_ticker': { 
@@ -152,7 +152,7 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/monitor_ticker.log'),
             'formatter': 'all',
-            'maxBytes': 100024 * 1024,
+            'maxBytes': 10024 * 1024,
             'backupCount': 1,
         },
         'file_sync_orders': { 
@@ -160,7 +160,7 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/sync_orders.log'),
             'formatter': 'all',
-            'maxBytes': 100024 * 1024,
+            'maxBytes': 10024 * 1024,
             'backupCount': 1,
         },
     },
