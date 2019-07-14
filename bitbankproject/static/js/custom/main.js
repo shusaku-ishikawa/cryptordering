@@ -156,18 +156,56 @@ $(function() {
             $(ele).val(han);
         }
     }
+    //SET CURSOR POSITION
+    $.fn.setCursorPosition = function(pos) {
+        this.each(function(index, elem) {
+        if (elem.setSelectionRange) {
+            elem.setSelectionRange(pos, pos);
+        } else if (elem.createTextRange) {
+            var range = elem.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            range.select();
+        }
+        });
+        return this;
+    };
+    $.fn.getCursorPosition = function () {
+        var pos = 0;
+        var el = $(this).get(0);
+        // IE Support
+        if (document.selection) {
+            el.focus();
+            var Sel = document.selection.createRange();
+            var SelLength = document.selection.createRange().text.length;
+            Sel.moveStart('character', -el.value.length);
+            pos = Sel.text.length - SelLength;
+        }
+        // Firefox support
+        else if (el.selectionStart || el.selectionStart == '0')
+            pos = el.selectionStart;
+        return pos;
+    }
+
     var $number_inputs = $('input[type2="number"]');
     $number_inputs
     .on('input', function() {
         let value = $(this).val();
-        console.log(value);
+        let cursor_pos = $(this).getCursorPosition();
+
+        console.log(cursor_pos);
+
         value = value
             .replace(/。/g, ".")
             .replace(/[０-９]/g, function(s) {
                 return String.fromCharCode(s.charCodeAt(0) - 65248);
             })
             .replace(/[^0-9\.]/g, '');
-      	$(this).val(value);
+          $(this)
+          .val(value)
+          .setCursorPosition(cursor_pos);
+          
     })
     .on('change', function() {
         let value = $(this).val();
