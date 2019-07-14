@@ -142,25 +142,29 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
     });
 
     $limitpriceinput = $('<input>', {
-        type: 'number',
+        type: 'text',
+        type2: 'number',
         class: 'limit_price',
         value: price,
     });
 
     $stoppriceinput = $('<input>', {
-        type: 'number',
+        type: 'text',
+        type2: 'number',
         class: 'stop_price',
         value: price_for_stop,
     });
 
     $trailwidth = $('<input>', {
         class: 'trail_width',
-        type: 'number',
+        type: 'text',
+        type2: 'number',
         value: trail_width,
         
     });
     $amountinput = $('<input>', {
-        type: 'number',
+        type: 'text',
+        type2: 'number',
         class: 'amount',
         value: start_amount
     });

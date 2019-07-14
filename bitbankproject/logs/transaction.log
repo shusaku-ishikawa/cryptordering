@@ -1,0 +1,4 @@
+[ERROR]	asctime:2019-07-14 16:14:20,520	module:models	message:place bitbank order: ('エラーコード: 60004 内容: 指定した数量がしきい値を下回っています',)
+[ERROR]	asctime:2019-07-14 16:14:24,932	module:models	message:place bitbank order: ('エラーコード: 60004 内容: 指定した数量がしきい値を下回っています',)
+[ERROR]	asctime:2019-07-14 16:14:29,465	module:models	message:place bitbank order: ('エラーコード: 60004 内容: 指定した数量がしきい値を下回っています',)
+[ERROR]	asctime:2019-07-14 16:14:33,497	module:models	message:place bitbank order: ('エラーコード: 60004 内容: 指定した数量がしきい値を下回っています',)
