@@ -188,26 +188,30 @@ $(function() {
         return pos;
     }
 
-    var $number_inputs = $('input[type2="number"]');
-    $number_inputs
-    .on('input', function() {
+    $('body')
+    .on('input', 'input[type2="number"]', function() {
         let value = $(this).val();
+        var replaced_value;
         let cursor_pos = $(this).getCursorPosition();
 
         console.log(cursor_pos);
-
-        value = value
+        if (value.match(/[^０-９^0-9。¥.]/g)) {
+            cursor_pos = cursor_pos - 1;
+        }
+        replaced_value = value
             .replace(/。/g, ".")
             .replace(/[０-９]/g, function(s) {
                 return String.fromCharCode(s.charCodeAt(0) - 65248);
             })
             .replace(/[^0-9\.]/g, '');
-          $(this)
-          .val(value)
-          .setCursorPosition(cursor_pos);
+        
+        
+        $(this)
+        .val(replaced_value)
+        .setCursorPosition(cursor_pos);
           
     })
-    .on('change', function() {
+    .on('change','input[type2="number"]' , function() {
         let value = $(this).val();
         if (value != "" && isNaN(value)) {
             set_error_message('数値を入力してください');
