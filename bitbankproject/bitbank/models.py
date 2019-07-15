@@ -375,7 +375,7 @@ class Order(models.Model):
             except Exception as e:
                 logger.error('place bitbank order: ' + str(e.args))
                 self.status = Order.STATUS_FAILED_TO_ORDER
-                self.error_message = str(e.args)
+                self.error_message = e.args[0]
                 self.save()
                 return False
             else:
@@ -422,7 +422,6 @@ class Order(models.Model):
 
     def cancel(self):
         logger = logging.getLogger('api')
-        print(self.status)
         # 未約定、部分約定以外のステータスの倍はステータスのみ変更
         if self.status not in { self.STATUS_UNFILLED, self.STATUS_PARTIALLY_FILLED }:
             self.status = self.STATUS_CANCELED_UNFILLED
@@ -439,7 +438,7 @@ class Order(models.Model):
                     self.order_id # 注文ID
                 )
             except Exception as e:
-                raise OrderCancelFailedError(str(e.args))
+                raise OrderCancelFailedError(e.args[0])
             else:
                 print(ret)
                 self.remaining_amount = ret.get('remaining_amount')
@@ -478,7 +477,7 @@ class Order(models.Model):
                     self.order_id
                 )
             except Exception as e:
-                raise OrderStatusUpdateError(str(e.args))
+                raise OrderStatusUpdateError(e.args[0])
             else:
                 self.remaining_amount = ret.get('remaining_amount')
                 self.executed_amount = ret.get('executed_amount')

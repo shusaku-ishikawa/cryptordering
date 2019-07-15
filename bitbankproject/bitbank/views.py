@@ -311,7 +311,10 @@ def ajax_assets(request):
                         'error': 'bitbankのAPI KEYが登録されていません'
                     }
                 else:
-                    res_dict = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key).get_asset()
+                    try:
+                        res_dict = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key).get_asset()
+                    except Exception as e:
+                        return JsonResponse({'error': e.args[0]})
                     
             elif market == 'coincheck':
                 if user.cc_api_key == None or user.cc_api_secret_key == None:
@@ -320,6 +323,8 @@ def ajax_assets(request):
                     }
                 else:
                     res_dict = json.loads(CoinCheck(user.cc_api_key, user.cc_api_secret_key).account.balance({}))
+                    if not res_dict['success']:
+                        return JsonResponse({'error': 'coincheckの資産の取得に失敗しました'})
             return JsonResponse(res_dict) 
 
 def _get_error_message(errors, str_order):
@@ -423,8 +428,8 @@ def ajax_order(request):
                 try:
                     relation = Relation.objects.get(order_3 = order)
                 except:
-                    print('hoge')
-                    return JsonResponse({'error': 'Unknown error'})
+                    
+                    return JsonResponse({'error': '親の注文が存在しません'})
                 else:
                     # OCOの場合
                     if relation.order_1 == None:
@@ -446,7 +451,7 @@ def ajax_order(request):
                 pk = request.POST.get('pk')
                 order = Order.objects.get(pk = pk)
             except KeyError  as e:
-                return JsonResponse({'error': str(e.args)})
+                return JsonResponse({'error': 'キー:pk が存在しません' })
             except Order.DoesNotExist:
                 return JsonResponse({'error': '対象の注文が存在しません'})
             else:
@@ -692,21 +697,22 @@ def ajax_inquiry(request):
         att_2_pk = request.POST.get('att_pk_2')
         att_3_pk = request.POST.get('att_pk_3')
         
+        error_msg = '添付ファイルの取得に失敗しました'
         if att_1_pk != None and att_1_pk != '':
             try:
                 new_inquiry.attachment_1 = Attachment.objects.get(pk = att_1_pk)
             except Attachment.DoesNotExist as e:
-                return JsonResponse({'error': str(e.args)})
+                return JsonResponse({'error': error_msg })
         if att_2_pk != None and att_2_pk != '':
             try:
                 new_inquiry.attachment_2 = Attachment.objects.get(pk = att_2_pk)
             except Attachment.DoesNotExist as e:
-                return JsonResponse({'error': str(e.args)})
+                return JsonResponse({'error': error_msg })
         if att_3_pk != None and att_3_pk != '':
             try:
                 new_inquiry.attachment_3 = Attachment.objects.get(pk = att_3_pk)
             except Attachment.DoesNotExist as e:
-                return JsonResponse({'error': str(e.args)})
+                return JsonResponse({'error': error_msg })
         
         new_inquiry.save()
     
