@@ -157,6 +157,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 logger = logging.getLogger('batch_logger')
 
+import re
+def _trim_error_msg(msg):
+    return re.sub('エラーコード: [0-9]+ 内容: ',"", msg)
+
 class Order(models.Model):
     def __str__(self):
         if self.order_id == None:
@@ -375,7 +379,7 @@ class Order(models.Model):
             except Exception as e:
                 logger.error('place bitbank order: ' + str(e.args))
                 self.status = Order.STATUS_FAILED_TO_ORDER
-                self.error_message = e.args[0]
+                self.error_message = _trim_error_msg(e.args[0])
                 self.save()
                 return False
             else:
@@ -398,9 +402,9 @@ class Order(models.Model):
                     'order_type': self.side if 'limit' in self.order_type else 'market_' + self.side,
                     'pair': self.pair
                 }))
-            except Exception:
+            except Exception as e:
                 self.status = Order.STATUS_FAILED_TO_ORDER
-                self.error_message = str(e.args)
+                self.error_message = e.args[0]
                 self.save()
                 raise OrderFailedError(self.error_message)
             else:
@@ -438,9 +442,8 @@ class Order(models.Model):
                     self.order_id # 注文ID
                 )
             except Exception as e:
-                raise OrderCancelFailedError(e.args[0])
+                raise OrderCancelFailedError(_trim_error_msg(e.args[0]) )
             else:
-                print(ret)
                 self.remaining_amount = ret.get('remaining_amount')
                 self.executed_amount = ret.get('executed_amount')
                 self.average_price = ret.get('average_price')
@@ -455,7 +458,7 @@ class Order(models.Model):
                     'id': self.order_id # 注文ID
                 }))   
             except Exception as e:
-                raise OrderCancelFailedError(str(e.args))
+                raise OrderCancelFailedError(e.args[0])
             else:
                 if not ret.get('success') and ret.get('error'):
                     raise OrderCancelFailedError(ret.get('error'))
@@ -477,7 +480,7 @@ class Order(models.Model):
                     self.order_id
                 )
             except Exception as e:
-                raise OrderStatusUpdateError(e.args[0])
+                raise OrderStatusUpdateError(_trim_error_msg(e.args[0]) )
             else:
                 self.remaining_amount = ret.get('remaining_amount')
                 self.executed_amount = ret.get('executed_amount')
@@ -496,7 +499,7 @@ class Order(models.Model):
                     'ending_before': self.order_id
                 }))
             except Exception as e:
-                raise OrderStatusUpdateError(str(e.args))
+                raise OrderStatusUpdateError(e.args[0])
             else:
                 if not _open.get('success'):
                     if _open.get('error'):

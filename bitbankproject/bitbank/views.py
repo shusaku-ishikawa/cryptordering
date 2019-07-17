@@ -35,6 +35,7 @@ from .models import (Alert, Attachment, Order, Inquiry, Relation,
                      User)
 from .serializer import *
 from .myexceptions import *
+import re
 
 class Login(LoginView):
     """ログインページ"""
@@ -274,6 +275,12 @@ def ajax_alerts(request):
             else:
                 print(str(serializer.errors) + " gttetetet")
                 return JsonResponse({'error': _get_error_message(serializer.errors, '') })
+
+def _get_ticker(market, pair):
+    res = python_bitbankcc.public().get_ticker(pair) if market == 'bitbank' else json.loads(CoinCheck('fake', 'fake').ticker.all())
+    if 'error' in res:
+        raise Exception(res['error'])
+    return res
 def ajax_ticker(request):
     if request.user.is_anonymous or request.user.is_active == False:
         return JsonResponse({'error' : 'authentication failed'}, status=401)
@@ -281,15 +288,25 @@ def ajax_ticker(request):
     if request.method == 'GET':
         market = request.GET.get('market');
         pair = request.GET.get('pair')
-        
         try:
-            res = python_bitbankcc.public().get_ticker(pair) if market == 'bitbank' else json.loads(CoinCheck('fake', 'fake').ticker.all())
+            result = _get_ticker(market, pair)
         except Exception as e:
-            res = {
-                'error': e.args
-            }
-        finally:
-            return JsonResponse(res)
+            return JsonResponse({'error': '{}のレートの取得に失敗しました'.format(market) })
+        else:
+            return JsonResponse(result)
+
+def _get_asset(market, user):
+    if market == 'bitbank':
+        try:
+            res_dict = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key).get_asset()
+        except Exception as e:
+            raise
+            
+    elif market == 'coincheck':
+        res_dict = json.loads(CoinCheck(user.cc_api_key, user.cc_api_secret_key).account.balance({}))
+        if 'error' in res_dict:
+            raise Exception('{}の資産の取得に失敗しました'.format(market))
+    return res_dict
 
 def ajax_assets(request):
     logger = logging.getLogger('api')
@@ -305,27 +322,14 @@ def ajax_assets(request):
         except KeyError as e:
             return JsonResponse({'error': str(e.args)})
         else:
-            if market == 'bitbank':
-                if user.bb_api_key == None or user.bb_api_secret_key == None:
-                    res_dict = {
-                        'error': 'bitbankのAPI KEYが登録されていません'
-                    }
-                else:
-                    try:
-                        res_dict = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key).get_asset()
-                    except Exception as e:
-                        return JsonResponse({'error': e.args[0]})
-                    
-            elif market == 'coincheck':
-                if user.cc_api_key == None or user.cc_api_secret_key == None:
-                    res_dict = {
-                        'error': 'coincheckのAPI KEYが登録されていません'
-                    }
-                else:
-                    res_dict = json.loads(CoinCheck(user.cc_api_key, user.cc_api_secret_key).account.balance({}))
-                    if not res_dict['success']:
-                        return JsonResponse({'error': 'coincheckの資産の取得に失敗しました'})
-            return JsonResponse(res_dict) 
+            try:
+                result = _get_asset(market, user)
+            except Exception as e:
+                return JsonResponse({'error': _trim_error_msg(e.args[0]) })
+            else:
+                return JsonResponse(result) 
+
+
 
 def _get_error_message(errors, str_order):
     _fields = {
@@ -446,7 +450,6 @@ def ajax_order(request):
                
         elif op == 'UPDATE':
             ''' パラメータ '''
-            
             try:
                 pk = request.POST.get('pk')
                 order = Order.objects.get(pk = pk)
@@ -460,6 +463,67 @@ def ajax_order(request):
                 param['pair'] = order.pair
                 
                 current_status = order.status
+
+                side = param['side']
+                order_type = param['order_type']
+                amount = float(param['start_amount'])
+                
+                asset_name = order.pair.split('_')[0] if side == 'sell' else order.pair.split('_')[1]
+                
+                try:
+                    assets = _get_asset(order.market, request.user)['assets']
+                except Exception as e:
+                    print(e)
+                    return JsonResponse({'error': '資産の取得に失敗しました'})
+                else:
+                    position = order.myposition
+                    parent = getattr(order, position)
+                asset = float([asset for asset in assets if asset['asset'] == asset_name ][0]['onhand_amount'])
+                # IFDの場合
+                if parent.special_order in { Relation.ORDER_IFD, Relation.ORDER_IFDOCO }:
+                    ifdorder = parent.order_1
+                    # 売の場合は数量のみ考慮
+                    if side == 'sell':
+                        asset_at_the_point = asset + (ifdorder.start_amount if ifdorder.side == 'buy' else -1 * ifdorder.start_amount )
+                        if amount > asset_at_the_point:
+                            return JsonResponse({'error': '数量が不足しております'})
+                    # 買いの場合は持っている金額考慮
+                    else:
+                        if 'limit' in order_type:
+                            rate = param['price']
+                        else:
+                            try:
+                                rate = float(_get_ticker(order.market, order.pair)['last'])
+                            except Exception as e:
+                                return JsonResponse({'error': _trim_error_msg(e.args[0]) })
+                        money_required = rate * amount
+                        
+                        if 'limit' in ifdorder.order_type:
+                            ifdrate = ifdorder.price
+                        else:
+                            try:
+                                ifdrate = float(_get_ticker(order.market, order.pair)['last'])
+                            except Exception as e:
+                                return JsonResponse({'error': _trim_error_msg(e.args[0]) })
+                            
+                        money_possess = asset + ifdrate * ifdorder.start_amount * (1 if ifdorder.side == 'sell' else -1)
+                        if money_required > money_possess:
+                            return JsonResponse({'error': '数量が不足しております'})
+                else:
+                    if side == 'sell':
+                        if amount > asset:
+                            return JsonResponse({'error': '数量が不足しております'})
+                    else:
+                        if 'limit' in order_type:
+                            rate = float(param['price'])
+                        else:
+                            try:
+                                rate = float(_get_ticker(order.market, order.pair)['last'])
+                            except Exception as e:
+                                return JsonResponse({'error': _trim_error_msg(e.args[0]) })
+                        print(assets)
+                        if rate * amount > asset:
+                            return JsonResponse({'error': '数量が不足しております'})
                 # IFDの約定待ちの注文を更新する場合
                 if current_status == Order.STATUS_WAIT_OTHER_ORDER_TO_FILL:
                     param['status'] = current_status
