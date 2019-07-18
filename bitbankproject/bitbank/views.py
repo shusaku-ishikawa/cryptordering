@@ -490,7 +490,7 @@ def ajax_order(request):
                     # 買いの場合は持っている金額考慮
                     else:
                         if 'limit' in order_type:
-                            rate = param['price']
+                            rate = float(param['price'])
                         else:
                             try:
                                 rate = float(_get_ticker(order.market, order.pair)['last'])

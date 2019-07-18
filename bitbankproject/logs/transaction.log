@@ -11,3 +11,8 @@
 [ERROR]	asctime:2019-07-17 20:43:45,429	module:models	message:place bitbank order: ('エラーコード: 60004 内容: 指定した数量がしきい値を下回っています',)
 [ERROR]	asctime:2019-07-17 20:44:43,570	module:models	message:place bitbank order: ('エラーコード: 60004 内容: 指定した数量がしきい値を下回っています',)
 [ERROR]	asctime:2019-07-17 20:47:15,773	module:models	message:place bitbank order: ('エラーコード: 60004 内容: 指定した数量がしきい値を下回っています',)
+[ERROR]	asctime:2019-07-18 19:40:00,296	module:models	message:place bitbank order: ('エラーコード: 60004 内容: 指定した数量がしきい値を下回っています',)
+[ERROR]	asctime:2019-07-18 19:43:07,485	module:models	message:place bitbank order: ('エラーコード: 60006 内容: 指定した価格が下限を下回っています',)
+[ERROR]	asctime:2019-07-18 19:47:02,157	module:models	message:place bitbank order: ('エラーコード: 60006 内容: 指定した価格が下限を下回っています',)
+[ERROR]	asctime:2019-07-18 19:47:08,616	module:models	message:place bitbank order: ('エラーコード: 60006 内容: 指定した価格が下限を下回っています',)
+[ERROR]	asctime:2019-07-18 19:47:46,712	module:models	message:place bitbank order: ('エラーコード: 60006 内容: 指定した価格が下限を下回っています',)

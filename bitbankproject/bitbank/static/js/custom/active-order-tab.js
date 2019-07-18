@@ -320,6 +320,8 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
             set_success_message('注文の更新が完了しました')
             $('#active_orders_button').click();
         }
+        let $input_search_market = $('#id_active_orders_search_market');
+        $input_search_market.trigger('change');
         $(this).prop('disabled', false);
     })
 
