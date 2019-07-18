@@ -28,11 +28,11 @@ from django.template.loader import get_template
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views import generic
+from .models import _trim_error_msg
 
 from .forms import (LoginForm, MyPasswordChangeForm, MyPasswordResetForm,
                     MySetPasswordForm, UserCreateForm, UserUpdateForm)
-from .models import (Alert, Attachment, Order, Inquiry, Relation,
-                     User)
+from .models import *
 from .serializer import *
 from .myexceptions import *
 import re
