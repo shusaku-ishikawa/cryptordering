@@ -464,66 +464,7 @@ def ajax_order(request):
                 
                 current_status = order.status
 
-                side = param['side']
-                order_type = param['order_type']
-                amount = float(param['start_amount'])
                 
-                asset_name = order.pair.split('_')[0] if side == 'sell' else order.pair.split('_')[1]
-                
-                try:
-                    assets = _get_asset(order.market, request.user)['assets']
-                except Exception as e:
-                    print(e)
-                    return JsonResponse({'error': '資産の取得に失敗しました'})
-                else:
-                    position = order.myposition
-                    parent = getattr(order, position)
-                asset = float([asset for asset in assets if asset['asset'] == asset_name ][0]['onhand_amount'])
-                # IFDの場合
-                if parent.special_order in { Relation.ORDER_IFD, Relation.ORDER_IFDOCO }:
-                    ifdorder = parent.order_1
-                    # 売の場合は数量のみ考慮
-                    if side == 'sell':
-                        asset_at_the_point = asset + (ifdorder.start_amount if ifdorder.side == 'buy' else -1 * ifdorder.start_amount )
-                        if amount > asset_at_the_point:
-                            return JsonResponse({'error': '数量が不足しております'})
-                    # 買いの場合は持っている金額考慮
-                    else:
-                        if 'limit' in order_type:
-                            rate = float(param['price'])
-                        else:
-                            try:
-                                rate = float(_get_ticker(order.market, order.pair)['last'])
-                            except Exception as e:
-                                return JsonResponse({'error': _trim_error_msg(e.args[0]) })
-                        money_required = rate * amount
-                        
-                        if 'limit' in ifdorder.order_type:
-                            ifdrate = ifdorder.price
-                        else:
-                            try:
-                                ifdrate = float(_get_ticker(order.market, order.pair)['last'])
-                            except Exception as e:
-                                return JsonResponse({'error': _trim_error_msg(e.args[0]) })
-                            
-                        money_possess = asset + ifdrate * ifdorder.start_amount * (1 if ifdorder.side == 'sell' else -1)
-                        if money_required > money_possess:
-                            return JsonResponse({'error': '数量が不足しております'})
-                else:
-                    if side == 'sell':
-                        if amount > asset:
-                            return JsonResponse({'error': '数量が不足しております'})
-                    else:
-                        if 'limit' in order_type:
-                            rate = float(param['price'])
-                        else:
-                            try:
-                                rate = float(_get_ticker(order.market, order.pair)['last'])
-                            except Exception as e:
-                                return JsonResponse({'error': _trim_error_msg(e.args[0]) })
-                        print(assets)
-                        if rate * amount > asset:
-                            return JsonResponse({'error': '数量が不足しております'})
                 # IFDの約定待ちの注文を更新する場合
                 if current_status == Order.STATUS_WAIT_OTHER_ORDER_TO_FILL:
                     param['status'] = current_status
@@ -536,6 +477,71 @@ def ajax_order(request):
 
                 serializer = OrderSerializer(data = param, instance = order, context = {'user': user})
                 if serializer.is_valid():
+                    side = param['side']
+                    order_type = param['order_type']
+                    amount = float(param['start_amount'])
+                    
+                    asset_name = order.pair.split('_')[0] if side == 'sell' else order.pair.split('_')[1]
+                    
+                    try:
+                        assets = _get_asset(order.market, request.user)['assets']
+                    except Exception as e:
+                        print(e)
+                        return JsonResponse({'error': '資産の取得に失敗しました'})
+                    else:
+                        position = order.myposition
+                        parent = getattr(order, position)
+                    asset = float([asset for asset in assets if asset['asset'] == asset_name ][0]['onhand_amount'])
+                    
+                    ## すでに注文している場合はその金額を戻す
+                    if order.status in { Order.STATUS_UNFILLED }:
+                        amount += order.start_amount
+                
+                    # IFDの場合
+                    if parent.special_order in { Relation.ORDER_IFD, Relation.ORDER_IFDOCO }:
+                        ifdorder = parent.order_1
+                        # 売の場合は数量のみ考慮
+                        if side == 'sell':
+                            asset_at_the_point = asset + (ifdorder.start_amount if ifdorder.side == 'buy' else -1 * ifdorder.start_amount )
+                            if amount > asset_at_the_point:
+                                return JsonResponse({'error': '数量が不足しております'})
+                        # 買いの場合は持っている金額考慮
+                        else:
+                            if 'limit' in order_type:
+                                rate = float(param['price'])
+                            else:
+                                try:
+                                    rate = float(_get_ticker(order.market, order.pair)['last'])
+                                except Exception as e:
+                                    return JsonResponse({'error': _trim_error_msg(e.args[0]) })
+                            money_required = rate * amount
+                            
+                            if 'limit' in ifdorder.order_type:
+                                ifdrate = ifdorder.price
+                            else:
+                                try:
+                                    ifdrate = float(_get_ticker(order.market, order.pair)['last'])
+                                except Exception as e:
+                                    return JsonResponse({'error': _trim_error_msg(e.args[0]) })
+                                
+                            money_possess = asset + ifdrate * ifdorder.start_amount * (1 if ifdorder.side == 'sell' else -1)
+                            if money_required > money_possess:
+                                return JsonResponse({'error': '数量が不足しております'})
+                    else:
+                        if side == 'sell':
+                            if amount > asset:
+                                return JsonResponse({'error': '数量が不足しております'})
+                        else:
+                            if 'limit' in order_type:
+                                rate = float(param['price'])
+                            else:
+                                try:
+                                    rate = float(_get_ticker(order.market, order.pair)['last'])
+                                except Exception as e:
+                                    return JsonResponse({'error': _trim_error_msg(e.args[0]) })
+                            print(assets)
+                            if rate * amount > asset:
+                                return JsonResponse({'error': '数量が不足しております'})
                     try:
                         updated_order = serializer.save()
                     except AlreadyFilledOrCancelledError:

@@ -128,17 +128,20 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         $ordertypeselect.append($('<option>', {
             value: key,
             text: ORDER_TYPES[key],
-            
         }));
     });
-    $ordertypeselect.on('change', function() {
+    $ordertypeselect.on('change', function(event, is_init) {
         var $card = $(this).closest('.order_body');
         var type = $(this).val();
-
+        
         $card.find('.limit_price').prop('readonly', !type.includes('limit'));
         $card.find('.stop_price').prop('readonly', !type.includes('stop'));
         $card.find('.trail_width').prop('readonly', !type.includes('trail'));
-       
+        if (is_init != true) {
+            if ($(this).val() == 'stop_limit') {
+                set_info_message('ストップリミット時即約定さすには、売りの場合は約定希望価格を発動価格よりも安く設定。 買いの場合は約定希望価格を発動価格よりも高く設定');
+            }
+        }
     });
 
     $limitpriceinput = $('<input>', {
@@ -357,7 +360,7 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
     }).append($row_1).append($row_2).append($row_3).append($row_4).append($row_5).append($row_6).append($row_7).append($row_8);
 
     $sellbuyselect.val(side).trigger('change');
-    $ordertypeselect.val(order_type).trigger('change');
+    $ordertypeselect.val(order_type).trigger('change', true);
     return $orderbody;
    
 }

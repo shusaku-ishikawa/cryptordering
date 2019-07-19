@@ -331,6 +331,17 @@ function set_success_message(message="正常に処理しました") {
     
     $modal.modal('show');
 }
+
+function set_info_message(message) {
+    var $modal = $('.modal');
+    $modal.find('span#message').html(message);
+    $modal.find('.success-icon').hide();
+    $modal.find('.alert-icon').hide();
+    
+    $modal.modal('show');
+}
+
+
 function handle_error(error) {
     const { status, statusText, responseText } = error;
     if (status == 401) {
