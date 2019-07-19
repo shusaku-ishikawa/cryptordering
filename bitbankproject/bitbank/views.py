@@ -495,7 +495,14 @@ def ajax_order(request):
                     
                     ## すでに注文している場合はその金額を戻す
                     if order.status in { Order.STATUS_UNFILLED }:
-                        asset += order.start_amount
+                        if order.side == 'sell':
+                            asset += order.start_amount
+                        else:
+                            # 買いの場合はレート * 数量を戻す
+                            rate = float(_get_ticker(order.market, order.pair)['last'])
+                            asset += order.start_amount * rate
+                            
+
                 
                     # IFDの場合
                     if parent.special_order in { Relation.ORDER_IFD, Relation.ORDER_IFDOCO }:
