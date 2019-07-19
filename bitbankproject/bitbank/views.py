@@ -495,7 +495,7 @@ def ajax_order(request):
                     
                     ## すでに注文している場合はその金額を戻す
                     if order.status in { Order.STATUS_UNFILLED }:
-                        amount += order.start_amount
+                        asset += order.start_amount
                 
                     # IFDの場合
                     if parent.special_order in { Relation.ORDER_IFD, Relation.ORDER_IFDOCO }:
