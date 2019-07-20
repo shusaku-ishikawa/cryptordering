@@ -499,8 +499,14 @@ def ajax_order(request):
                             asset += order.start_amount
                         else:
                             # 買いの場合はレート * 数量を戻す
-                            rate = float(_get_ticker(order.market, order.pair)['last'])
-                            asset += order.start_amount * rate
+                            if 'limit' in order.order_type:
+                                rate = order.price
+                            else:
+                                try:
+                                    rate = float(_get_ticker(order.market, order.pair)['last'])
+                                except Exception as e:
+                                    return JsonResponse({'error': '{}のレートの取得に失敗しました'.format(order.market)})
+                                asset += order.start_amount * rate
                             
 
                 

@@ -576,7 +576,7 @@ function init_order_tab(is_initial = false) {
                 } else if (new_order_type == 'stop_limit') {
                     $('#id_stop_price_placeholder_' + i).html('逆指値(発動価格)');
                     $('#id_price_placeholder_' + i).html('指値(約定希望価格)');
-                    set_info_message('ストップリミット時即約定さすには、売りの場合は約定希望価格を発動価格よりも安く設定。 買いの場合は約定希望価格を発動価格よりも高く設定');
+                    set_info_message('ストップリミット時即約定さすには、<br>売りの場合は約定希望価格を発動価格よりも安く設定<br>買いの場合は約定希望価格を発動価格よりも高く設定');
                 }
                 
                 display_price_div(i, new_order_type);
