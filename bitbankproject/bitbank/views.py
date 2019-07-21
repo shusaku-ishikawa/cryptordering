@@ -506,7 +506,7 @@ def ajax_order(request):
                                     rate = float(_get_ticker(order.market, order.pair)['last'])
                                 except Exception as e:
                                     return JsonResponse({'error': '{}のレートの取得に失敗しました'.format(order.market)})
-                                asset += order.start_amount * rate
+                            asset += order.start_amount * rate
                             
 
                 
