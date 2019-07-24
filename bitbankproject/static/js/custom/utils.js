@@ -205,23 +205,24 @@ async function init_free_amount_json_async() {
         call_assets('GET', 'coincheck')
     )
     .done(function(bbassets, ccassets) {
-        console.log(bbassets[0])
         if (bbassets[0]['error']) {
             set_error_message(bbassets[0]['error']);
+        } else {
+            bbassets[0].assets.forEach(asset => {
+                free_amount_json['bitbank'][asset.asset] = asset.free_amount;
+            });
         }
-        bbassets[0].assets.forEach(asset => {
-            free_amount_json['bitbank'][asset.asset] = asset.free_amount;
-        });
         if (ccassets[0]['error']) {
             set_error_message(ccassets[0]['error']);
+        } else {
+            Object.keys(ccassets[0]).forEach(asset_name => {
+                console.log(asset_name);
+                if (asset_name != 'success') {
+                    free_amount_json['coincheck'][asset_name] = ccassets[0][asset_name];
+                }
+                
+            });
         }
-        Object.keys(ccassets[0]).forEach(asset_name => {
-            console.log(asset_name);
-            if (asset_name != 'success') {
-                free_amount_json['coincheck'][asset_name] = ccassets[0][asset_name];
-            }
-            
-        })
     })
     .fail(function() {
         set_error_message('資産の取得に失敗しました。')
