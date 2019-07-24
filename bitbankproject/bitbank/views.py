@@ -297,6 +297,8 @@ def ajax_ticker(request):
 
 def _get_asset(market, user):
     if market == 'bitbank':
+        if not user.bb_api_key or not user.bb_api_secret_key:
+            return {'error': 'bitbank api keyが登録されていません'}
         try:
             res_dict = python_bitbankcc.private(user.bb_api_key, user.bb_api_secret_key).get_asset()
         except Exception as e:
