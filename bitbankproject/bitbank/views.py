@@ -511,7 +511,7 @@ def ajax_order(request):
 
                 
                     # IFDの場合
-                    if parent.special_order in { Relation.ORDER_IFD, Relation.ORDER_IFDOCO }:
+                    if parent.special_order in { Relation.ORDER_IFD, Relation.ORDER_IFDOCO } and parent.order_1 != order:
                         ifdorder = parent.order_1
                         # 売の場合は数量のみ考慮
                         if side == 'sell':
