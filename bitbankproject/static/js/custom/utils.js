@@ -206,14 +206,14 @@ async function init_free_amount_json_async() {
     )
     .done(function(bbassets, ccassets) {
         if (bbassets[0]['error']) {
-            set_error_message(bbassets[0]['error']);
+            //set_error_message(bbassets[0]['error']);
         } else {
             bbassets[0].assets.forEach(asset => {
                 free_amount_json['bitbank'][asset.asset] = asset.free_amount;
             });
         }
         if (ccassets[0]['error']) {
-            set_error_message(ccassets[0]['error']);
+            //set_error_message(ccassets[0]['error']);
         } else {
             Object.keys(ccassets[0]).forEach(asset_name => {
                 console.log(asset_name);
@@ -262,7 +262,7 @@ async function init_ticker_json_async() {
         
     })
     .fail(function() {
-        set_error_message('レートの取得に失敗しました。')
+        //set_error_message('レートの取得に失敗しました。')
     });
  
 }

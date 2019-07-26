@@ -3279,3 +3279,63 @@
 [INFO]	asctime:2019-07-21 12:32:01,172	module:monitor_ticker	message:completed
 [INFO]	asctime:2019-07-21 12:32:03,142	module:monitor_ticker	message:started
 [INFO]	asctime:2019-07-21 12:33:00,584	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-26 18:45:01,329	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-26 18:48:08,142	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-26 18:48:09,722	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062573.0 現在売レート=1062573.0
+[INFO]	asctime:2019-07-26 18:48:16,976	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062573.0 現在売レート=1062573.0
+[INFO]	asctime:2019-07-26 18:48:24,474	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062501.0 現在売レート=1062501.0
+[INFO]	asctime:2019-07-26 18:48:31,790	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062501.0 現在売レート=1062501.0
+[INFO]	asctime:2019-07-26 18:48:42,319	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062501.0 現在売レート=1062501.0
+[INFO]	asctime:2019-07-26 18:48:49,781	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062501.0 現在売レート=1062501.0
+[INFO]	asctime:2019-07-26 18:48:57,370	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062501.0 現在売レート=1062501.0
+[INFO]	asctime:2019-07-26 18:49:04,732	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:49:11,386	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-26 18:49:34,643	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-26 18:49:36,208	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:49:46,754	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062499.0 現在売レート=1062499.0
+[INFO]	asctime:2019-07-26 18:49:54,735	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062499.0 現在売レート=1062499.0
+[INFO]	asctime:2019-07-26 18:50:02,204	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:50:10,133	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:50:18,015	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:50:25,997	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:50:33,330	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-26 18:51:06,552	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-26 18:51:08,142	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:51:15,500	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:51:22,935	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:51:30,543	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:51:38,135	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:51:47,640	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:51:55,199	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:02,815	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:02,818	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:09,824	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-26 18:52:15,428	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-26 18:52:16,966	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:16,968	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:24,361	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:24,366	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:31,973	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:31,975	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:39,740	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:39,744	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:49,775	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:49,779	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:57,114	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:52:57,116	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:53:04,608	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:53:04,610	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:53:11,893	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:53:11,897	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1062500.0 現在売レート=1062500.0
+[INFO]	asctime:2019-07-26 18:53:18,856	module:monitor_ticker	message:completed
+[INFO]	asctime:2019-07-26 18:53:21,848	module:monitor_ticker	message:started
+[INFO]	asctime:2019-07-26 18:53:23,491	module:monitor_ticker	message:トレールbuy: トレール金額=1063324.0 現在買レート=1064128.0 現在売レート=1064128.0
+[INFO]	asctime:2019-07-26 18:53:24,018	module:monitor_ticker	message:トレール注文:612746679を注文しました
+[INFO]	asctime:2019-07-26 18:53:24,019	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1064128.0 現在売レート=1064128.0
+[INFO]	asctime:2019-07-26 18:53:31,525	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1064358.0 現在売レート=1064358.0
+[INFO]	asctime:2019-07-26 18:53:39,120	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1064487.0 現在売レート=1064487.0
+[INFO]	asctime:2019-07-26 18:53:46,748	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1064485.0 現在売レート=1064485.0
+[INFO]	asctime:2019-07-26 18:53:57,167	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1064485.0 現在売レート=1064485.0
+[INFO]	asctime:2019-07-26 18:54:04,513	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1064485.0 現在売レート=1064485.0
+[INFO]	asctime:2019-07-26 18:54:11,664	module:monitor_ticker	message:トレールsell: トレール金額=1062500.0 現在買レート=1064484.0 現在売レート=1064484.0
+[INFO]	asctime:2019-07-26 18:54:19,572	module:monitor_ticker	message:completed

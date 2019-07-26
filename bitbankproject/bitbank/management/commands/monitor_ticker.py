@@ -200,7 +200,7 @@ class Command(BaseCommand):
                         # トレール注文取得
                         trail_orders_by_pair = Order.objects.filter(market = market, pair = pair, order_type = Order.TYPE_TRAIL, order_id__isnull = True, status__in = [Order.STATUS_READY_TO_ORDER])
                         for trail_order in trail_orders_by_pair:
-                            logger.info('トレール{side}: トレール金額={trail_price} 現在買レート={buy_rate} 現在売レート={sell_rate}'.format(side=trail_order.side , stop_price=trail_order.trail_price, buy_rate=rate, sell_rate=rate))
+                            logger.info('トレール{side}: トレール金額={trail_price} 現在買レート={buy_rate} 現在売レート={sell_rate}'.format(side=trail_order.side , trail_price=trail_order.trail_price, buy_rate=rate, sell_rate=rate))
                             
                             try:
                                 parent = getattr(trail_order, trail_order.myposition)
