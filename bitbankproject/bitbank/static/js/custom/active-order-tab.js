@@ -317,6 +317,11 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         var stop_price = $card.find('.stop_price').val();
         var trail_width = $card.find('.trail_width').val();
         var amount = $card.find('.amount').val();
+        
+        // 新規注文の場合は注意書き
+        if (!is_cancellable) {
+            set_info_message('決済注文の数量の変更は大丈夫でしょうか？')
+        }
 
         let result = await update_order_async(pk, side, order_type, limit_price, stop_price, trail_width, amount);
         if (result) {

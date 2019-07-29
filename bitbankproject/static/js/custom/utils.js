@@ -225,7 +225,7 @@ async function init_free_amount_json_async() {
         }
     })
     .fail(function() {
-        set_error_message('資産の取得に失敗しました。')
+        //set_error_message('資産の取得に失敗しました。')
     });
 }
 
@@ -347,6 +347,7 @@ function handle_error(error) {
     const { status, statusText, responseText } = error;
     if (status == 401) {
         window.location.href = BASE_URL_LOGIN;
+        return false;
     }
     set_error_message(statusText);
 }
