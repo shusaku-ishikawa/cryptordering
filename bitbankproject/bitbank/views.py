@@ -365,7 +365,7 @@ def ajax_order(request):
         else:
             search_market = request.GET.get('market')
             search_pair = request.GET.get('pair')
-            order_history = Order.objects.filter(user=user).filter(status__in=[Order.STATUS_CANCELED_PARTIALLY_FILLED, Order.STATUS_FULLY_FILLED, Order.STATUS_FAILED_TO_ORDER])
+            order_history = Order.objects.filter(user=user).filter(status__in=[Order.STATUS_FULLY_FILLED, Order.STATUS_FAILED_TO_ORDER])
             
             if search_market != 'all':
                 order_history = order_history.filter(market = search_market)
@@ -460,7 +460,9 @@ def ajax_order(request):
             except Order.DoesNotExist:
                 return JsonResponse({'error': '対象の注文が存在しません'})
             else:
+                
                 param = request.POST.copy()
+                require_message = order.start_amount < float(param['start_amount'])
                 param['market'] = order.market
                 param['pair'] = order.pair
                 
@@ -566,7 +568,7 @@ def ajax_order(request):
                     else:
                         if updated_order.status == Order.STATUS_FAILED_TO_ORDER:
                             return JsonResponse({'error': updated_order.error_message})
-                        return JsonResponse({'success': True})
+                        return JsonResponse({'success': True, 'require_message': require_message})
                 else:
                     return JsonResponse({'error': _get_error_message(serializer.errors, '注文修正')})
                     

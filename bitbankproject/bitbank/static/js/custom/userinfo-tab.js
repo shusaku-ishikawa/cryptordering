@@ -19,11 +19,11 @@ async function init_user_info_content_async() {
     $('#id_cc_api_key').val(user.cc_api_key);
     $('#id_cc_api_secret_key').val(user.cc_api_secret_key);
     $('#id_email_for_notice').val(user.email_for_notice);
+    $('#id_remaining_days').html(user.remaining_days + '日');
     return true;
 }
 
 function init_user_info_tab(is_initial = false) {
-    
     
     // 初期ロード時のみ
     if (is_initial) {
@@ -33,9 +33,7 @@ function init_user_info_tab(is_initial = false) {
             var bb_api_secret_key = $('#id_bb_api_secret_key').val();
             var cc_api_key = $('#id_cc_api_key').val();
             var cc_api_secret_key = $('#id_cc_api_secret_key').val();
-            
             var email_for_notice = $('#id_email_for_notice').val();
-
             if(!email_for_notice.match(/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/)){
                 // 不正なメールアドレスの場合
                 set_error_message('メールアドレスの形式が不正です');

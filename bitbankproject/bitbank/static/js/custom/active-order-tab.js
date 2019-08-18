@@ -80,7 +80,7 @@ async function update_order_async(pk, side, order_type, limit_price, stop_price,
             set_error_message(result.error);
             return false;
         }
-        return true;
+        return {result:true, require_message: result.require_message};
     } catch (error) {
         handle_error(error);
         return false;
@@ -317,15 +317,16 @@ function build_active_order_card(is_cancellable, order_seq, pk, order_id, order_
         var stop_price = $card.find('.stop_price').val();
         var trail_width = $card.find('.trail_width').val();
         var amount = $card.find('.amount').val();
+        let {result: result, require_message: require_message} = await update_order_async(pk, side, order_type, limit_price, stop_price, trail_width, amount);
         
-        // 新規注文の場合は注意書き
-        if (!is_cancellable) {
-            set_info_message('決済注文の数量の変更は大丈夫でしょうか？')
-        }
-
-        let result = await update_order_async(pk, side, order_type, limit_price, stop_price, trail_width, amount);
+        console.log(require_message)
         if (result) {
-            set_success_message('注文の更新が完了しました')
+            var message = '注文の更新が完了しました。<br>'
+            // 新規注文の場合は注意書き
+            if (!is_cancellable && require_message) {
+                message = message + '決済注文の数量の変更は大丈夫でしょうか？'
+            }
+            set_success_message(message)
             $('#active_orders_button').click();
         }
         let $input_search_market = $('#id_active_orders_search_market');
