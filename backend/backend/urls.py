@@ -4,6 +4,6 @@ from django.conf.urls import include
 
 app_name = 'api'
 urlpatterns = [
-    path('v3/api/', include('api.urls')),
-    path('v3/admin/', admin_site.urls),
+    path('api/', include('api.urls')),
+    path('admin/', admin_site.urls),
 ]
