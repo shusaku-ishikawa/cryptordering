@@ -22,14 +22,9 @@
           :options="searchCondition.options.pairs"
         />
         <OrderHistoryPageCard
-          v-for='(alert, index) in data'
+          v-for='(order, index) in data'
           :key="index"
-          :id="alert.id"
-          :market="alert.market"
-          :pair="alert.pair"
-          :rate="alert.rate"
-          :comment="alert.comment"
-          v-on:delete="deleteAlert"
+          :order="order"
         />
          <v-pagination
           v-show="pagination.length > 1"
@@ -86,28 +81,6 @@ export default {
   data () {
     return {
       loading: true,
-      register: {
-        market: '',
-        pair: '',
-        rate: 0,
-        comment: '',
-        options: {
-          markets: [
-            {text: 'bitbank', value: 'bitbank'},
-            {text: 'coincheck', value: 'coincheck'}
-          ],
-          pairs: [
-            {value: 'btc_jpy', text: 'BTC/JPY'},
-            {value: 'xrp_jpy', text: 'XRP/JPY'},
-            {value: 'ltc_btc', text: 'LTC/BTC'},
-            {value: 'eth_btc', text: 'ETH/BTC'},
-            {value: 'mona_jpy', text: 'MONA/JPY'},
-            {value: 'mona_btc', text: 'MONA/BTC'},
-            {value: 'bcc_jpy', text: 'BCC/JPY'},
-            {value: 'bcc_btc', text: 'BCC/BTC'}
-          ]
-        }
-      },
       searchCondition: {
         market: '',
         pair: '',
@@ -191,13 +164,14 @@ export default {
       }
     },
     async fetchData (page, market, pair) {
-      let pagedUrl = 'alerts?market=' + market + '&pair=' + pair + '?page=' + page 
+      let pagedUrl = 'history?market=' + market + '&pair=' + pair + '?page=' + page 
       try {
         let result = await this.$store.dispatch(
           'http/get',
           { url: pagedUrl },
           { root: true }
         )
+        console.log(result.data.result)
         this.data = result.data.result
         this.pagination.length = result.data.page_count
       } catch (err) {

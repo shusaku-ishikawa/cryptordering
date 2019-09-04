@@ -13,7 +13,7 @@
       </router-link>
     </v-btn>
     <v-btn value="order_history">
-      <router-link :to="{name: 'order_history'}" tag="button">
+      <router-link :to="{name: 'history'}" tag="button">
         <span>取引履歴</span>
       </router-link>
     </v-btn>

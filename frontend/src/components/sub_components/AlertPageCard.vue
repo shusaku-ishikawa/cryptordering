@@ -34,7 +34,7 @@
     margin-bottom: 10px;
   }
   table {
-    width: 100%
+    width: 100%;
   }
   th, td {
     padding: 3px 3px;

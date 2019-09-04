@@ -46,20 +46,26 @@
     margin-bottom: 10px;
   }
   table {
-    width: 100%
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px
+  }
+  tr {
+    border-bottom: solid #555555 1px
   }
   th, td {
     padding: 3px 3px;
+    border: solid #555555 1px
   }
 </style>
 <script>
 export default {
-  name: 'AlertPageCard',
+  name: 'OrderHistoryPageCard',
   data () {
     return {
 
     }
   },
-  props: 'order'
+  props: ['order']
 }
 </script>

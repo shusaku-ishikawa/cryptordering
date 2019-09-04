@@ -13,5 +13,6 @@ urlpatterns = [
 router = routers.SimpleRouter()
 router.register('users', UserViewSet)
 router.register('alerts', AlertViewSet)
+router.register('history', OrderViewSet)
 urlpatterns += router.urls
 

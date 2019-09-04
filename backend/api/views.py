@@ -37,6 +37,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
     def list(self, request):
         qs = self.queryset.filter(user = request.user, status = STATUS_FULLY_FILLED)
         page_count = math.ceil(len(qs) / PAGE_SIZE)
@@ -45,7 +46,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         if page:
             offset = (int(page) - 1) * PAGE_SIZE
             qs = qs[offset:offset + PAGE_SIZE]
-        data = AlertSerializer(qs, many = True).data
+        data = OrderSerializer(qs, many = True).data
         return Response(status=status.HTTP_200_OK, data = {'result': data, 'page_count': page_count})
 
 class AssetView(APIView):

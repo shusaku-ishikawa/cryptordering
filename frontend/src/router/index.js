@@ -6,6 +6,7 @@ import Router from 'vue-router'
 import Login from '@/components/LoginPage'
 import Info from '@/components/InfoPage'
 import Order from '@/components/OrderPage'
+import OrderHistory from '@/components/OrderHistoryPage'
 import Asset from '@/components/AssetPage'
 import Alert from '@/components/AlertPage'
 import Store from '../store/index.js'
@@ -42,6 +43,14 @@ const router = new Router({
       path: '/order',
       name: 'order',
       component: Order,
+      meta: {
+        isPublic: false
+      }
+    },
+    {
+      path: '/history',
+      name: 'history',
+      component: OrderHistory,
       meta: {
         isPublic: false
       }
