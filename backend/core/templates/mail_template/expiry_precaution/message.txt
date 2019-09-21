@@ -1,0 +1,12 @@
+{{ customer.full_name }} 様
+
+会員期間が残り{{ customer.remaining_days }}日となりました。
+お早めの更新をお願いいたします。
+
+金融機関名: {{ bank }}
+支店名: {{ branch }}
+口座名義人: {{ meigi }}
+口座種別: {{ type }}
+口座番号: {{ number }}
+
+管理者

@@ -64,62 +64,53 @@ class MyUserAdmin(UserAdmin):
     actions = [mail_users]
     
 class MyRelationAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'market', 'user_display', 'pair_display', 'special_order', 'order_1', 'order_2', 'order_3', 'placed_at', 'is_active')
+    list_display = ('pk', 'market', 'user_display', 'symbol', 'special_order', 'order_1', 'order_2', 'order_3', 'placed_at', 'is_active')
     list_display_links = ('pk',)
-    def pair_display(self, obj):
-        return PAIRS[obj.pair]
     def order_type_display(self, obj):
         return ORDER_TYPES[obj.order_type]
     def user_display(self, obj):
         return obj.user.full_name
     user_display.short_description = '利用者'
-    pair_display.short_description = '通貨'
     order_type_display.short_description = '注文'
     
 class MyOrderAdmin(admin.ModelAdmin):
-    list_display = ('market', 'order_id', 'user_display', 'pair_display', 'side_display', 'order_type_display', 'price', 'start_amount', 'remaining_amount', 'executed_amount', 'status_display', 'error_message')
-    list_display_links = ('order_id',)
+    list_display = ('auto_id', 'market', 'id', 'user_display', 'symbol', 'side_display', 'type_display', 'price', 'stop_price', 'amount', 'average', 'remaining', 'filled', 'status_display', 'error_message')
+    list_display_links = ('id',)
     def user_display(self, obj):
         return obj.user.full_name
     user_display.short_description = '利用者'
-    def pair_display(self, obj):
-        return PAIRS[obj.pair]
+  
     def side_display(self, obj):
         return '買' if obj.side == SIDE_BUY else '売'
-    def order_type_display(self, obj):
-        return ORDER_TYPES[obj.order_type]
+    def type_display(self, obj):
+        return ORDER_TYPES[obj.type]
     def status_display(self, obj):
-        if obj.status == None:
-            return '未注文'
-        else:
-            return STATUS[obj.status]
-        
-    pair_display.short_description = '通貨'
+        return obj.status 
     side_display.short_description = '売/買'
-    order_type_display.short_description = '注文'
+    type_display.short_description = '注文'
     status_display.short_description = 'ステータス'
     
     
 class MyAlertAdmin(admin.ModelAdmin):
-    list_display = ('market', 'user_display', 'pair_display', 'rate', 'is_active')
-    def pair_display(self, obj):
-        return PAIRS[obj.pair]
+    list_display = ('market', 'user_display', 'symbol_display', 'rate', 'is_active')
+    def symbol_display(self, obj):
+        return SYMBOLS[obj.symbol]
     def user_display(self, obj):
         return obj.user.full_name
     user_display.short_description = '利用者'
-    pair_display.short_description = '通貨'
+    symbol_display.short_description = '通貨'
 
 class MyInquiryAdmin(admin.ModelAdmin):
     
     list_display = ('user_display', 'date_initiated', 'subject', 'body', 'email_for_reply', 'show_attachment_1', 'show_attachment_2', 'show_attachment_3')
     def user_display(self, obj):
         return obj.user.full_name
-    user_display.short_description = '利用者'
+
 
     def show_attachment_1(self, obj):
         if obj.attachment_1:
             return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
-                url = obj.attachment_1.file.url,
+                url = obj.attachment_1.url,
                 width = "100px",
                 height= "auto",
                 )
@@ -130,7 +121,7 @@ class MyInquiryAdmin(admin.ModelAdmin):
     def show_attachment_2(self, obj):
         if obj.attachment_2:
             return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
-                url = obj.attachment_2.file.url,
+                url = obj.attachment_2.url,
                 width = "100px",
                 height= "auto",
                 )
@@ -140,13 +131,14 @@ class MyInquiryAdmin(admin.ModelAdmin):
     def show_attachment_3(self, obj):
         if obj.attachment_2:
             return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
-                url = obj.attachment_3.file.url,
+                url = obj.attachment_3.url,
                 width = "100px",
                 height= "auto",
                 )
             )
         else:
             return 'なし'
+    user_display.short_description = '利用者'
     show_attachment_1.short_description = '添付ファイル１'
     show_attachment_2.short_description = '添付ファイル２'
     show_attachment_3.short_description = '添付ファイル３'

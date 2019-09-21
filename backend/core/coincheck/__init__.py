@@ -1,1 +1,0 @@
-name = 'coincheck_pachage'

@@ -2,10 +2,16 @@
 import os
 import sys
 import pymysql
+from django.conf import settings
+
 pymysql.install_as_MySQLdb()
+
+
+# os.sys.path.append()
 
 if __name__ == '__main__':
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

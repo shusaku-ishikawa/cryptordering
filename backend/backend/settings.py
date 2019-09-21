@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -116,9 +117,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -126,15 +127,118 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static_v3/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'bitbank/static'),
+]
+MEDIA_ROOT = os.path.join(BASE_DIR,'uploaded_files')
+MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     )
 }
+LOGGING = {
+    'version': 1,   # これを設定しないと怒られる
+    'disable_existing_loggers': False,
+    'formatters': { # 出力フォーマットを文字列形式で指定する
+        'all': {    # 出力フォーマットに`all`という名前をつける
+            'format': '\t'.join([
+                "[%(levelname)s]",
+                "asctime:%(asctime)s",
+                "module:%(module)s",
+                "message:%(message)s",
+            ])
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {  # ログをどこに出すかの設定
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'file_transaction': { 
+            'level': 'DEBUG',  # DEBUG以上のログを取り扱うという意味
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/transaction.log'),
+            'formatter': 'all',
+            'maxBytes': 1024 * 1024,
+            'backupCount': 2,
+        },
+        'file_monitor_order_status': { 
+            'level': 'DEBUG',  # DEBUG以上のログを取り扱うという意味
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/monitor_order_status.log'),
+            'formatter': 'all',
+            'maxBytes': 10024 * 1024,
+            'backupCount': 1,
+        },
+        'file_monitor_ticker': { 
+            'level': 'DEBUG',  # DEBUG以上のログを取り扱うという意味
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/monitor_ticker.log'),
+            'formatter': 'all',
+            'maxBytes': 10024 * 1024,
+            'backupCount': 1,
+        },
+        'file_sync_orders': { 
+            'level': 'DEBUG',  # DEBUG以上のログを取り扱うという意味
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/sync_orders.log'),
+            'formatter': 'all',
+            'maxBytes': 10024 * 1024,
+            'backupCount': 1,
+        },
+    },
+    'loggers': {  # どんなloggerがあるかを設定する
+        'api': { 
+            'handlers': ['file_transaction', 'console'],  # 先述のfile, consoleの設定で出力
+            'level': 'DEBUG',
+        },
+        'monitor_order_status': { 
+            'handlers': ['file_monitor_order_status', 'console'],  # 先述のfile, consoleの設定で出力
+            'level': 'DEBUG',
+        },
+        'monitor_ticker': { 
+            'handlers': ['file_monitor_ticker', 'console'],  # 先述のfile, consoleの設定で出力
+            'level': 'DEBUG',
+        },
+        'sync_orders': { 
+            'handlers': ['file_sync_orders', 'console'],  # 先述のfile, consoleの設定で出力
+            'level': 'DEBUG',
+        },
+    },
+}
 
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+DEFAULT_FROM_EMAIL = 'kenkenpar55@kenkenpar.com'
+DEFAULT_CHARSET = 'utf-8'
+EMAIL_HOST = 'smtp.muumuu-mail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'kenkenpar55@kenkenpar.com'
+EMAIL_HOST_PASSWORD = '1q1q1q1q'
+EMAIL_USE_TLS = False
+
+
+# JOBs
+CRONJOBS = [
+    ('* * * * *', 'django.core.management.call_command', ['monitor_order_status']),
+    ('* * * * *', 'django.core.management.call_command', ['sync_orders']),
+    ('* * * * *', 'django.core.management.call_command', ['monitor_ticker']),
+]
+CRONTAB_LOCK_JOBS = False

@@ -18,12 +18,24 @@ from django.db.models import Q
 from datetime import datetime
 import time
 from django.template.loader import get_template
-from core.coincheck.coincheck import CoinCheck
-import python_bitbankcc
 from django.utils import timezone
 from django.template.loader import get_template
 from django.conf import settings
 from core.myexception import *
+from core.enums import *
+import ccxt
+
+
+def parse_ccxt_error(market, orig):
+    import re, json
+    if market == MARKET_BITBANK:
+        matched = re.findall(r'\{.+\}', orig)
+        if len(matched) > 0:
+            parsed = json.loads(matched[0])
+            code = parsed.get('data').get('code')
+            return BITBANK_ERROR_CODES[str(code)]
+        else:
+            return ['']
 
 class ASCIIFileSystemStorage(FileSystemStorage):
     """
@@ -130,7 +142,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
-        send_mail(subject, message, from_email, [self.email_for_notice], **kwargs)
+        send_mail(
+            subject,
+            message,
+            from_email,
+            [self.email_for_notice],
+            **kwargs
+        )
+
  
 
     @property
@@ -141,7 +160,26 @@ class User(AbstractBaseUser, PermissionsMixin):
         メールアドレスを返す
         """
         return self.email
-
+    def fetch_balance(self, market, asset_name = None):
+        client_class = getattr(ccxt, market)
+        client = client_class({
+            'nonce': ccxt.Exchange.milliseconds,
+        })
+        if market == MARKET_BITBANK:
+            client.apiKey = self.bb_api_key
+            client.secret = self.bb_api_secret_key
+        elif market == MARKET_COINCHECK:
+            client.apiKey = self.cc_api_key
+            client.secret = self.cc_api_secret_key
+        try:
+            free = client.fetch_balance().get('free')
+        except:
+            return None
+        else:
+            if asset_name:
+                return free.get(asset_name)
+            else:
+                return free
 logger = logging.getLogger('batch_logger')
 
 import re
@@ -150,15 +188,18 @@ def _trim_error_msg(msg):
 
 class Order(models.Model):
     def __str__(self):
-        if self.order_id == None:
+        if self.id == None:
             return "-"
         else:
-            return self.order_id
+            return self.id
         
     class Meta:
         verbose_name = "取引履歴"
         verbose_name_plural = "3.取引履歴"
-        
+
+    auto_id = models.AutoField(
+        primary_key = True
+    )
     user = models.ForeignKey(
         User,
         verbose_name = '利用者',
@@ -170,7 +211,7 @@ class Order(models.Model):
         max_length = 50,
     )
    
-    pair = models.CharField(
+    symbol = models.CharField(
         verbose_name = _('通貨'),
         max_length = 50,
     )
@@ -180,7 +221,7 @@ class Order(models.Model):
         max_length = 50,
     )
 
-    order_type = models.CharField(
+    type = models.CharField(
         verbose_name = _('注文方法'),
         max_length = 50,
     )
@@ -193,7 +234,7 @@ class Order(models.Model):
             MinValueValidator(0),
         ]
     )
-    price_for_stop = models.FloatField(
+    stop_price = models.FloatField(
         verbose_name = _('ストップ価格'),
         blank = True,
         null = True,
@@ -219,7 +260,7 @@ class Order(models.Model):
         ]
     )
 
-    start_amount = models.FloatField(
+    amount = models.FloatField(
         verbose_name = _('注文数量'),
         null = True,
         validators = [
@@ -227,7 +268,7 @@ class Order(models.Model):
         ]
     )
 
-    remaining_amount = models.FloatField(
+    remaining = models.FloatField(
         verbose_name = _('未約定数量'),
         blank = True,
         null = True,
@@ -236,7 +277,7 @@ class Order(models.Model):
         ]
     )
 
-    executed_amount = models.FloatField(
+    filled = models.FloatField(
         verbose_name = _('約定済数量'),
         blank = True,
         null = True,
@@ -245,7 +286,7 @@ class Order(models.Model):
         ]
     )
 
-    average_price = models.FloatField(
+    average = models.FloatField(
         verbose_name = _('約定平均価格'),
         null = True,
         blank = True,
@@ -266,14 +307,14 @@ class Order(models.Model):
         null = True,
         blank = True
     )
-    order_id = models.CharField(
+    id = models.CharField(
         verbose_name = _('取引ID'),
         max_length = 50,
         null = True,
         blank = True
     )
 
-    ordered_at = UnixTimeStampField(
+    timestamp = UnixTimeStampField(
         verbose_name = _('注文時刻unixtime'),
         use_numeric = True,
         null = True,
@@ -290,191 +331,167 @@ class Order(models.Model):
     
     @property
     def myposition(self):
-        if hasattr(self, 'new_order'):
-            return 'new_order'
-        elif hasattr(self, 'settle_order_1'):
-            return 'settle_order_1'
-        elif hasattr(self, 'settle_order_2'):
-            return 'settle_order_2'
+        if hasattr(self, POSITION_NEW_ORDER):
+            return POSITION_NEW_ORDER
+        elif hasattr(self, POSITION_SETTLE_ORDER_1):
+            return POSITION_SETTLE_ORDER_1
+        elif hasattr(self, POSITION_SETTLE_ORDER_2):
+            return POSITION_SETTLE_ORDER_2
         else:
             raise Exception('')
+    
+    @property
+    def is_immediate_order(self):
+        return self.type in { TYPE_MARKET, TYPE_LIMIT }
+    @property
+    def is_limit_order(self):
+        return 'limit' in self.type
+    @property
+    def is_stop_order(self):
+        return 'stop' in self.type
+    @property
+    def is_trail_order(self):
+        return 'trail' in self.type
+    
+    @property
+    def valid_order_type(self):
+        if self.is_stop_order:
+            return self.type.split('_')[1]
+        elif self.is_trail_order:
+            return TYPE_MARKET
+        else:
+            return self.type
 
-    def place(self):
-        logger = logging.getLogger('api')
-
-        prv_bitbank = python_bitbankcc.private(self.user.bb_api_key, self.user.bb_api_secret_key)
-        prv_coincheck = CoinCheck(self.user.cc_api_key, self.user.cc_api_secret_key)
-        
-        if self.market == 'bitbank':
-            try:
-                ret = prv_bitbank.order(
-                    self.pair, # ペア
-                    self.price, # 価格
-                    self.start_amount, # 注文枚数
-                    self.side, # 注文サイド
-                    'market' if self.order_type.find("limit") == -1 else 'limit' # 注文タイプ
-                )
-            except Exception as e:
-                logger.error('place bitbank order: ' + str(e.args))
-                self.status = Order.STATUS_FAILED_TO_ORDER
-                self.error_message = _trim_error_msg(e.args[0])
-                self.save()
-                return False
-            else:
-                self.remaining_amount = ret.get('remaining_amount')
-                self.executed_amount = ret.get('executed_amount')
-                self.average_price = ret.get('average_price')
-                self.status = ret.get('status')
-                self.ordered_at = ret.get('ordered_at')
-                self.order_id = ret.get('order_id')
-                self.save()
-                return True
-           
-        elif self.market == 'coincheck':
-            try:
-                current_rate = float(json.loads(prv_coincheck.ticker.all())['last'])
-                ret = json.loads(prv_coincheck.order.create({
-                    'rate': self.price if 'limit' in self.order_type else None,
-                    'amount': self.start_amount if not (self.order_type == 'market' and self.side == 'buy') else None,
-                    'market_buy_amount': current_rate * self.start_amount if (self.order_type == 'market' and self.side == 'buy') else None,
-                    'order_type': self.side if 'limit' in self.order_type else 'market_' + self.side,
-                    'pair': self.pair
-                }))
-            except Exception as e:
-                self.status = Order.STATUS_FAILED_TO_ORDER
-                self.error_message = e.args[0]
-                self.save()
-                raise OrderFailedError(self.error_message)
-            else:
-                if ret.get('success'):
-                    self.order_id = ret.get('id')
-                    self.remaining_amount = ret.get('amount')
-                    ordered_date = datetime.strptime(ret.get('created_at'), '%Y-%m-%dT%H:%M:%S.%fZ') + timedelta(hours = 9)
-                    self.ordered_at = int(ordered_date.timestamp() * 1000)
-                    self.status = self.STATUS_UNFILLED
+    def is_placable(self, rate):
+        if self.is_stop_order:
+            return (self.side == SIDE_SELL and (rate <= self.stop_price)) or \
+                (self.side == SIDE_BUY and (rate >= self.stop_price))
+        elif self.is_trail_order:
+            if self.side == SIDE_SELL:
+                if self.trail_price > rate:
+                    return True       
+                elif rate > self.trail_price + self.trail_width:
+                    self.trail_price = rate - self.trail_width
                     self.save()
+                    return False
+            else:
+                if self.trail_price <= rate:
                     return True
-                elif ret.get('error'):
-                    self.status = self.STATUS_FAILED_TO_ORDER
-                    self.error_message = ret.get('error')
+                elif rate <= self.trail_price - self.trail_width:
+                    self.trail_price = rate + self.trail_width
                     self.save()
-                    raise OrderFailedError(self.error_message)
-                else:
-                    raise Exception('想定外のレスポンス:' + str(ret))
+                    return False
+
+    def place(self, force = False):
+        logger = logging.getLogger('api')
+        if self.status != STATUS_READY_TO_ORDER:
+            return True
+        
+        if not force and not self.is_immediate_order:
+            return True
+    
+        client_class = getattr(ccxt, self.market)
+        client = client_class({
+            'nonce': ccxt.Exchange.milliseconds
+        })
+        
+        if self.market == MARKET_BITBANK:
+            client.apiKey = self.user.bb_api_key
+            client.secret = self.user.bb_api_secret_key
+        elif self.market == MARKET_COINCHECK:
+            client.apiKey = self.user.cc_api_key
+            client.secret = self.user.cc_api_secret_key
+        try:
+            result = client.create_order(self.symbol, self.valid_order_type, self.side, self.amount, self.price)
+        except Exception as e:
+            print(e)
+            self.status = STATUS_FAILED_TO_ORDER
+            self.error_message = parse_ccxt_error(self.market, e.args[0])
+            
+        else:
+            print(result)
+            
+            self.id = result.get('id')
+            self.status = result.get('status')
+            self.amount = result.get('amount')
+            self.remaining = result.get('remaining')
+            self.timestamp = result.get('timestamp')
+        finally:
+            self.save()
+            return self.status != STATUS_FAILED_TO_ORDER
 
     def cancel(self):
         # 未約定、部分約定以外のステータスの倍はステータスのみ変更
-        if self.status not in { self.STATUS_UNFILLED, self.STATUS_PARTIALLY_FILLED }:
-            self.status = self.STATUS_CANCELED_UNFILLED
+        if self.status not in { STATUS_UNFILLED, STATUS_PARTIALLY_FILLED }:
+            self.status = STATUS_CANCELED_UNFILLED
             self.save()
             return True
-        
-        prv_bitbank = python_bitbankcc.private(self.user.bb_api_key, self.user.bb_api_secret_key)
-        prv_coincheck = CoinCheck(self.user.cc_api_key, self.user.cc_api_secret_key)
-        
-        if self.market == 'bitbank':
-            try:
-                ret = prv_bitbank.cancel_order(
-                    self.pair, # ペア
-                    self.order_id # 注文ID
-                )
-            except Exception as e:
-                raise OrderCancelFailedError(_trim_error_msg(e.args[0]) )
-            else:
-                self.remaining_amount = ret.get('remaining_amount')
-                self.executed_amount = ret.get('executed_amount')
-                self.average_price = ret.get('average_price')
-                self.status = ret.get('status')
-                self.save()
-                return True
-            
 
-        elif self.market == 'coincheck':
-            try:
-                ret = json.loads(prv_coincheck.order.cancel({
-                    'id': self.order_id # 注文ID
-                }))   
-            except Exception as e:
-                raise OrderCancelFailedError(e.args[0])
-            else:
-                if not ret.get('success') and ret.get('error'):
-                    raise OrderCancelFailedError(ret.get('error'))
-                self.status = self.STATUS_CANCELED_UNFILLED
-                self.save()
-                return True
-                
+        client_class = getattr(ccxt, self.market)
+        client = client_class({
+            'nonce': ccxt.Exchange.milliseconds
+        })
+        
+        if self.market == MARKET_BITBANK:
+            client.apiKey = self.user.bb_api_key
+            client.secret = self.user.bb_api_secret_key
+        elif self.market == MARKET_COINCHECK:
+            client.apiKey = self.user.cc_api_key
+            client.secret = self.user.cc_api_secret_key
+        try:
+            result = client.cancel_order(self.id, self.symbol)
+        except Exception as e:
+            return False
+        else:
+            print(result)
+            return True
             
     def update(self):
         logger  = logging.getLogger('api')
     
-        prv_bitbank = python_bitbankcc.private(self.user.bb_api_key, self.user.bb_api_secret_key)
-        prv_coincheck = CoinCheck(self.user.cc_api_key, self.user.cc_api_secret_key)
-        
-        if self.market == 'bitbank':
-            try:
-                ret = prv_bitbank.get_order(
-                    self.pair, 
-                    self.order_id
-                )
-            except Exception as e:
-                raise OrderStatusUpdateError(_trim_error_msg(e.args[0]) )
-            else:
-                self.remaining_amount = ret.get('remaining_amount')
-                self.executed_amount = ret.get('executed_amount')
-                self.average_price = ret.get('average_price')
-                status = ret.get('status')
-                self.status = status
-                self.save()
-                return status
-          
-        elif self.market == 'coincheck':
-            try:
-                _open = json.loads(prv_coincheck.order.opens({}))
-                _close = json.loads(prv_coincheck.order.transactions({
-                    'limit': 1,
-                    'starting_after': self.order_id,
-                    'ending_before': self.order_id
-                }))
-            except Exception as e:
-                raise OrderStatusUpdateError(e.args[0])
-            else:
-                if not _open.get('success'):
-                    if _open.get('error'):
-                        raise OrderStatusUpdateError(_open.get('error'))
-                    raise OrderStatusUpdateError('想定外の応答: ' + str(_open))
-                if not _close.get('success'):
-                    if _close.get('error'):
-                        raise OrderStatusUpdateError(_close.get('error'))
-                    raise OrderStatusUpdateError('想定外の応答: ' + str(_close))
-                
-                is_open = False
-                for oo in _open.get('orders'):
-                    if oo.get('id') == self.order_id:
-                        is_open = True
-                        return self.STATUS_UNFILLED
+       # 未約定、部分約定以外のステータスの倍はステータスのみ変更
+        if self.status not in { STATUS_UNFILLED, STATUS_PARTIALLY_FILLED }:
+            self.status = STATUS_CANCELED_UNFILLED
+            self.save()
+            return True
 
-                if not is_open:
-                    if len(_close.get('transactions')) != 0:
-                        # filled
-                        self.status = self.STATUS_FULLY_FILLED
-                        self.executed_amount = self.start_amount
-                        self.remaining_amount = 0
-                        self.average_price = float(_close.get('transactions')[0].get('rate'))
-                    else:
-                        # canceled
-                        self.status = self.STATUS_CANCELED_UNFILLED
-                    self.save()
-                    return self.STATUS_FULLY_FILLED
+        client_class = getattr(ccxt, self.market)
+        client = client_class({
+            'nonce': ccxt.Exchange.milliseconds
+        })
+        
+        if self.market == MARKET_BITBANK:
+            client.apiKey = self.user.bb_api_key
+            client.secret = self.user.bb_api_secret_key
+        elif self.market == MARKET_COINCHECK:
+            client.apiKey = self.user.cc_api_key
+            client.secret = self.user.cc_api_secret_key
+        try:
+            order = client.fetch_order(self.id, self.symbol)
+        except Exception as e:
+            print(e)
+            return False
+        else:
+            self.status = order.get('status')
+            self.remaining = order.get('remaining')
+            self.filled = order.get('filled')
+            self.average = order.get('average')
+            self.save()
+            return True
+    
     def notify_user(self):
         try:
-            readable_datetime = datetime.fromtimestamp(int(int(self.ordered_at) / 1000))
-        except ValueError:
+            readable_datetime = datetime.fromtimestamp(int(self.timestamp / 1000))
+        except ValueError as e:
+            print(e)
             return False
         else:
             context = { "user": self.user, "order": self, 'readable_datetime': readable_datetime }
-            subject = get_template('bitbank/mail_template/fill_notice/subject.txt').render(context)
-            message = get_template('bitbank/mail_template/fill_notice/message.txt').render(context)
-            self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+            subject = get_template('mail_template/fill_notice/subject.txt').render(context)
+            message_txt = get_template('mail_template/fill_notice/message.txt').render(context)
+            message_html = get_template('mail_template/fill_notice/message.html').render(context)
+            
+            self.user.email_user(subject, message_txt, settings.DEFAULT_FROM_EMAIL, html_message = message_html)
             logger.info('notice sent to:' + self.user.email_for_notice)
 
 class Relation(models.Model):
@@ -485,31 +502,6 @@ class Relation(models.Model):
         verbose_name = "発注一覧"
         verbose_name_plural = "2.発注一覧"
 
-    ORDER_SINGLE = 'SINGLE'
-    ORDER_IFD = 'IFD'
-    ORDER_OCO = 'OCO'
-    ORDER_IFDOCO = 'IFDOCO'
-
-    MARKET = [
-        'bitbank',
-        'coincheck'
-    ]
-    PAIR = [
-        'btc_jpy',
-        'xrp_jpy',
-        'ltc_btc',
-        'eth_btc',
-        'mona_jpy',
-        'mona_btc',
-        'bcc_jpy',
-        'bcc_btc',
-    ]
-    SPECIAL_ORDER = [
-        'SINGLE',
-        # 'IFD',
-        # 'OCO',
-        # 'IFDOCO'  
-    ]
     
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -519,7 +511,7 @@ class Relation(models.Model):
         default = 'bitbank'
     )
     
-    pair = models.CharField(
+    symbol = models.CharField(
         verbose_name = _('通貨'),
         max_length = 50,
     )
@@ -565,12 +557,21 @@ class Relation(models.Model):
         verbose_name = '有効',
         default = True,
     )
-    
+    @property
+    def errors(self):
+        errors = []
+        if self.order_1 and self.order_1.status == STATUS_FAILED_TO_ORDER:
+            errors.append('新規注文でエラー:{}'.format(self.order_1.error_message))
+        if self.order_2 and self.order_2.status == STATUS_FAILED_TO_ORDER:
+            errors.append('決済注文1でエラー:{}'.format(self.order_2.error_message))
+        if self.order_3 and self.order_3.status == STATUS_FAILED_TO_ORDER:
+            errors.append('決済注文2でエラー:{}'.format(self.order_3.error_message))
+        return errors
    
 
 class Alert(models.Model):
     def __str__(self):
-        return self.pair
+        return self.symbol
 
     class Meta:
         verbose_name = "通知設定"
@@ -582,7 +583,7 @@ class Alert(models.Model):
         max_length = 50,
         default = 'bitbank'
     )
-    pair = models.CharField(
+    symbol = models.CharField(
         verbose_name = _('通貨'),
         max_length = 50,
         default = 'btc_jpy',
@@ -619,34 +620,19 @@ class Alert(models.Model):
         null = True,
     )
     def notify_user(self):
-        if self.user.use_alert == 'ON':
-            context = { "user": self.user, "rate": self.rate, "pair": self.pair, "comment": self.comment }
-            subject = get_template('bitbank/mail_template/rate_notice/subject.txt').render(context)
-            message = get_template('bitbank/mail_template/rate_notice/message.txt').render(context)
-            self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        if self.user.use_alert:
+            context = { "user": self.user, "rate": self.rate, "symbol": self.symbol, "comment": self.comment }
+            subject = get_template('mail_template/rate_notice/subject.txt').render(context)
+            message_txt = get_template('mail_template/rate_notice/message.txt').render(context)
+            message_html = get_template('mail_template/rate_notice/message.html').render(context)
+        
+            self.user.email_user(subject, message_txt, settings.DEFAULT_FROM_EMAIL, html_message = message_html)
             self.alerted_at = timezone.now()
             
         self.is_active = False
         self.save()
     
         
-class Attachment(models.Model):
-    def __str__(self):
-        return self.file.name
-    class Meta:
-        verbose_name = "添付ファイル"
-        verbose_name_plural = "添付ファイル"
-    file = models.FileField(
-        verbose_name = 'ファイル',
-        upload_to = 'attachments',
-        null = False,
-        blank = False,
-    )
-    uploaded_at = models.DateTimeField(
-        verbose_name = 'アップロード日時',
-        auto_now_add = True,
-    )
-
 class Inquiry(models.Model):
     def __str__(self):
         return self.subject
@@ -667,29 +653,24 @@ class Inquiry(models.Model):
     email_for_reply = models.EmailField(
         verbose_name = _('通知用メールアドレス'),
     )
-    attachment_1 = models.ForeignKey(
-        Attachment,
-        verbose_name = '添付ファイル1',
+   
+    attachment_1 = models.FileField(
+        verbose_name = 'ファイル1',
+        upload_to = 'attachments',
         null = True,
         blank = True,
-        on_delete = models.CASCADE,
-        related_name = 'att_1'
     )
-    attachment_2 = models.ForeignKey(
-        Attachment,
-        verbose_name = '添付ファイル2',
-        null = True,
-        blank = True, 
-        on_delete = models.CASCADE,
-        related_name = 'att_2'
-    )
-    attachment_3 = models.ForeignKey(
-        Attachment,
-        verbose_name = '添付ファイル3',
+    attachment_2 = models.FileField(
+        verbose_name = 'ファイル2',
+        upload_to = 'attachments',
         null = True,
         blank = True,
-        on_delete = models.CASCADE,
-        related_name = 'att_3'
+    )
+    attachment_3 = models.FileField(
+        verbose_name = 'ファイル3',
+        upload_to = 'attachments',
+        null = True,
+        blank = True,
     )
 
     closed = models.BooleanField(
@@ -702,7 +683,17 @@ class Inquiry(models.Model):
 
     )
 
-
+class Ticker():
+    @staticmethod
+    def get_ticker(market, symbol):
+        client_class = getattr(ccxt, market)
+        client = client_class()
+        try:
+            data = client.fetch_ticker(symbol)
+        except Exception as e:
+            return None
+        else:
+            return data
 class BankInfo(models.Model):
     def __str__(self):
         return '口座情報'
@@ -760,7 +751,3 @@ class BankInfo(models.Model):
             BankInfo.number = 'no data'
             return instance
         return qs[0]
-
-@receiver(post_delete, sender=Attachment)
-def delete_file(sender, instance, **kwargs):
-    instance.file.delete(False)

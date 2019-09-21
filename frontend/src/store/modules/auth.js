@@ -3,7 +3,7 @@ export default {
   state: {
     userid: '',
     username: '',
-    token: '',
+    token: ''
   },
   mutations: {
     create (state, data) {
@@ -18,6 +18,9 @@ export default {
     }
   },
   getters: {
+    isAuthenticated: (state, getters) => {
+      return state.token !== ''
+    },
     userInfoGetUrl: (state, getters) => {
       return 'users/' + state.userid
     },
@@ -38,7 +41,7 @@ export default {
           commit('create', {
             userid: result.data.id,
             username: data.username,
-            token: result.data.token,
+            token: result.data.token
           })
         }
       } catch (err) {

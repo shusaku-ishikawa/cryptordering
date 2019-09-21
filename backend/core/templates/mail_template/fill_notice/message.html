@@ -1,0 +1,64 @@
+{{ user.full_name }} 様 
+
+下記注文が約定されました。
+
+<table>
+  <tr>
+    <th align="left">
+      Order ID
+    </th>
+    <td align="right">
+      {{ order.id }}
+    </td>
+    </tr>
+    <tr>
+      <th align="left">
+        注文日時
+      </th>
+      <td align="right">
+        {{ readable_datetime }}
+      </td>
+    </tr>
+    <tr>
+      <th align="left">
+        通貨
+      </th>
+      <td align="right">
+        {{ order.symbol }}
+      </td>
+    </tr>
+    <tr>
+      <th align="left">
+        売買
+      </th>
+      <td align="right">
+        {{ order.side }}
+      </td>
+    </tr>
+    <tr>
+      <th align="left">
+        注文
+      </th>
+      <td align="right">
+        {{ order.type }}
+      </td>
+    </tr>
+    <tr>
+      <th align="left">
+        数量
+      </th>
+      <td align="right">
+        {{ order.amount }}
+      </td>
+    </tr>
+    <tr>
+    <th align="left">
+      平均価格
+    </th>
+    <td align="right">
+      {{ order.average }}
+    </td>
+  </tr>   
+</table>
+
+管理者
